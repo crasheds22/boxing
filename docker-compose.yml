@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+    db:
+        container_name: boxing-db
+        build:  
+            context: ./database
+        ports:
+            - "7999:3306"
+        volumes:
+            - mydb:/var/lib/mysql
+            - ./database/:/var/database
+        restart: always
+    
+    web:
+        container_name: boxing-web
+        build:
+            context: ./webapp
+        ports:
+            - "8000:80"
+        depends_on: 
+            - db
+        volumes:
+            - ./webapp/html:/usr/lib/html
+            - ./webapp/cgi-bin:/usr/lib/cgi-bin
+
+volumes:
+  mydb:
