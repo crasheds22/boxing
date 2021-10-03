@@ -9,7 +9,7 @@ services:
             - "7999:3306"
         volumes:
             - mydb:/var/lib/mysql
-            - ./database/:/var/database
+            - ./database/db_upgrades:/var/db_upgrades
         restart: always
     
     web:

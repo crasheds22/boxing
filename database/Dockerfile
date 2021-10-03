@@ -1,7 +1,13 @@
 FROM mysql:latest
 
-ENV MYSQL_ROOT_PASSWORD=password
+ENV MYSQL_USER=user
+ENV MYSQL_PASSWORD=password
 ENV MYSQL_DATABASE=boxing
+ENV MYSQL_ROOT_PASSWORD=password
+
+COPY create-user.sql /docker-entrypoint-initdb.d/
+
+COPY connect-db.sh /usr/local/bin/
 
 EXPOSE 3306
 
