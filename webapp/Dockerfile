@@ -1,6 +1,6 @@
-FROM ubuntu:16.04
+FROM httpd
 
-RUN apt-get update && apt-get upgrade
+RUN apt-get update && apt-get upgrade -y
 
 RUN apt-get install -y build-essential
 
@@ -11,9 +11,17 @@ RUN apt-get install -y tzdata
 RUN apt-get install -y \
     apache2 \
     curl \
-    perl
+    perl \
+    vim \
+    nano
 
 RUN a2enmod cgid
+
+RUN ln -sf /dev/stderr /var/log/apache2/error.log
+RUN ln -sf /dev/stdout /var/log/apache2/access.log
+
+RUN cpan -y DBI
+RUN cpan -y Template
 
 EXPOSE 80
 
