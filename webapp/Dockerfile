@@ -22,6 +22,8 @@ RUN ln -sf /dev/stdout /var/log/apache2/access.log
 
 RUN cpan -y DBI
 RUN cpan -y Template
+RUN cpan -y JSON
+RUN cpan -y Try::Tiny
 
 EXPOSE 80
 
