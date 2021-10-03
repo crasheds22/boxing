@@ -1,0 +1,11 @@
+[% INCLUDE header.tt 
+    pagetitle = "Login"
+%]
+<form class="form-horizontal" role="form" name="loginform" id="loginform">
+    [% INCLUDE startboundingbox.tt
+        boxtitle = "Test"
+    %]
+        <p>Hello there</p>
+    [% INCLUDE endboundingbox.tt %]
+</form>
+[% INCLUDE footer.tt %]
