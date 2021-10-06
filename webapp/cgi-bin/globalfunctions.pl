@@ -15,22 +15,18 @@ sub DBConnect {
 
     my $dbi_str = "dbi:mysql:$tablespace;host=$host:$port";
 
-    my $connector;
-    eval {
-        $connector = DBI->connect( $dbi_str, $username, $password, { AutoCommit => 0, RaiseError => 1 } );
-        $connector->{LongReadLen} = 15005;
-        $connector->{LongTruncOk} = 1;
-    };
-
-    if ( $@ ) {
-        print STDERR "Error in connecting to DB";
-        $connector = undef;
+    my $connector = DBI->connect( $dbi_str, $username, $password, { AutoCommit => 0, RaiseError => 1 } );
+    if ( !defined $connector ) {
+        print STDERR $DBI::errstr;
+        return undef;
     }
+    $connector->{LongReadLen} = 15005;
+    $connector->{LongTruncOk} = 1;
 
-    if ( $connector ) {
+    if ( defined $connector ) {
         return $connector;
     } else {
-        exit;
+        return undef;
     }
 
 }

@@ -15,6 +15,8 @@ RUN apt-get install -y \
     vim \
     nano
 
+RUN apt-get install -y default-libmysqlclient-dev
+
 RUN a2enmod cgid
 
 RUN ln -sf /dev/stderr /var/log/apache2/error.log
@@ -24,6 +26,7 @@ RUN cpan -y DBI
 RUN cpan -y Template
 RUN cpan -y JSON
 RUN cpan -y Try::Tiny
+RUN cpan -y DBD::mysql
 
 EXPOSE 80
 
