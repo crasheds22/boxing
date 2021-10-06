@@ -1,8 +1,5 @@
 #!/usr/bin/perl -w
 
-use strict;
-use warnings;
-
 use DBI;
 
 sub DBConnect {
@@ -28,6 +25,16 @@ sub DBConnect {
     } else {
         return undef;
     }
+
+}
+
+sub ACTIVEPage {
+
+    my ( $pagename ) = @_;
+
+    %ACTIVE = ();
+
+    $ACTIVE{$pagename} = 'class="active"';
 
 }
 

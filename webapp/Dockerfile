@@ -27,6 +27,7 @@ RUN cpan -y Template
 RUN cpan -y JSON
 RUN cpan -y Try::Tiny
 RUN cpan -y DBD::mysql
+RUN cpan -y CGI;
 
 EXPOSE 80
 

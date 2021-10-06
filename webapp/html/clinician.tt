@@ -1,0 +1,97 @@
+[% INCLUDE header.tt
+    pagetitle = "Clinician"
+    pagename = clinicianname
+    ACTIVE = activepage
+%]
+
+<form class="form-horizontal" role="form" name="clinician_form" id="clinician_form">
+    [% INCLUDE startboundingbox.tt
+        boxtitle = "Patients"
+    %]
+    <div class="box-body">
+        <div class="form-group">
+            <table class="table table-responsive table-bordered table-striped" name="patient_table" id="patient_table">
+                <thead>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    [% INCLUDE endboundingbox.tt %]
+
+    [% INCLUDE startboundingbox.tt
+        boxtitle = "Upcoming Sessions"
+    %]
+    <div class="box-body">
+        <div class="form-group">
+            <table class="table table-responsive table-bordered table-striped" name="future_sessions" id="future_sessions">
+                <thead>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    [% INCLUDE endboundingbox.tt %]
+    [% INCLUDE startboundingbox.tt
+        boxtitle = "Previous Sessions"
+    %]
+    <div class="box-body">
+        <div class="form-group">
+            <table class="table table-responsive table-bordered table-striped" name="past_sessions" id="past_sessions">
+                <thead>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    [% INCLUDE endboundingbox.tt %]
+
+    [% IF p.accounttypeid == 2 || p.accounttypeid == 1 %]
+    [% INCLUDE startboundingbox.tt
+        boxtitle = "Clinicians"
+    %]
+    <div class="box-body">
+        <div class="form-group">
+            <table class="table table-responsive table-bordered table-striped" name="clinician_table" id="clinician_table">
+                <thead>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    [% INCLUDE endboundingbox.tt %]
+    [% END %]
+
+    [% IF p.accounttypeid == 1 %]
+    [% INCLUDE startboundingbox.tt
+        boxtitle = "Head Clinicians"
+    %]
+    <div class="box-body">
+        <div class="form-group">
+            <table class="table table-responsive table-bordered table-striped" name="head_clinician_table" id="head_clinician_table">
+                <thead>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    [% INCLUDE endboundingbox.tt %]
+    [% END %]
+</form>
+
+[% INCLUDE footer.tt %]
