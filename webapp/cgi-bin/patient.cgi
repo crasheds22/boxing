@@ -38,11 +38,9 @@ if ( $main::p{accounttypeid} == 4 ) {
     $patientname .= " (Viewing)";
 }
 
-&ACTIVEPage( 'patient' );
-
 my %args = (
     patientname => $patientname,
-    ACTIVE => \%main::ACTIVE,
+    ACTIVE => &ACTIVEPage( 'patient' ),
     p => \%main::p
 );
 
