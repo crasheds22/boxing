@@ -14,3 +14,17 @@
 
     </head>
     <body>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">[% pagename %]</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li [% ACTIVE.patient %]><a href="/cgi-bin/patient.cgi">Patient</a></li>
+                    <li [% ACTIVE.clinician %]><a href="/cgi-bin/clinician.cgi">Clinician</a></li>
+                    <li [% ACTIVE.settings %]><a href="#">Settings</a></li>
+                    <li><a href="#">Log Out</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="wrapper">
