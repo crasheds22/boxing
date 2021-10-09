@@ -110,4 +110,14 @@ sub ShowLogin {
 
 }
 
+sub ActivePage {
+
+    my ( $pagename ) = @_;
+
+    my %ACTIVE = ();
+    $ACTIVE{$pagename} = 'class="active"';
+
+    return \%ACTIVE;
+}
+
 1;
