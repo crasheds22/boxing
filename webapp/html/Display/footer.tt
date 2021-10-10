@@ -1,5 +1,35 @@
         </div>
 
+        <script>
+            function Alert( message, iswarning ) {
+                if ( iswarning ) {
+                    BootstrapDialog.show({
+                        title: "Warning",
+                        type: BootstrapDialog.TYPE_WARNING,
+                        message: message,
+                        buttons: [ {
+                            label: 'Ok',
+                            action: function( self ) {
+                                self.close();
+                            }
+                        } ]
+                    });
+                } else {
+                    BootstrapDialog.show({
+                        title: "Information",
+                        message: message,
+                        buttons: [ {
+                            label: "Ok",
+                            action: function( self ) {
+                                self.close();
+                            }
+                        } ]
+                    });
+                }
+            }
+            
+        </script>
+
         [% scriptdata %]
     </body>
 </html>

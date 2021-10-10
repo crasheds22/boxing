@@ -186,24 +186,25 @@
     function NewPatient() {
         patientDialog = new BootstrapDialog({
             id: "patientdialog",
-            url: "/ajax/ajaxaddpatient.cgi",
-            data: { "clinicianid": "[% p.clinicianid %]" },
+            title: "Create Patient",
+            data: {  },
+            message: $('<div></div>').load('ajax/ajaxaddeditpatient.cgi')
         });
-        patientDialog.show();
+        patientDialog.open();
     }
 
     function NewClinician( ishead ) {
         if ( ishead ) {
             clinicianDialog = new BootstrapDialog({
                 id: "patientdialog",
-                url: "/ajax/ajaxaddclinician.cgi",
-                data: { "clinicianid": "[% p.clinicianid %]", "ishead": 1 },
+                url: "/ajax/ajaxaddeditclinician.cgi",
+                data: { "ishead": 1 },
             });
         } else {
             clinicianDialog = new BootstrapDialog({
                 id: "cliniciandialog",
-                url: "/ajax/ajaxaddclinician.cgi",
-                data: { "clinicianid": "[% p.clinicianid %]", "ishead": 0 },
+                url: "/ajax/ajaxaddeditclinician.cgi",
+                data: { "ishead": 0 },
             });
         }
         clinicianDialog.show();
