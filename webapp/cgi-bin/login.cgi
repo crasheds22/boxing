@@ -3,19 +3,29 @@
 use strict;
 use warnings;
 
-use Template;
+use CGI;
+use JSON;
 
 require "./globalfunctions.pl";
 
-my $filename = "login.tt";
+my $dbh = &DBConnect();
 
-my $template = Template->new(
-    INCLUDE_PATH => '/usr/lib/html/'
-);
+my %in = ();
+my $query = CGI->new();
+foreach ( $query->param ) {
+    $in{$_} = $query->param($_);
+}
 
-my %args = ();
+&SecurityCheck( $dbh, \%in );
 
-print "Content-Type: text/html\n\n";
-$template->process( $filename, \%args ) or die "Template process failed (login): ", $template->error();
+if ( $main::p{accounttypeid} == 4 ) {
+    # Patient
+    print STDERR "A patient has logged in\n";
+    $dbh->disconnect();
+} else {
+    # Not a patient
+    print STDERR "A not patient has logged in\n";
+    $dbh->disconnect();
+}
 
-exit; 
+exit;

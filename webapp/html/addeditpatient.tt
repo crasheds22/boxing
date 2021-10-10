@@ -1,0 +1,127 @@
+<form class="form-horizontal" role="form" name="addeditpatient_form" id="addeditpatient_form" action="CheckFields()" autocomplete="off">
+    <input type="hidden" name="patientid" value="[% db.patientid %]" />
+    <div class="box-body">
+        <div class="form-group">
+            <label class="control-label col-md-3">First name</label>
+            <div class="col-md-8">
+                <input type="text" class="form-control" id="firstname" name="firstname" value="[% db.firstname %]" placeholder="First name" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3">Last name</label>
+            <div class="col-md-8">
+                <input type="text" class="form-control" id="lastname" name="lastname" value="[% db.lastname %]" placeholder="Last name" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3">Username</label>
+            <div class="col-md-6">
+                <p class="form-control-static" id="username" name="username" value="[% db.username %]"></p>
+            </div>
+        [% IF !db.patientid %]
+            <div class="col-md-2">
+                <input type="button" class="btn btn-primary btn-xs btn-outline" value="Generate" onclick="GenerateUsername()" />
+            </div>
+        [% END %]
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3">Date of Birth</label>
+            <div class="col-md-8">
+                <div class="input-group date">
+                    <input type="text" class="form-control" id="dob" name="dob" value="[% db.dob %]" placeholder="dd/mm/yyyy" />
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3">Condition</label>
+            <div class="col-md-8">
+                <textarea class="form-control" rows="4" name="condition" id="condition" placeholder="Patient condition note" >[% db.condition %]</textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-1"></div>
+            <label class="control-label col-md-2">Height</label>
+            <div class="col-md-2">
+                <input type="text" class="form-control" id="height" name="height" value="[% db.height %]" placeholder="Height" />
+            </div>
+            <div class="col-md-2"></div>
+            <label class="control-label col-md-2">Weight</label>
+            <div class="col-md-2">
+                <input type="text" class="form-control" id="weight" name="weight" value="[% db.weight %]" placeholder="Weight" /> 
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-5"></div>
+            <input type="submit" class="btn btn-primary" value="Save" />
+            <input type="button" class="btn btn-default" value="Close" onclick="patientDialog.close();" />
+        </div>
+    </div>
+</form>
+
+<script>
+    function CheckFields() {
+        if ( $("#firstname").val() == "" ) {
+            // TODO Alert message
+            return false;
+        } 
+
+        if ( $("#lastname").val() == "" ) {
+            // TODO Alert message
+            return false;
+        }
+
+        $.ajax({
+            url: 'ajax/savepatient.cgi',
+            type: 'get',
+            data: $("addeditpatient_form").serialize(),
+            success: function ( data ) {
+                if ( data.success ) {
+                    $("success_saving").show();
+                    $("success_saving").html( "Success! " + data.message );
+
+                    patientDialog.close();
+                } else {
+                    $("error_saving").show();
+                    $("error_saving").html( "Error: " + data.message );
+                }
+            }
+        });
+    }
+
+    function GenerateUsername() {
+        $("#firstname").css("background-color", "white" );
+        $("#lastname").css("background-color", "white" );
+
+        var firstinitial = $("#firstname").val()[0];
+        if ( firstinitial === undefined ) {
+            $("#firstname").css("background-color", "#ffaa75");
+            Alert( "Plase set a first name", 1 );
+            return false;
+        }
+
+        var lastname = $("#lastname").val();
+        if ( lastname === undefined || lastname == "" ) {
+            $("#lastname").css("background-color", "#ffaa75");
+            Alert( "Please set a last name", 1 );
+            return;
+        }
+
+        var username = firstinitial + "." + lastname;
+
+        $("#username").html( username );
+    }
+
+    $(document).ready(function() {
+        $("#dob").datepicker( {
+            autoclose: true,
+        } );
+    });
+
+</script>

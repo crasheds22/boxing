@@ -1,97 +1,315 @@
-[% INCLUDE header.tt
-    pagetitle = "Clinician"
+[% INCLUDE Display/header.tt
+    pagetitle = 'Clinician'
     pagename = clinicianname
     ACTIVE = activepage
 %]
 
 <form class="form-horizontal" role="form" name="clinician_form" id="clinician_form">
-    [% INCLUDE startboundingbox.tt
-        boxtitle = "Patients"
+    <input type="hidden" name="clinicianid" value="[% p.clinicianid %]" />
+    [% INCLUDE Display/startboundingbox.tt 
+        boxtitle = 'Patients'
     %]
     <div class="box-body">
         <div class="form-group">
-            <table class="table table-responsive table-bordered table-striped" name="patient_table" id="patient_table">
+            <table class="table table-striped table-bordered" id="patient_table">
                 <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Age (D.o.B.)</th>
+                        <th>Height</th>
+                        <th>Weight</th>
+                        <th>Current Condition</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                    </tr>
                 </thead>
                 <tbody>
+                    <tr>
+                        <td>Value</td>
+                        <td>Value</td>
+                        <td>Value</td>
+                        <td>Value</td>
+                        <td>Value</td>
+                        <td>Value</td>
+                        <td>Value</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                <input type="button" class="btn btn-primary" onclick="NewPatient()" value="New Patient" />
+            </div>
+        </div>
+    </div>
+    [% INCLUDE Display/endboundingbox.tt %]
+    <hr />
+[% IF p.accounttypeid == 2 || p.accounttypeid == 1 %]
+    [% INCLUDE Display/startboundingbox.tt 
+        boxtitle = 'Clinicians'
+    %]
+    <div class="box-body">
+        <div class="form-group">
+            <table class="table table-striped table-bordered" id="clinician_table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Value</td>
+                        <td>Value</td>
+                        <td>Value</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                <input type="button" class="btn btn-primary" onclick="NewClinician(0)" value="New Clinician" />
+            </div>
+        </div>
+    </div>
+    [% INCLUDE Display/endboundingbox.tt %]
+    <hr />
+[% END %]
+[% IF p.accounttypeid == 2 || p.accounttypeid == 1 %]
+    [% INCLUDE Display/startboundingbox.tt 
+        boxtitle = 'Head Clinicians'
+    %]
+    <div class="box-body">
+        <div class="form-group">
+            <table class="table table-striped table-bordered" id="headclinician_table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Value</td>
+                        <td>Value</td>
+                        <td>Value</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                <input type="button" class="btn btn-primary" onclick="NewClinician(1)" value="New Head Clinician" />
+            </div>
+        </div>
+    </div>
+    [% INCLUDE Display/endboundingbox.tt %]
+    <hr />
+[% END %]
+    [% INCLUDE Display/startboundingbox.tt 
+        boxtitle = 'Upcoming Sessions'
+    %]
+    <div class="box-body">
+        <div class="form-group">
+            <table class="table table-striped table-bordered" id="future_sessions">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Scheduled For</th>
+                        <th>Assigned To</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Value</td>
+                        <td>Value</td>
+                        <td>Value</td>
+                        <td>Value</td>
+                        <td>Value</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                <input type="button" class="btn btn-primary" onclick="#" value="New Session" />
+            </div>
+        </div>
+    </div>
+    [% INCLUDE Display/endboundingbox.tt %]
+    <hr />
+    [% INCLUDE Display/startboundingbox.tt 
+        boxtitle = 'Previous Sessions'
+    %]
+    <div class="box-body">
+        <div class="form-group">
+            <table class="table table-striped table-bordered" id="past_sessions">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Completed On</th>
+                        <th>Assigned To</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Value</td>
+                        <td>Value</td>
+                        <td>Value</td>
+                        <td>Value</td>
+                        <td>Value</td>
+                    </tr>
                 </tbody>
                 <tfoot>
                 </tfoot>
             </table>
         </div>
     </div>
-    [% INCLUDE endboundingbox.tt %]
-
-    [% INCLUDE startboundingbox.tt
-        boxtitle = "Upcoming Sessions"
-    %]
-    <div class="box-body">
-        <div class="form-group">
-            <table class="table table-responsive table-bordered table-striped" name="future_sessions" id="future_sessions">
-                <thead>
-                </thead>
-                <tbody>
-                </tbody>
-                <tfoot>
-                </tfoot>
-            </table>
-        </div>
-    </div>
-    [% INCLUDE endboundingbox.tt %]
-    [% INCLUDE startboundingbox.tt
-        boxtitle = "Previous Sessions"
-    %]
-    <div class="box-body">
-        <div class="form-group">
-            <table class="table table-responsive table-bordered table-striped" name="past_sessions" id="past_sessions">
-                <thead>
-                </thead>
-                <tbody>
-                </tbody>
-                <tfoot>
-                </tfoot>
-            </table>
-        </div>
-    </div>
-    [% INCLUDE endboundingbox.tt %]
-
-    [% IF p.accounttypeid == 2 || p.accounttypeid == 1 %]
-    [% INCLUDE startboundingbox.tt
-        boxtitle = "Clinicians"
-    %]
-    <div class="box-body">
-        <div class="form-group">
-            <table class="table table-responsive table-bordered table-striped" name="clinician_table" id="clinician_table">
-                <thead>
-                </thead>
-                <tbody>
-                </tbody>
-                <tfoot>
-                </tfoot>
-            </table>
-        </div>
-    </div>
-    [% INCLUDE endboundingbox.tt %]
-    [% END %]
-
-    [% IF p.accounttypeid == 1 %]
-    [% INCLUDE startboundingbox.tt
-        boxtitle = "Head Clinicians"
-    %]
-    <div class="box-body">
-        <div class="form-group">
-            <table class="table table-responsive table-bordered table-striped" name="head_clinician_table" id="head_clinician_table">
-                <thead>
-                </thead>
-                <tbody>
-                </tbody>
-                <tfoot>
-                </tfoot>
-            </table>
-        </div>
-    </div>
-    [% INCLUDE endboundingbox.tt %]
-    [% END %]
+    [% INCLUDE Display/endboundingbox.tt %]
 </form>
 
-[% INCLUDE footer.tt %]
+<script type="text/javascript">
+    function NewPatient() {
+        patientDialog = new BootstrapDialog({
+            id: "patientdialog",
+            title: "Create Patient",
+            data: {  },
+            message: $('<div></div>').load('ajax/ajaxaddeditpatient.cgi')
+        });
+        patientDialog.open();
+    }
+
+    function NewClinician( ishead ) {
+        if ( ishead ) {
+            clinicianDialog = new BootstrapDialog({
+                id: "patientdialog",
+                url: "/ajax/ajaxaddeditclinician.cgi",
+                data: { "ishead": 1 },
+            });
+        } else {
+            clinicianDialog = new BootstrapDialog({
+                id: "cliniciandialog",
+                url: "/ajax/ajaxaddeditclinician.cgi",
+                data: { "ishead": 0 },
+            });
+        }
+        clinicianDialog.show();
+    }
+
+    $(document).ready(function() {
+        $("#patient_table").DataTable( {
+            lengthMenu: [ 5, 10, 20 ],
+            //ajax: {
+            //    url: '/ajax/ajaxdisplaypatients.cgi',
+            //    type: 'post',
+            //    data: { clinicianid: "[% p.clinicianid %]" },
+            //    complete: function( response ) {
+            //    },
+            //},
+            columnDefs: [],
+            aaSorting: [ [ 1, 'asc' ] ],
+            columns: [ 
+                { data: 'patientname', orderable: 'true', searchable: 'true' },
+                { data: 'dob'        , orderable: 'true', searchable: 'false' },
+                { data: 'height'     , orderable: 'false', searchable: 'false' },
+                { data: 'weight'     , orderable: 'false', searchable: 'false' },
+                { data: 'condition'  , orderable: 'false', searchable: 'false' },
+                { data: 'edit'       , orderable: 'false', searchable: 'false' },
+                { data: 'delete'     , orderable: 'false', searchable: 'false' },
+            ]
+        } );
+
+        $("#clinician_table").DataTable( {
+            lengthMenu: [ 5, 10, 20 ],
+            //ajax: {
+            //    url: '/ajax/ajaxdisplayclinicians.cgi',
+            //    type: 'post',
+            //    data: { headclinicianid: "[% p.clinicianid %]" },
+            //    complete: function( response ) {
+            //    },
+            //},
+            columnDefs: [],
+            aaSorting: [ [ 1, 'asc' ] ],
+            columns: [ 
+                { data: 'clinicianname', orderable: 'true', searchable: 'true' },
+                { data: 'edit'         , orderable: 'false', searchable: 'false' },
+                { data: 'delete'       , orderable: 'false', searchable: 'false' },
+            ]
+        } );
+
+        $("#headclinician_table").DataTable( {
+            lengthMenu: [ 5, 10, 20 ],
+            //ajax: {
+            //    url: '/ajax/ajaxdisplayclinicians.cgi',
+            //    type: 'post',
+            //    data: { adminid: "[% p.clinicianid %]" },
+            //    complete: function( response ) {
+            //    },
+            //},
+            columnDefs: [],
+            aaSorting: [ [ 1, 'asc' ] ],
+            columns: [ 
+                { data: 'clinicianname', orderable: 'true', searchable: 'true' },
+                { data: 'edit'         , orderable: 'false', searchable: 'false' },
+                { data: 'delete'       , orderable: 'false', searchable: 'false' },
+            ]
+        } );
+
+        $("#future_sessions").DataTable( {
+            lengthMenu: [ 5, 10, 20 ],
+            //ajax: {
+            //    url: '/ajax/ajaxdisplaysessions.cgi',
+            //    type: 'post',
+            //    data: { clinicianid: "[% p.clinicianid %]", isfuture: "1" },
+            //    complete: function( response ) {
+            //    },
+            //},
+            columnDefs: [],
+            aaSorting: [ [ 1, 'asc' ] ],
+            columns: [ 
+                { data: 'sessionname'  , orderable: 'true', searchable: 'true' },
+                { data: 'scheduledfor' , orderable: 'true', searchable: 'true' },
+                { data: 'assignedto'   , orderable: 'true', searchable: 'true' },
+                { data: 'edit'         , orderable: 'false', searchable: 'false' },
+                { data: 'delete'       , orderable: 'false', searchable: 'false' },
+            ]
+        } );
+
+        $("#past_sessions").DataTable( {
+            lengthMenu: [ 5, 10, 20 ],
+            //ajax: {
+            //    url: '/ajax/ajaxdisplaysessions.cgi',
+            //    type: 'post',
+            //    data: { clinicianid: "[% p.clinicianid %]", isfuture: "0" },
+            //    complete: function( response ) {
+            //    },
+            //},
+            columnDefs: [],
+            aaSorting: [ [ 1, 'asc' ] ],
+            columns: [ 
+                { data: 'sessionname'  , orderable: 'true', searchable: 'true' },
+                { data: 'completedon'  , orderable: 'true', searchable: 'true' },
+                { data: 'assignedto'   , orderable: 'true', searchable: 'true' },
+                { data: 'edit'         , orderable: 'false', searchable: 'false' },
+                { data: 'delete'       , orderable: 'false', searchable: 'false' },
+            ]
+        } );
+
+    });
+</script>
+
+[% INCLUDE Display/footer.tt %]
