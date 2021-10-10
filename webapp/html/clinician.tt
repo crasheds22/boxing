@@ -5,6 +5,7 @@
 %]
 
 <form class="form-horizontal" role="form" name="clinician_form" id="clinician_form">
+    <input type="hidden" name="clinicianid" value="[% p.clinicianid %]" />
     [% INCLUDE Display/startboundingbox.tt 
         boxtitle = 'Patients'
     %]
@@ -18,10 +19,14 @@
                         <th>Height</th>
                         <th>Weight</th>
                         <th>Current Condition</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
+                        <td>Value</td>
+                        <td>Value</td>
                         <td>Value</td>
                         <td>Value</td>
                         <td>Value</td>
@@ -51,8 +56,8 @@
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Completed On</th>
-                        <th>Assigned To</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -85,8 +90,8 @@
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Completed On</th>
-                        <th>Assigned To</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -120,10 +125,14 @@
                         <th>Name</th>
                         <th>Scheduled For</th>
                         <th>Assigned To</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
+                        <td>Value</td>
+                        <td>Value</td>
                         <td>Value</td>
                         <td>Value</td>
                         <td>Value</td>
@@ -152,10 +161,14 @@
                         <th>Name</th>
                         <th>Completed On</th>
                         <th>Assigned To</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
+                        <td>Value</td>
+                        <td>Value</td>
                         <td>Value</td>
                         <td>Value</td>
                         <td>Value</td>
@@ -197,34 +210,103 @@
     }
 
     $(document).ready(function() {
-        $("#patient_table").DataTable(
-        //{
-        //    lengthMenu: [ 5, 10, 20 ],
-        //    ajax: {
-        //        url: '/ajax/ajaxdisplaypatients.cgi',
-        //        type: 'post',
-        //        data: function ( data ) {
-        //            data[clinicianid] = "[% p.clinicianid %]"
-        //        },
-        //        complete: function( response ) {
-//
-        //        },
-        //    },
-        //    columnDefs: [],
-        //    aaSorting: [ [ 1, 'asc' ] ],
-        //    columns: [ 
-        //        { data: 'patientname', orderable: 'true', searchable: 'true' },
-        //    ]
-        //}
-        );
+        $("#patient_table").DataTable( {
+            lengthMenu: [ 5, 10, 20 ],
+            //ajax: {
+            //    url: '/ajax/ajaxdisplaypatients.cgi',
+            //    type: 'post',
+            //    data: { clinicianid: "[% p.clinicianid %]" },
+            //    complete: function( response ) {
+            //    },
+            //},
+            columnDefs: [],
+            aaSorting: [ [ 1, 'asc' ] ],
+            columns: [ 
+                { data: 'patientname', orderable: 'true', searchable: 'true' },
+                { data: 'dob'        , orderable: 'true', searchable: 'false' },
+                { data: 'height'     , orderable: 'false', searchable: 'false' },
+                { data: 'weight'     , orderable: 'false', searchable: 'false' },
+                { data: 'condition'  , orderable: 'false', searchable: 'false' },
+                { data: 'edit'       , orderable: 'false', searchable: 'false' },
+                { data: 'delete'     , orderable: 'false', searchable: 'false' },
+            ]
+        } );
 
-        $("#clinician_table").DataTable();
+        $("#clinician_table").DataTable( {
+            lengthMenu: [ 5, 10, 20 ],
+            //ajax: {
+            //    url: '/ajax/ajaxdisplayclinicians.cgi',
+            //    type: 'post',
+            //    data: { headclinicianid: "[% p.clinicianid %]" },
+            //    complete: function( response ) {
+            //    },
+            //},
+            columnDefs: [],
+            aaSorting: [ [ 1, 'asc' ] ],
+            columns: [ 
+                { data: 'clinicianname', orderable: 'true', searchable: 'true' },
+                { data: 'edit'         , orderable: 'false', searchable: 'false' },
+                { data: 'delete'       , orderable: 'false', searchable: 'false' },
+            ]
+        } );
 
-        $("#headclinician_table").DataTable();
+        $("#headclinician_table").DataTable( {
+            lengthMenu: [ 5, 10, 20 ],
+            //ajax: {
+            //    url: '/ajax/ajaxdisplayclinicians.cgi',
+            //    type: 'post',
+            //    data: { adminid: "[% p.clinicianid %]" },
+            //    complete: function( response ) {
+            //    },
+            //},
+            columnDefs: [],
+            aaSorting: [ [ 1, 'asc' ] ],
+            columns: [ 
+                { data: 'clinicianname', orderable: 'true', searchable: 'true' },
+                { data: 'edit'         , orderable: 'false', searchable: 'false' },
+                { data: 'delete'       , orderable: 'false', searchable: 'false' },
+            ]
+        } );
 
-        $("#future_sessions").DataTable();
+        $("#future_sessions").DataTable( {
+            lengthMenu: [ 5, 10, 20 ],
+            //ajax: {
+            //    url: '/ajax/ajaxdisplaysessions.cgi',
+            //    type: 'post',
+            //    data: { clinicianid: "[% p.clinicianid %]", isfuture: "1" },
+            //    complete: function( response ) {
+            //    },
+            //},
+            columnDefs: [],
+            aaSorting: [ [ 1, 'asc' ] ],
+            columns: [ 
+                { data: 'sessionname'  , orderable: 'true', searchable: 'true' },
+                { data: 'scheduledfor' , orderable: 'true', searchable: 'true' },
+                { data: 'assignedto'   , orderable: 'true', searchable: 'true' },
+                { data: 'edit'         , orderable: 'false', searchable: 'false' },
+                { data: 'delete'       , orderable: 'false', searchable: 'false' },
+            ]
+        } );
 
-        $("#past_sessions").DataTable();
+        $("#past_sessions").DataTable( {
+            lengthMenu: [ 5, 10, 20 ],
+            //ajax: {
+            //    url: '/ajax/ajaxdisplaysessions.cgi',
+            //    type: 'post',
+            //    data: { clinicianid: "[% p.clinicianid %]", isfuture: "0" },
+            //    complete: function( response ) {
+            //    },
+            //},
+            columnDefs: [],
+            aaSorting: [ [ 1, 'asc' ] ],
+            columns: [ 
+                { data: 'sessionname'  , orderable: 'true', searchable: 'true' },
+                { data: 'completedon'  , orderable: 'true', searchable: 'true' },
+                { data: 'assignedto'   , orderable: 'true', searchable: 'true' },
+                { data: 'edit'         , orderable: 'false', searchable: 'false' },
+                { data: 'delete'       , orderable: 'false', searchable: 'false' },
+            ]
+        } );
 
     });
 </script>
