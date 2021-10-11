@@ -1,5 +1,10 @@
 #!/usr/bin/perl -w
 
+# TODO: removing is a form of saving
+
+use strict;
+use warnings;
+
 use CGI;
 use JSON;
 
@@ -7,7 +12,7 @@ require "../globalfunctions.pl";
 
 my $dbh = &DBConnect();
 
-exit; # Bail out for now
+exit;
 #&SimpleSecurityCheck();
 
 my $query = CGI->new();
@@ -35,14 +40,17 @@ if ( $editing ) {
     if ( $@ ) {
         $data{success} = 0;
         $data{message} = "Patient update error";
+
         print encode_json( \%data );
+
+        $dbh->rollback();
         $dbh->disconnect();
+
+        exit;
     }
 
     $data{success} = 1;
     $data{message} = "Patient updated";
-    print encode_json( \%data );
-    $dbh->disconnect();
 
 } else {
     # Creating
@@ -57,9 +65,13 @@ if ( $editing ) {
     if ( $@ ) {
         $data{success} = 0;
         $data{message} = "Account creation error";
+
         print encode_json( \%data );
+
         $dbh->rollback();
         $dbh->disconnect();
+
+        exit;
     }
 
     my $patientid = $sth->last_insert_id( undef, undef, undef, undef );
@@ -74,17 +86,22 @@ if ( $editing ) {
     if ( $@ ) {
         $data{success} = 0;
         $data{message} = "Patient creation error";
+
         print encode_json( \%data );
+
         $dbh->rollback();
         $dbh->disconnect();
+
+        exit;
     }
 
     $data{success} = 1;
     $data{message} = "Patient created";
-    print encode_json( \%data );
-    $dbh->disconnect();
 }
 
+$dbh->disconnect();
 $dbh->commit();
+
+print encode_json( \%data );
 
 exit;

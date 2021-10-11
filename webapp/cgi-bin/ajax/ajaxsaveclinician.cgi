@@ -1,7 +1,9 @@
 #!/usr/bin/perl -w
 
+# TODO: removing is a form of saving
+
 use strict;
-use arnings;
+use warnings;
 
 use CGI;
 use JSON;
@@ -10,12 +12,13 @@ require "../globalfunctions.pl";
 
 my $dbh = &DBConnect();
 
-#&SimpleScurityCheck();
+exit;
+#&SimpleSecurityCheck();
 
 my $query = CGI->new;
 my %in = ();
-foreach ( $query->params ) {
-    $in{$_} = $query->params($_);
+foreach ( $query->param ) {
+    $in{$_} = $query->param($_);
 }
 
 $in{accounttypeid} = sprintf( "%d", $in{accounttypeid} );
