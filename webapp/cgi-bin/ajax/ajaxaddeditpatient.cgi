@@ -20,7 +20,7 @@ foreach ( $query->param ) {
 }
 
 my %db = ();
-if ( defined $in{patientid} ) {
+if ( $in{patientid} ) {
     # We are editing
     my $sql = "select a.*, b.* 
             from ACCOUNT a 
