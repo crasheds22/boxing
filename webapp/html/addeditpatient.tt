@@ -82,6 +82,7 @@
             type: 'get',
             data: $("addeditpatient_form").serialize(),
             success: function ( data ) {
+                data = $.parseJSON( data );
                 if ( data.success ) {
                     $("success_saving").show();
                     $("success_saving").html( "Success! " + data.message );
