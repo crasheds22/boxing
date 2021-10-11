@@ -1,3 +1,50 @@
 #!/usr/bin/perl -w
 
+use strict;
+use warnings;
+
+use CGI;
+use JSON;
+use Template;
+
+require "../globalfunctions.pl";
+
+my $dbh = &DBConnect();
+
+#&SecurityCheck( $dbh );
+
+my $query = CGI->new();
+my %in = ();
+foreach ( $query->params ) {
+    $in{$_} = $query->param($_);
+}
+
+my %db = ();
+if ( $in{clinicianid} ) {
+    # We are editing
+    my $sql = "select a.*, b.*, c.*
+            from ACCOUNT a
+            join CLINICIAN b on a.accountid=b.clinicianid
+            join ACCOUNT_TYPE c on a.accounttypeid=c.typeid
+            where clinicianid=?";
+    my $sth = $dbh->prepare( $sql );
+    $sth->execute( $in{clinicianid} );
+    my $hashref = $sth->fetchrow_hashref;
+    $sth->finish;
+
+    foreach ( keys %$hashref ) {
+        $db{$_} = $hashref->{$_};
+    }
+
+} else {
+    # We are not
+}
+
+my $filename = "addeditclinician.tt";
+my %args = (
+
+);
+
+
+
 exit;
