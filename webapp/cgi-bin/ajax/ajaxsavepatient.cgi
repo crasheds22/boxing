@@ -82,10 +82,10 @@ if ( $editing ) {
     my $patientid = $sth->last_insert_id( undef, undef, undef, undef );
 
     eval {
-        $sql = "insert into PATIENT ( patientid, dob, condition, height, weight )
-                values ( ?, ?, ?, ?, ? )";
+        $sql = "insert into PATIENT ( patientid, dob, condition, height, weight, insertby )
+                values ( ?, ?, ?, ?, ?, ? )";
         $sth = $dbh->prepare( $sql );
-        $sth->execute( $patientid, $in{dob}, $in{condition}, $in{height}, $in{width} );
+        $sth->execute( $patientid, $in{dob}, $in{condition}, $in{height}, $in{width}, $main::p{clinicianid} );
         $sth->finish();
     }:
     if ( $@ ) {
