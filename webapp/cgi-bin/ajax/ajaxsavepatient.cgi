@@ -25,23 +25,6 @@ if ( $editing ) {
     # Editing
 
     eval {
-        my $accountname = $in{firstname} . " " . $in{lastname};
-        $sql = "update ACCOUNT
-                set accountname=?
-                where accountid=?";
-        $sth = $dbh->prepare( $sql );
-        $sth->execute( $accountname, $in{patientid} );
-        $sth->finish();
-    };
-    if ( $@ ) {
-        $data{success} = 0;
-        $data{message} = "Account update error";
-        print encode_json( \%data );
-        $dbh->rollback();
-        $dbh->disconnect();
-    }
-
-    eval {
         $sql = "update PATIENT 
                 set dob=?, condition=?, height=?, weight=?
                 where patientid=?";

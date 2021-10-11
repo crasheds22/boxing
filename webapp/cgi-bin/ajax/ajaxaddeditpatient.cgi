@@ -34,6 +34,9 @@ if ( $in{patientid} ) {
     }
     $sth->finish();
 
+    $db{readonly} = "readonly";
+    $db{readonly_bool} = 1;
+
 } else {
     # We are not
 }

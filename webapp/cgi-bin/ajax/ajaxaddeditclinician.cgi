@@ -13,6 +13,10 @@ my $dbh = &DBConnect();
 
 #&SecurityCheck( $dbh );
 
+if ( !$main::p{editclinician} ) {
+    exit;
+}
+
 my $query = CGI->new();
 my %in = ();
 foreach ( $query->params ) {
@@ -36,15 +40,27 @@ if ( $in{clinicianid} ) {
         $db{$_} = $hashref->{$_};
     }
 
+    if ( $db{accounttypeid} == 3 ) {
+        $db{clinician} = "selected";
+    } elsif ( $db{accounttypeid} == 2 || $in{ishead} ) {
+        $db{headclinician} = "selected";
+    } elsif ( $db{accounttypeid} == 1 ) {
+        $db{admin} = "selected";
+    }
+
+    $db{readonly} = "readonly";
+    $db{readonly_bool} = 1;
+
 } else {
     # We are not
 }
 
 my $filename = "addeditclinician.tt";
 my %args = (
-
+    db => \%db,
+    p => \%p
 );
 
-
+$main::g_template->process( $filename, \%args ) or die "Template process failed: " . $main::g_template->error();
 
 exit;
