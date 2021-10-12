@@ -99,6 +99,25 @@ if ( $in{clinicianid} ) {
         exit;
     }
 
+    $sql = "insert into REPORTING ( headclinician, clinicianid ) values ( ?, ? )";
+    eval {
+        $sth = $dbh->prepare( $sql );
+        $sth->execute( $main::p{clinicianid}, $clinicianid );
+        $sth->finish();
+    };
+    if ( $@ ) {
+        my %data = (
+            success => 0,
+            message => "Error linking clinician"
+        );
+
+        $dbh->rollback();
+        $dbh->disconnect();s
+
+        print encode_json( \%data );
+        exit;
+    }
+
     $change = "created";
 }
 
