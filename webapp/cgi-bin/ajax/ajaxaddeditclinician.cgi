@@ -48,6 +48,8 @@ if ( $in{clinicianid} ) {
         $db{admin} = "selected";
     }
 
+    ( $db{firstname}, $db{lastname} ) = split( " ", $db{accountname} );
+
     $db{readonly} = "readonly";
     $db{readonly_bool} = 1;
 
