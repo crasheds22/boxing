@@ -187,7 +187,6 @@
         patientDialog = new BootstrapDialog({
             id: "patientdialog",
             title: "Create Patient",
-            data: {  },
             message: $('<div></div>').load('ajax/ajaxaddeditpatient.cgi')
         });
         patientDialog.open();
@@ -197,12 +196,14 @@
         if ( ishead ) {
             clinicianDialog = new BootstrapDialog({
                 id: "patientdialog",
+                title: "Create Clinician",
                 url: "/ajax/ajaxaddeditclinician.cgi",
                 data: { "ishead": 1 },
             });
         } else {
             clinicianDialog = new BootstrapDialog({
                 id: "cliniciandialog",
+                title: "Create Clinician",
                 url: "/ajax/ajaxaddeditclinician.cgi",
                 data: { "ishead": 0 },
             });
@@ -210,17 +211,69 @@
         clinicianDialog.show();
     }
 
+    function EditPatient( patientid ) {
+        patientDialog = new BootstrapDialog({
+            id: "patientdialog",
+            title: "Edit Patient",
+            data: { "patientid": patientid },
+            message: $('<div></div>').load('ajax/ajaxaddeditpatient.cgi')
+        });
+        patientDialog.open();
+    }
+
+    function EditClinician( clinicianid ) {
+        clinicianDialog = new BootstrapDialog({
+            id: "cliniciandialog",
+            title: "Edit Clinician",
+            url: "/ajax/ajaxaddeditclinician.cgi",
+            data: { "clinicianid": clinicianid },
+        });
+        clinicianDialog.show();
+    }
+
+    function RemovePatient( patientid ) {
+        BootstrapDialog.show({
+            title: "Remove Patient",
+            type: BootstrapDialog.TYPE_WARNING,
+            message: "Do you want to delete or archive this Patient?",
+            buttons: [ {
+                label: "Archive",
+                action: function( self ) {
+                    $.ajax({
+
+                    });
+                    self.close();
+                }
+            }, {
+                label: "Delete",
+                action: function( self ) {
+                    $.ajax({
+
+                    });
+                    self.close();
+                }
+            }, {
+                label: "Cancel",
+                action: function( self ) {
+                    self.close();
+                }
+            } ]
+        });
+    }
+
+    function RemoveClinician( clinicianid ) {
+
+    }
+
     $(document).ready(function() {
         $("#patient_table").DataTable( {
             lengthMenu: [ 5, 10, 20 ],
             //ajax: {
-            //    url: '/ajax/ajaxdisplaypatients.cgi',
+            //    url: 'ajax/ajaxdisplaypatients.cgi',
             //    type: 'post',
-            //    data: { clinicianid: "[% p.clinicianid %]" },
             //    complete: function( response ) {
             //    },
             //},
-            columnDefs: [],
             aaSorting: [ [ 1, 'asc' ] ],
             columns: [ 
                 { data: 'patientname', orderable: 'true', searchable: 'true' },
@@ -242,7 +295,6 @@
             //    complete: function( response ) {
             //    },
             //},
-            columnDefs: [],
             aaSorting: [ [ 1, 'asc' ] ],
             columns: [ 
                 { data: 'clinicianname', orderable: 'true', searchable: 'true' },
@@ -260,7 +312,6 @@
             //    complete: function( response ) {
             //    },
             //},
-            columnDefs: [],
             aaSorting: [ [ 1, 'asc' ] ],
             columns: [ 
                 { data: 'clinicianname', orderable: 'true', searchable: 'true' },
@@ -278,7 +329,6 @@
             //    complete: function( response ) {
             //    },
             //},
-            columnDefs: [],
             aaSorting: [ [ 1, 'asc' ] ],
             columns: [ 
                 { data: 'sessionname'  , orderable: 'true', searchable: 'true' },
@@ -298,7 +348,6 @@
             //    complete: function( response ) {
             //    },
             //},
-            columnDefs: [],
             aaSorting: [ [ 1, 'asc' ] ],
             columns: [ 
                 { data: 'sessionname'  , orderable: 'true', searchable: 'true' },

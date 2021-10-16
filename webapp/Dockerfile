@@ -30,6 +30,7 @@ RUN cpan -y JSON
 RUN cpan -y Try::Tiny
 RUN cpan -y DBD::mysql
 RUN cpan -y CGI;
+RUN cpan -y Digest::SHA;
 
 RUN echo '\n\
     <VirtualHost *:80>\n\

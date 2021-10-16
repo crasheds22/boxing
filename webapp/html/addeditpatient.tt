@@ -1,17 +1,17 @@
-<form class="form-horizontal" role="form" name="addeditpatient_form" id="addeditpatient_form" action="CheckFields()" autocomplete="off">
+<form class="form-horizontal" role="form" name="addeditpatient_form" id="addeditpatient_form" autocomplete="off">
     <input type="hidden" name="patientid" value="[% db.patientid %]" />
     <div class="box-body">
         <div class="form-group">
             <label class="control-label col-md-3">First name</label>
             <div class="col-md-8">
-                <input type="text" class="form-control" id="firstname" name="firstname" value="[% db.firstname %]" placeholder="First name" />
+                <input type="text" class="form-control" id="firstname" name="firstname" value="[% db.firstname %]" placeholder="First name" [% db.readonly %]  />
             </div>
         </div>
 
         <div class="form-group">
             <label class="control-label col-md-3">Last name</label>
             <div class="col-md-8">
-                <input type="text" class="form-control" id="lastname" name="lastname" value="[% db.lastname %]" placeholder="Last name" />
+                <input type="text" class="form-control" id="lastname" name="lastname" value="[% db.lastname %]" placeholder="Last name" [% db.readonly %] />
             </div>
         </div>
 
@@ -20,7 +20,9 @@
             <div class="col-md-6">
                 <p class="form-control-static" id="username" name="username" value="[% db.username %]"></p>
             </div>
-        [% IF !db.patientid %]
+        [% IF !db.readonly_bool 
+            # Cannot regenerate username if existing
+        %]
             <div class="col-md-2">
                 <input type="button" class="btn btn-primary btn-xs btn-outline" value="Generate" onclick="GenerateUsername()" />
             </div>
@@ -59,7 +61,7 @@
 
         <div class="form-group">
             <div class="col-md-5"></div>
-            <input type="submit" class="btn btn-primary" value="Save" />
+            <input type="button" class="btn btn-primary" value="Save" onclick="CheckFields();" />
             <input type="button" class="btn btn-default" value="Close" onclick="patientDialog.close();" />
         </div>
     </div>
@@ -68,20 +70,21 @@
 <script>
     function CheckFields() {
         if ( $("#firstname").val() == "" ) {
-            // TODO Alert message
+            Alert( "Please ensure a first name is entered", 1 );
             return false;
         } 
 
         if ( $("#lastname").val() == "" ) {
-            // TODO Alert message
+            Alert( "Please ensure a last name is entered", 1 );
             return false;
         }
 
         $.ajax({
-            url: 'ajax/savepatient.cgi',
-            type: 'get',
+            url: 'ajax/ajaxsavepatient.cgi',
+            type: 'post',
             data: $("addeditpatient_form").serialize(),
             success: function ( data ) {
+                data = $.parseJSON( data );
                 if ( data.success ) {
                     $("success_saving").show();
                     $("success_saving").html( "Success! " + data.message );
@@ -90,6 +93,7 @@
                 } else {
                     $("error_saving").show();
                     $("error_saving").html( "Error: " + data.message );
+                    Alert( "Error: " + data.message, 1 );
                 }
             }
         });
