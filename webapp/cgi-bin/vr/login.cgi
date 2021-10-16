@@ -35,7 +35,7 @@ my ( $sql, $sth );
 $sql = "select accountid, accountname, password from ACCOUNT where username like ?";
 $sth = $dbh->prepare( $sql );
 $sth->execute( $in{username} );
-my ( $exists, $name, $password ) = $sth->fetchrow_arrayref;
+my ( $exists, $name, $password ) = $sth->fetchrow_array;
 $sth->finish;
 
 if ( $exists ) {
