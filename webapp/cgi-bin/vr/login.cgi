@@ -15,6 +15,8 @@ my %in = ();
 $in{username} = scalar $query->param('username');
 $in{password} = scalar $query->param('password');
 
+print "Content-Type: application/json\n\n";
+
 if ( !defined $in{username} or !defined $in{password} ) {
     my %data = (
         success => 0,
