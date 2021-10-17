@@ -12,11 +12,9 @@ my $dbh = &DBConnect();
 
 my %in = ();
 my $query = CGI->new();
-foreach ( $query->param ) {
-    $in{$_} = $query->param($_);
-}
+$in{username} = $query->param('username');
 
-&SecurityCheck( $dbh, \%in );
+&SecurityCheck( $dbh, $in{username} );
 
 if ( $main::p{accounttypeid} == 4 ) {
     # Patient
