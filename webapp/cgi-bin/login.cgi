@@ -16,14 +16,11 @@ $in{username} = $query->param('username');
 
 &SecurityCheck( $dbh, $in{username} );
 
-if ( $main::p{accounttypeid} == 4 ) {
-    # Patient
-    print STDERR "A patient has logged in\n";
-    $dbh->disconnect();
-} else {
-    # Not a patient
-    print STDERR "A not patient has logged in\n";
-    $dbh->disconnect();
-}
+my $filename = 'dashboard.tt';
+my %args = ();
+
+$main::g_template->process( $filename, \%args ) or die "Template process error: " . $main::g_template->error();
+
+$dbh->disconnect();
 
 exit;

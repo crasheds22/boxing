@@ -1,0 +1,15 @@
+[% INCLUDE Display/header.tt 
+    pagetitle = 'Dashboard'
+    pagename = p.accountname
+    ACTIVE = '' 
+%]
+
+<div class="container">
+    <div class="col-md-1"></div>
+    <form class="form-horizontal" name="dashboard_form" id="dashboard_form" method="post" role="form">
+        <p>Someday, maybe, there will be better text here</p>
+    </form>
+    <div class="col-md-1"></div>
+</div>
+
+[% INCLUDE Display/footer.tt %]

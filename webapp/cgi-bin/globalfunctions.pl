@@ -137,7 +137,7 @@ sub CheckCookie {
     my ( $ok, $accountid, $timeout ) = $sth->fetchrow_array;
     $sth->finish;
 
-    if ( $ok && $timeout || !$ok ) {
+    if ( $ok && $timeout ) {
         # Timeout
         &DestroySessionToken( $dbh, $sessionid );
         $dbh->disconnect;
@@ -156,7 +156,7 @@ sub CheckCookie {
     %p = ();
     $sql = "select a.* 
             from ACCOUNT a 
-            where a.accountid = '?'";
+            where a.accountid = ?";
     $sth = $dbh->prepare( $sql );
     $sth->execute( $accountid );
     my $hashref = $sth->fetchrow_hashref;
@@ -190,7 +190,7 @@ sub ActivePage {
     $ACTIVE{$pagename} = 'class="active"';
 
     return \%ACTIVE;
-    
+
 }
 
 sub ShowError {

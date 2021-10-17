@@ -14,7 +14,7 @@ foreach ( $query->param ) {
     $in{$_} = $query->param($_);
 }
 
-#&SecurityCheck( $dbh, undef );
+&SecurityCheck( $dbh );
 
 my $clinicianname;
 if ( $in{clinicianid} && grep { $main::p{accounttypeid} eq $_ } ( 1, 2 ) ) {
