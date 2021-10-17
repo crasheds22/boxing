@@ -13,8 +13,9 @@ my $dbh = &DBConnect();
 my %in = ();
 my $query = CGI->new();
 $in{username} = $query->param('username');
+$in{logout} = sprintf( "%d", scalar $query->param('logout') );
 
-&SecurityCheck( $dbh, $in{username} );
+&SecurityCheck( $dbh, \%in );
 
 my $filename = 'dashboard.tt';
 my %args = ();

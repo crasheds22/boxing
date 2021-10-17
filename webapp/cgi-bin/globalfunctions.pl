@@ -45,12 +45,14 @@ sub DBConnect {
 
 sub SecurityCheck {
 
-    my ( $dbh, $username ) = @_;
+    my ( $dbh, $in ) = @_;
+
+    my %in = %$in if $in;
 
     print "Content-Type:text/html\n";
 
-    if ( $username ) {
-        Authenticate( $dbh, $username );
+    if ( $in{username} ) {
+        Authenticate( $dbh, $in{username} );
     } elsif ( my $sessionid = GetAuthCookie( "boxingsessionid" ) ) {
         CheckCookie( $dbh, $sessionid );
 
@@ -85,6 +87,18 @@ sub Authenticate {
         $dbh->disconnect;
         &ShowError( "<p>This could mean your username is incorrect</p>", "Error logging in" );
         exit;
+    }
+
+    if ( $p{accounttypeid} == 4 ) {
+        # A patient
+        $sql = "select a.* 
+                from PATIENT a 
+                where patientid=?";
+        $sth = $dbh->prepare( $sql );
+        $sth->execute( $p{accountid} );
+    } else {
+        # A not patient
+        $p{clinicianid} = $p{accountid};
     }
 
     ( $p{sessionid} ) = &GenerateSessionID( $dbh, $p{accountid} );
@@ -131,7 +145,7 @@ sub CheckCookie {
 
     my $sql = "select sessionid, accountid, last_seen < DATE_SUB(UTC_TIMESTAMP(), interval $hoursTimeout hour)
             from ACCOUNT_SESSION
-            where sessionid = ?";
+            where sessionid like ?";
     my $sth = $dbh->prepare( $sql );
     $sth->execute( $p{sessionid} );
     my ( $ok, $accountid, $timeout ) = $sth->fetchrow_array;
@@ -171,11 +185,10 @@ sub CheckCookie {
 
 sub ShowLogin {
 
-    print "\n";
-
     my $filename = 'login.tt';
     my %args = ();
 
+    print "\n";
     $g_template->process( $filename, \%args ) or die "Template process failed: " . $g_template->error();
 
     exit;
@@ -214,7 +227,9 @@ sub DestroySessionToken {
 
     my ( $dbh, $sessionid ) = @_;
 
-    my $sql = "delete from ACCOUNT_SESSION where sessionid=?";
+    my $sql = "delete 
+            from ACCOUNT_SESSION 
+            where sessionid like ?";
     my $sth = $dbh->prepare( $sql );
     $sth->execute( $sessionid );
     $sth->finish();
@@ -222,6 +237,29 @@ sub DestroySessionToken {
     $dbh->commit();
 
     return;
+
+}
+
+sub Logout {
+
+    my ( $dbh, $sessionid, $accountid ) = @_;
+
+    &DestroySessionToken( $dbh, $sessionid );
+    print SetAuthCookie( "boxingsessionid", "" );
+
+    my $sql = "update ACCOUNT_LOG
+            set enddate=UTC_TIMESTAMP(), sessionid=null 
+            where accountid=? and sessionid like ?";
+    my $sth = $dbh->prepare( $sql );
+    $sth->execute( $accountid, $sessionid );
+    $sth->finish();
+
+    $dbh->commit();
+    $dbh->disconnect;
+
+    print "Location: http://localhost:8000/cgi-bin/login.cgi?logout=1\n\n";
+
+    exit;
 
 }
 

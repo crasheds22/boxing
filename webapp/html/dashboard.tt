@@ -7,7 +7,7 @@
 <div class="container">
     <div class="col-md-1"></div>
     <form class="form-horizontal" name="dashboard_form" id="dashboard_form" method="post" role="form">
-        <p>Someday, maybe, there will be better text here</p>
+        <p>Welcome [% p.accountname %]</p>
     </form>
     <div class="col-md-1"></div>
 </div>
