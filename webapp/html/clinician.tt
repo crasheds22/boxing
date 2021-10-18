@@ -4,183 +4,154 @@
     ACTIVE = activepage
 %]
 
-<form class="form-horizontal" role="form" name="clinician_form" id="clinician_form">
-    <input type="hidden" name="clinicianid" value="[% p.clinicianid %]" />
-    [% INCLUDE Display/startboundingbox.tt 
-        boxtitle = 'Patients'
-    %]
-    <div class="box-body">
-        <div class="form-group">
-            <table class="table table-striped table-bordered" id="patient_table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Age (D.o.B.)</th>
-                        <th>Height</th>
-                        <th>Weight</th>
-                        <th>Current Condition</th>
-                        <th>&nbsp;</th>
-                        <th>&nbsp;</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Value</td>
-                        <td>Value</td>
-                        <td>Value</td>
-                        <td>Value</td>
-                        <td>Value</td>
-                        <td>Value</td>
-                        <td>Value</td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                </tfoot>
-            </table>
-        </div>
-        <div class="form-group">
-            <div class="col-md-2">
-                <input type="button" class="btn btn-primary" onclick="NewPatient()" value="New Patient" />
+<div class="col-md-1"></div>
+<div class="col-md-10">
+    <form class="form-horizontal" role="form" name="clinician_form" id="clinician_form">
+        <input type="hidden" name="clinicianid" value="[% p.clinicianid %]" />
+        [% INCLUDE Display/startboundingbox.tt 
+            boxtitle = 'Patients'
+        %]
+        <div class="box-body">
+            <div class="form-group">
+                <table class="table table-striped table-bordered" id="patient_table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Age (D.o.B.)</th>
+                            <th>Height</th>
+                            <th>Weight</th>
+                            <th>Current Condition</th>
+                            <th>&nbsp;</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="form-group">
+                <div class="col-md-2">
+                    <input type="button" class="btn btn-primary" onclick="NewPatient()" value="New Patient" />
+                </div>
             </div>
         </div>
-    </div>
-    [% INCLUDE Display/endboundingbox.tt %]
-    <hr />
-[% IF p.accounttypeid == 2 || p.accounttypeid == 1 %]
-    [% INCLUDE Display/startboundingbox.tt 
-        boxtitle = 'Clinicians'
-    %]
-    <div class="box-body">
-        <div class="form-group">
-            <table class="table table-striped table-bordered" id="clinician_table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>&nbsp;</th>
-                        <th>&nbsp;</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Value</td>
-                        <td>Value</td>
-                        <td>Value</td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                </tfoot>
-            </table>
-        </div>
-        <div class="form-group">
-            <div class="col-md-2">
-                <input type="button" class="btn btn-primary" onclick="NewClinician(0)" value="New Clinician" />
+        [% INCLUDE Display/endboundingbox.tt %]
+        <hr />
+    [% IF p.accounttypeid == 2 || p.accounttypeid == 1 %]
+        [% INCLUDE Display/startboundingbox.tt 
+            boxtitle = 'Clinicians'
+        %]
+        <div class="box-body">
+            <div class="form-group">
+                <table class="table table-striped table-bordered" id="clinician_table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>&nbsp;</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="form-group">
+                <div class="col-md-2">
+                    <input type="button" class="btn btn-primary" onclick="NewClinician(0)" value="New Clinician" />
+                </div>
             </div>
         </div>
-    </div>
-    [% INCLUDE Display/endboundingbox.tt %]
-    <hr />
-[% END %]
-[% IF p.accounttypeid == 2 || p.accounttypeid == 1 %]
-    [% INCLUDE Display/startboundingbox.tt 
-        boxtitle = 'Head Clinicians'
-    %]
-    <div class="box-body">
-        <div class="form-group">
-            <table class="table table-striped table-bordered" id="headclinician_table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>&nbsp;</th>
-                        <th>&nbsp;</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Value</td>
-                        <td>Value</td>
-                        <td>Value</td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                </tfoot>
-            </table>
-        </div>
-        <div class="form-group">
-            <div class="col-md-2">
-                <input type="button" class="btn btn-primary" onclick="NewClinician(1)" value="New Head Clinician" />
+        [% INCLUDE Display/endboundingbox.tt %]
+        <hr />
+    [% END %]
+    [% IF p.accounttypeid == 1 %]
+        [% INCLUDE Display/startboundingbox.tt 
+            boxtitle = 'Head Clinicians'
+        %]
+        <div class="box-body">
+            <div class="form-group">
+                <table class="table table-striped table-bordered" id="headclinician_table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>&nbsp;</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="form-group">
+                <div class="col-md-2">
+                    <input type="button" class="btn btn-primary" onclick="NewClinician(1)" value="New Head Clinician" />
+                </div>
             </div>
         </div>
-    </div>
-    [% INCLUDE Display/endboundingbox.tt %]
-    <hr />
-[% END %]
-    [% INCLUDE Display/startboundingbox.tt 
-        boxtitle = 'Upcoming Sessions'
-    %]
-    <div class="box-body">
-        <div class="form-group">
-            <table class="table table-striped table-bordered" id="future_sessions">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Scheduled For</th>
-                        <th>Assigned To</th>
-                        <th>&nbsp;</th>
-                        <th>&nbsp;</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Value</td>
-                        <td>Value</td>
-                        <td>Value</td>
-                        <td>Value</td>
-                        <td>Value</td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                </tfoot>
-            </table>
-        </div>
-        <div class="form-group">
-            <div class="col-md-2">
-                <input type="button" class="btn btn-primary" onclick="#" value="New Session" />
+        [% INCLUDE Display/endboundingbox.tt %]
+        <hr />
+    [% END %]
+        [% INCLUDE Display/startboundingbox.tt 
+            boxtitle = 'Upcoming Sessions'
+        %]
+        <div class="box-body">
+            <div class="form-group">
+                <table class="table table-striped table-bordered" id="future_sessions">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Scheduled For</th>
+                            <th>Assigned To</th>
+                            <th>&nbsp;</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="form-group">
+                <div class="col-md-2">
+                    <input type="button" class="btn btn-primary" onclick="#" value="New Session" />
+                </div>
             </div>
         </div>
-    </div>
-    [% INCLUDE Display/endboundingbox.tt %]
-    <hr />
-    [% INCLUDE Display/startboundingbox.tt 
-        boxtitle = 'Previous Sessions'
-    %]
-    <div class="box-body">
-        <div class="form-group">
-            <table class="table table-striped table-bordered" id="past_sessions">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Completed On</th>
-                        <th>Assigned To</th>
-                        <th>&nbsp;</th>
-                        <th>&nbsp;</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Value</td>
-                        <td>Value</td>
-                        <td>Value</td>
-                        <td>Value</td>
-                        <td>Value</td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                </tfoot>
-            </table>
+        [% INCLUDE Display/endboundingbox.tt %]
+        <hr />
+        [% INCLUDE Display/startboundingbox.tt 
+            boxtitle = 'Previous Sessions'
+        %]
+        <div class="box-body">
+            <div class="form-group">
+                <table class="table table-striped table-bordered" id="past_sessions">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Completed On</th>
+                            <th>Assigned To</th>
+                            <th>&nbsp;</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot>
+                    </tfoot>
+                </table>
+            </div>
         </div>
-    </div>
-    [% INCLUDE Display/endboundingbox.tt %]
-</form>
+        [% INCLUDE Display/endboundingbox.tt %]
+    </form>
+</div>
+<div class="col-md-1"></div>
 
 <script type="text/javascript">
     function NewPatient() {

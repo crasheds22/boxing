@@ -10,11 +10,7 @@ my $dbh = &DBConnect();
 
 my $query = CGI->new();
 my %in = ();
-foreach ( $query->param ) {
-    $in{$_} = $query->param($_);
-}
-
-my %p = %main::p;
+$in{clinicianid} = $query->param('clinicianid') ? sprintf( "%d", scalar $query->param('clinicianid') ) : 0;
 
 &SecurityCheck( $dbh );
 
@@ -38,14 +34,14 @@ if ( $in{clinicianid} && grep { $main::p{accounttypeid} eq $_ } ( 1, 2 ) ) {
     $clinicianname .= "(Viewing)";
     
 } else {
-    $clinicianname = $in{accountname};
+    $clinicianname = $p{accountname};
 }
 
 my $filename = 'clinician.tt';
 my %args = (
     clinicianname => $clinicianname,
     activepage => &ActivePage( 'clinician' ),
-    p => \%p
+    p => \%main::p
 );
 
 print "Content-Type:text/html\n\n";
