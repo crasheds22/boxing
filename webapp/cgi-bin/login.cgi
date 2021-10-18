@@ -13,7 +13,7 @@ my $dbh = &DBConnect();
 my %in = ();
 my $query = CGI->new();
 $in{username} = $query->param('username');
-$in{logout} = sprintf( "%d", scalar $query->param('logout') );
+$in{logout} = scalar $query->param('logout') ? 1 : 0;
 
 &SecurityCheck( $dbh, \%in );
 

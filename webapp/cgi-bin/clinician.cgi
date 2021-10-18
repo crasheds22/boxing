@@ -18,6 +18,11 @@ my %p = %main::p;
 
 &SecurityCheck( $dbh );
 
+if ( !$main::p{accountid} ) {
+    &ShowError( "Account error... see administrator", "Account Error" );
+    exit;
+}
+
 my $clinicianname;
 if ( $in{clinicianid} && grep { $main::p{accounttypeid} eq $_ } ( 1, 2 ) ) {
     # We are viewing another clinician

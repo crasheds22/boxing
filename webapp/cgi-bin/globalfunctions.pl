@@ -11,8 +11,6 @@ use Boxing::Auth qw( GetAuthCookie SetAuthCookie );
 
 $boxing_secret_key = 'Goj8EbUBND8oljJxpmX8mcVMbO2h4Djl';
 
-%p = ();
-
 $g_template = Template->new(
     INCLUDE_PATH => '/usr/lib/html'
 );
@@ -71,9 +69,11 @@ sub Authenticate {
 
     my ( $dbh, $username ) = @_;
 
-    my $sql = "select a.* 
-            from ACCOUNT a
-            where a.username like ?";
+    %p = ();
+
+    my $sql = "select accountid, accountname, insertdate, timezone, accounttypeid
+            from ACCOUNT 
+            where username like ? and !deleted and !archived";
     my $sth = $dbh->prepare( $sql );
     $sth->execute( $username );
     my $hashref = $sth->fetchrow_hashref;
@@ -91,11 +91,15 @@ sub Authenticate {
 
     if ( $p{accounttypeid} == 4 ) {
         # A patient
-        $sql = "select a.* 
-                from PATIENT a 
+        $sql = "select patientid, `condition`, dob, height, weight, armlength, insertby 
+                from PATIENT 
                 where patientid=?";
         $sth = $dbh->prepare( $sql );
         $sth->execute( $p{accountid} );
+        $hashref = $sth->fetchrow_hashref;
+        foreach ( keys %$hashref ) {
+            $p{$_} = $hashref->{$_};
+        }
     } else {
         # A not patient
         $p{clinicianid} = $p{accountid};
@@ -147,7 +151,7 @@ sub CheckCookie {
             from ACCOUNT_SESSION
             where sessionid like ?";
     my $sth = $dbh->prepare( $sql );
-    $sth->execute( $p{sessionid} );
+    $sth->execute( $sessionid );
     my ( $ok, $accountid, $timeout ) = $sth->fetchrow_array;
     $sth->finish;
 
@@ -167,29 +171,35 @@ sub CheckCookie {
         &UpdateSessionToken( $dbh, $sessionid );
     }
 
-    %p = ();
-    $sql = "select a.* 
-            from ACCOUNT a 
-            where a.accountid = ?";
-    $sth = $dbh->prepare( $sql );
-    $sth->execute( $accountid );
-    my $hashref = $sth->fetchrow_hashref;
-    foreach ( keys %$hashref ) {
-        $p{$_} = $hashref->{$_};
-    }
-    $sth->finish;
-
-    if ( $p{accounttypeid} == 4 ) {
-        $sql = "select a.*
-                from PATIENT a
-                where a.patientid=?";
+    if ( $accountid ) {
+        %p = ();
+        $sql = "select accountid, accountname, insertdate, timezone, accounttypeid
+                from ACCOUNT 
+                where accountid like ? and !deleted and !archived";
         $sth = $dbh->prepare( $sql );
-        $sth->execute( $p{accountid} );
-        $hashref = $sth->fetchrow_hashref;
+        $sth->execute( $accountid );
+        my $hashref = $sth->fetchrow_hashref;
         foreach ( keys %$hashref ) {
             $p{$_} = $hashref->{$_};
         }
         $sth->finish;
+
+        if ( $p{accounttypeid} == 4 ) {
+            $sql = "select patientid, dob, `condition`, height, weight, armlength, insertby 
+                    from PATIENT 
+                    where patientid=?";
+            $sth = $dbh->prepare( $sql );
+            $sth->execute( $p{accountid} );
+            $hashref = $sth->fetchrow_hashref;
+            foreach ( keys %$hashref ) {
+                $p{$_} = $hashref->{$_};
+            }
+            $sth->finish;
+        } else {
+            $p{clinicianid} = $p{accountid};
+        }
+    } else {
+        $p{accountid} = 0;
     }
 
     return;
@@ -273,6 +283,19 @@ sub Logout {
     print "Location: http://localhost:8000/cgi-bin/login.cgi?logout=1\n\n";
 
     exit;
+
+}
+
+sub UpdateSessionToken {
+    
+    my ( $dbh, $sessionid ) = @_;
+
+    my $sql = "update ACCOUNT_SESSION set last_seen=UTC_TIMESTAMP() where sessionid like ?";
+    my $sth = $dbh->prepare( $sql );
+    $sth->execute( $sessionid );
+    $sth->finish();
+
+    $dbh->commit();
 
 }
 
