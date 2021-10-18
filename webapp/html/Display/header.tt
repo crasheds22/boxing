@@ -43,7 +43,7 @@
                     <li [% ACTIVE.clinician %]><a href="/cgi-bin/clinician.cgi">Clinician</a></li>
                 [% END %]
                     <li [% ACTIVE.settings %]><a href="#">Settings</a></li>
-                    <li><a href="#">Log Out</a></li>
+                    <li><a href="/cgi-bin/login.cgi?logout=1">Log Out</a></li>
                 </ul>
             </div>
         </nav>

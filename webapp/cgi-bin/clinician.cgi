@@ -14,12 +14,17 @@ foreach ( $query->param ) {
     $in{$_} = $query->param($_);
 }
 
-#&SecurityCheck( $dbh, undef );
+my %p = %main::p;
+
+&SecurityCheck( $dbh );
 
 my $clinicianname;
 if ( $in{clinicianid} && grep { $main::p{accounttypeid} eq $_ } ( 1, 2 ) ) {
     # We are viewing another clinician
-    my $sql = "select accountname from ACCOUNT join CLINICIAN on accountid=clinicianid where clinicianid=?";
+    my $sql = "select accountname 
+            from ACCOUNT 
+            join CLINICIAN on accountid=clinicianid 
+            where clinicianid=?";
     my $sth = $dbh->prepare( $sql );
     $sth->execute( $in{clinicianid} );
     ( $clinicianname ) = $sth->fetchrow_array;
@@ -35,7 +40,7 @@ my $filename = 'clinician.tt';
 my %args = (
     clinicianname => $clinicianname,
     activepage => &ActivePage( 'clinician' ),
-    p => \%main::p
+    p => \%p
 );
 
 print "Content-Type:text/html\n\n";
