@@ -44,7 +44,6 @@ my %args = (
     p => \%main::p
 );
 
-print "Content-Type:text/html\n\n";
 $main::g_template->process( $filename, \%args ) or die "Template process error: " . $main::g_template->error() . "\n";
 
 $dbh->disconnect();

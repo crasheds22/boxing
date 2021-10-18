@@ -10,8 +10,7 @@ require "../globalfunctions.pl";
 
 my $dbh = &DBConnect();
 
-exit;
-#&SimpleSecurityCheck( $dbh );
+&SimpleSecurityCheck( $dbh );
 
 print "Content-Type; text/json\n\n";
 

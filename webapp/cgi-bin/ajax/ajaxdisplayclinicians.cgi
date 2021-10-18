@@ -10,8 +10,7 @@ require "../globalfunctions.pl";
 
 my $dbh = &DBConnect();
 
-exit;
-#&SimpleSecurityCheck( $dbh );
+&SimpleSecurityCheck( $dbh );
 
 if ( grep { $main::p{accounttypeid} ne $_ } ( 1, 2 ) ) {
     exit;

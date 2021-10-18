@@ -11,7 +11,7 @@ require "../globalfunctions.pl";
 
 my $dbh = &DBConnect();
 
-#&SimpleSecurityCheck();
+&SecurityCheck( $dbh );
 
 my $query = CGI->new;
 my %in = ();
@@ -50,5 +50,7 @@ my %args = (
 
 print "Content-Type:text/html\n\n";
 $main::g_template->process( $filename, \%args ) or die "Template process failed: " . $main::g_template->error();
+
+$dbh->disconnect;
 
 exit;

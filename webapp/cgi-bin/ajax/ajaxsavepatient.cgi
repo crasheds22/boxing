@@ -12,8 +12,7 @@ require "../globalfunctions.pl";
 
 my $dbh = &DBConnect();
 
-exit;
-#&SimpleSecurityCheck();
+&SimpleSecurityCheck( $dbh );
 
 my $query = CGI->new();
 my %in = ();

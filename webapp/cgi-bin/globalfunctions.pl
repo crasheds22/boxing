@@ -197,12 +197,17 @@ sub CheckCookie {
             $sth->finish;
         } else {
             $p{clinicianid} = $p{accountid};
+            if ( grep { $p{accounttypeid} eq $_ } ( 1, 2 ) ) {
+                $p{editclinician} = 1;
+            }
         }
     } else {
         $p{accountid} = 0;
     }
 
-    return;
+    print "\n";
+
+    return 1;
 
 }
 
@@ -297,6 +302,19 @@ sub UpdateSessionToken {
 
     $dbh->commit();
 
+}
+
+sub SimpleSecurityCheck {
+
+    my ( $dbh ) = @_;
+
+    my $sessionid = GetAuthCookie( "boxingsessionid" );
+    
+    if ( $sessionid eq "" ) {
+        return 0;
+    }
+
+    return CheckCookie( $dbh, $sessionid );
 }
 
 1;
