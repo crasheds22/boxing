@@ -14,6 +14,8 @@ foreach ( $query->param ) {
     $in{$_} = $query->param($_);
 }
 
+my %p = %main::p;
+
 &SecurityCheck( $dbh );
 
 my $clinicianname;
@@ -38,7 +40,7 @@ my $filename = 'clinician.tt';
 my %args = (
     clinicianname => $clinicianname,
     activepage => &ActivePage( 'clinician' ),
-    p => \%main::p
+    p => \%p
 );
 
 print "Content-Type:text/html\n\n";

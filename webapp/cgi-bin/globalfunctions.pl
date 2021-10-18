@@ -179,6 +179,19 @@ sub CheckCookie {
     }
     $sth->finish;
 
+    if ( $p{accounttypeid} == 4 ) {
+        $sql = "select a.*
+                from PATIENT a
+                where a.patientid=?";
+        $sth = $dbh->prepare( $sql );
+        $sth->execute( $p{accountid} );
+        $hashref = $sth->fetchrow_hashref;
+        foreach ( keys %$hashref ) {
+            $p{$_} = $hashref->{$_};
+        }
+        $sth->finish;
+    }
+
     return;
 
 }

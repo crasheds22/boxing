@@ -18,7 +18,9 @@ $in{logout} = sprintf( "%d", scalar $query->param('logout') );
 &SecurityCheck( $dbh, \%in );
 
 my $filename = 'dashboard.tt';
-my %args = ();
+my %args = (
+    p => \%main::p
+);
 
 $main::g_template->process( $filename, \%args ) or die "Template process error: " . $main::g_template->error();
 
