@@ -239,12 +239,12 @@
     $(document).ready(function() {
         $("#patient_table").DataTable( {
             lengthMenu: [ 5, 10, 20 ],
-            //ajax: {
-            //    url: 'ajax/ajaxdisplaypatients.cgi',
-            //    type: 'post',
-            //    complete: function( response ) {
-            //    },
-            //},
+            ajax: {
+                url: 'ajax/ajaxdisplaypatients.cgi',
+                type: 'post',
+                complete: function( response ) {
+                },
+            },
             aaSorting: [ [ 1, 'asc' ] ],
             columns: [ 
                 { data: 'patientname', orderable: 'true', searchable: 'true' },

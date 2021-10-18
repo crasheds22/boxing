@@ -61,6 +61,8 @@ sub SecurityCheck {
         ShowLogin();
     }
 
+    print "\n";
+
     return;
 
 }
@@ -115,8 +117,6 @@ sub Authenticate {
     $dbh->commit;
 
     print SetAuthCookie( "boxingsessionid", $p{sessionid} );
-
-    print "\n";
 
 }
 
@@ -204,8 +204,6 @@ sub CheckCookie {
     } else {
         $p{accountid} = 0;
     }
-
-    print "\n";
 
     return 1;
 

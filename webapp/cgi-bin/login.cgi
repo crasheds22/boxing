@@ -4,7 +4,6 @@ use strict;
 use warnings;
 
 use CGI;
-use JSON;
 
 require "./globalfunctions.pl";
 

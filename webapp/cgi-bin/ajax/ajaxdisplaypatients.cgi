@@ -3,7 +3,6 @@
 use strict;
 use warnings;
 
-use CGI;
 use JSON;
 
 require "../globalfunctions.pl";
@@ -11,11 +10,6 @@ require "../globalfunctions.pl";
 my $dbh = &DBConnect();
 
 &SimpleSecurityCheck( $dbh );
-
-print "Content-Type; text/json\n\n";
-
-my $query = CGI->new;
-my %in = ();
 
 my ( $sql, $sth );
 
@@ -27,9 +21,9 @@ $sql = "select distinct a.accountname, b.patientid, b.dob, b.height, b.weight, b
         where b.insertby in ( ? )";
 $sth = $dbh->prepare( $sql );
 $sth->execute( $insertby );
-my @payload = ();
-while ( my ( $accountname, $dob, $height, $weight, $condition ) = $sth->fetchrow_array ) {
-    push @payload, {
+my %payload = ( data => [] );
+while ( my ( $accountname, $patientid, $dob, $height, $weight, $condition ) = $sth->fetchrow_array ) {
+    my $row = {
         patientname => $accountname,
         dob => $dob,
         height => $height,
@@ -37,9 +31,14 @@ while ( my ( $accountname, $dob, $height, $weight, $condition ) = $sth->fetchrow
         condition => $condition,
         edit => "<input type=\"button\" class=\"btn btn-primary btn-xs btn-outline\" onclick=\"EditPatient($patientid);\" />",
         delete => "<input type=\"button\" class=\"btn btn-danger btn-xs btn-outline\" onclick=\"RemovePatient($patientid);\" />"
-    } 
+    };
+
+    push @{ $payload{data} }, $row;
 }
 
-print encode_json( \@payload );
+$dbh->disconnect;
+
+print "Content-Type: application/json\n\n";
+print encode_json( \%payload );
 
 exit;
