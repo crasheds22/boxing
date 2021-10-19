@@ -39,9 +39,7 @@
                 </div>
                 <ul class="nav navbar-nav">
                     <li [% ACTIVE.patient %]><a href="/cgi-bin/patient.cgi">Patient</a></li>
-                [% IF p.accounttypeid != 4 %]
                     <li [% ACTIVE.clinician %]><a href="/cgi-bin/clinician.cgi">Clinician</a></li>
-                [% END %]
                     <li [% ACTIVE.settings %]><a href="#">Settings</a></li>
                     <li><a href="/cgi-bin/login.cgi?logout=1">Log Out</a></li>
                 </ul>

@@ -1,5 +1,8 @@
 #!/usr/bin/perl -w
 
+use strict;
+use warnings;
+
 use CGI;
 use JSON;
 use Template;
@@ -8,10 +11,6 @@ require "./globalfunctions.pl";
 
 my $dbh = &DBConnect();
 
-my $query = CGI->new();
-my %in = ();
-$in{clinicianid} = $query->param('clinicianid') ? sprintf( "%d", scalar $query->param('clinicianid') ) : 0;
-
 &SecurityCheck( $dbh );
 
 if ( !$main::p{accountid} ) {
@@ -19,8 +18,17 @@ if ( !$main::p{accountid} ) {
     exit;
 }
 
+if ( $main::p{accounttypeid} == 4 ) {
+    &ShowError( "You do not have access to this area", "Security Error" );
+    exit;
+}
+
+my $query = CGI->new();
+my %in = ();
+$in{clinicianid} = $query->param('clinicianid') ? sprintf( "%d", scalar $query->param('clinicianid') ) : 0;
+
 my $clinicianname;
-if ( $in{clinicianid} && grep { $main::p{accounttypeid} eq $_ } ( 1, 2 ) ) {
+if ( $in{clinicianid} ) {
     # We are viewing another clinician
     my $sql = "select accountname 
             from ACCOUNT 
@@ -34,7 +42,7 @@ if ( $in{clinicianid} && grep { $main::p{accounttypeid} eq $_ } ( 1, 2 ) ) {
     $clinicianname .= "(Viewing)";
     
 } else {
-    $clinicianname = $p{accountname};
+    $clinicianname = $main::p{accountname};
 }
 
 my $filename = 'clinician.tt';
