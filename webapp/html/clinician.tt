@@ -237,13 +237,12 @@
     }
 
     $(document).ready(function() {
+        $("#patient_table").DataTable().destroy();
         $("#patient_table").DataTable( {
             lengthMenu: [ 5, 10, 20 ],
             ajax: {
                 url: 'ajax/ajaxdisplaypatients.cgi',
-                type: 'post',
-                complete: function( response ) {
-                },
+                type: 'get',
             },
             aaSorting: [ [ 1, 'asc' ] ],
             columns: [ 
@@ -257,15 +256,14 @@
             ]
         } );
 
+        $("#clinician_table").DataTable().destroy();
         $("#clinician_table").DataTable( {
             lengthMenu: [ 5, 10, 20 ],
-            //ajax: {
-            //    url: '/ajax/ajaxdisplayclinicians.cgi',
-            //    type: 'post',
-            //    data: { headclinicianid: "[% p.clinicianid %]" },
-            //    complete: function( response ) {
-            //    },
-            //},
+            ajax: {
+                url: 'ajax/ajaxdisplayclinicians.cgi',
+                type: 'get',
+                data: { headclinicianid: "[% p.clinicianid %]" },
+            },
             aaSorting: [ [ 1, 'asc' ] ],
             columns: [ 
                 { data: 'clinicianname', orderable: 'true', searchable: 'true' },
@@ -274,6 +272,7 @@
             ]
         } );
 
+        $("#headclinician_table").DataTable().destroy();
         $("#headclinician_table").DataTable( {
             lengthMenu: [ 5, 10, 20 ],
             //ajax: {
