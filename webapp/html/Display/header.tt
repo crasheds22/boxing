@@ -40,7 +40,8 @@
                 <ul class="nav navbar-nav">
                     <li [% ACTIVE.patient %]><a href="/cgi-bin/patient.cgi">Patient</a></li>
                     <li [% ACTIVE.clinician %]><a href="/cgi-bin/clinician.cgi">Clinician</a></li>
-                    <li [% ACTIVE.settings %]><a href="#">Settings</a></li>
+                    <li [% ACTIVE.session %]><a href="/cgi-bin/session.cgi">Session</a></li>
+                    <li [% ACTIVE.settings %]><a href="/cgi-bin/settings.cgi">Settings</a></li>
                     <li><a href="/cgi-bin/login.cgi?logout=1">Log Out</a></li>
                 </ul>
             </div>
