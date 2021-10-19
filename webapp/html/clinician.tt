@@ -211,16 +211,28 @@
                 label: "Archive",
                 action: function( self ) {
                     $.ajax({
-
+                        url: "ajax/ajaxsavepatient.cgi",
+                        data: {
+                            patientid: patientid,
+                            archive: 1
+                        },
+                        type: 'get'
                     });
+                    location.reload();
                     self.close();
                 }
             }, {
                 label: "Delete",
                 action: function( self ) {
                     $.ajax({
-
+                        url: "ajax/ajaxsavepatient.cgi",
+                        data: {
+                            patientid: patientid,
+                            delete: 1
+                        },
+                        type: "get"
                     });
+                    location.reload();
                     self.close();
                 }
             }, {
