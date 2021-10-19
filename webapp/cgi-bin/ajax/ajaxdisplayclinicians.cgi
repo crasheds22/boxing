@@ -27,7 +27,7 @@ if ( $in{headclinicianid} ) {
     $sql = "select accountid, accountname 
             from ACCOUNT
             join REPORTING on accountid=clinicianid
-            where headclinician=?";
+            where headclinician=? and !deleted and !archived";
     $sth = $dbh->prepare( $sql );
     $sth->execute( $in{headclinicianid} );
 
@@ -35,7 +35,7 @@ if ( $in{headclinicianid} ) {
     # Lets just get all the head clinicians
     $sql = "select accountid, accountname
             from ACCOUNT
-            where accounttypeid = 2";
+            where accounttypeid = 2 and !deleted and !archived";
     $sth = $dbh->prepare( $sql );
     $sth->execute();
 

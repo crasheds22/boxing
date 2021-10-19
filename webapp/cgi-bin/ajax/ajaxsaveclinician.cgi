@@ -24,17 +24,69 @@ $in{accounttypeid} = sprintf( "%d", $in{accounttypeid} );
 
 my ( $sql, $sth );
 
-print "Content-Type:text/json\n\n";
-my $change ="";
+print "Content-Type:application/json\n\n";
+my %data = ();
 
-if ( $in{clinicianid} ) {
+if ( $in{delete} ) {
+    $sql = "update ACCOUNT 
+            set deleted=1 
+            where accountid=?";
+    
+    eval {
+        $sth = $dbh->prepare( $sql );
+        $sth->execute( $in{clinicianid} );
+    };
+    if ( $@ ) {
+        $dbh->rollback();
+        $dbh->disconnect();
+
+        $data{success} = \0;
+        $data{message} = "Error deleting Clinician";
+
+        print encode_json( \%data );
+
+        exit;
+    }
+
+    $data{success} = \1;
+    $data{message} = "Clinician deleted"
+
+
+} elsif ( $in{archive} ) {
+    $sql = "update ACCOUNT 
+            set archived=1 
+            where accountid=?";
+    
+    eval {
+        $sth = $dbh->prepare( $sql );
+        $sth->execute( $in{clinicianid} );
+    };
+    if ( $@ ) {
+        $dbh->rollback();
+        $dbh->disconnect();
+
+        $data{success} = \0;
+        $data{message} = "Error archiving Clinician";
+
+        print encode_json( \%data );
+
+        exit;
+    }
+
+    $data{success} = \1;
+    $data{message} = "Clinician archived";
+
+
+} elsif ( $in{clinicianid} ) {
     # We are editing
 
-    $sql = "update ACCOUNT set accounttypeid=? where accountid=?";
+    $sql = "update ACCOUNT 
+            set accounttypeid=? 
+            where accountid=?";
 
     eval { 
         $sth = $dbh->prepare( $sql );
-        $sth->execute( $in{accounttypeid} );
+        $sth->execute( $in{accounttypeid}, $in{clinicianid} );
         $sth->finish();
     };
     if ( $@ ) {
@@ -50,14 +102,15 @@ if ( $in{clinicianid} ) {
         exit;
     }
 
-    $change = "updated";
+    $data{success} = \1;
+    $data{message} = "Clinician Updated";
 
 } else {
     # We are creating
 
     my $accountname = $in{firstname} . " " . $in{lastname};
 
-    $sql = "inset into ACCOUNT ( accountname, username, password, insertdate, timezone, accounttypeid )
+    $sql = "insert into ACCOUNT ( accountname, username, password, insertdate, timezone, accounttypeid )
             values ( ?, ?, 'Password1', UTC_TIMESTAMP(), '+8:00', ? )";
     eval {
         $sth = $dbh->prepare( $sql );
@@ -79,7 +132,8 @@ if ( $in{clinicianid} ) {
 
     my $clinicianid = $dbh->last_insert_id( undef, undef, undef, undef );
 
-    $sql = "insert into CLINICIAN ( clinicianid )values ( ? )";
+    $sql = "insert into CLINICIAN ( clinicianid )
+            values ( ? )";
     eval {
         $sth = $dbh->prepare( $sql );
         $sth->execute( $clinicianid );
@@ -98,7 +152,8 @@ if ( $in{clinicianid} ) {
         exit;
     }
 
-    $sql = "insert into REPORTING ( headclinician, clinicianid ) values ( ?, ? )";
+    $sql = "insert into REPORTING ( headclinician, clinicianid ) 
+            values ( ?, ? )";
     eval {
         $sth = $dbh->prepare( $sql );
         $sth->execute( $main::p{clinicianid}, $clinicianid );
@@ -111,19 +166,15 @@ if ( $in{clinicianid} ) {
         );
 
         $dbh->rollback();
-        $dbh->disconnect();s
+        $dbh->disconnect();
 
         print encode_json( \%data );
         exit;
     }
 
-    $change = "created";
+    $data{success} = \1;
+    $data{message} = "Clinician created";
 }
-
-my %data = (
-    success => 1,
-    message => " Clinician $change"
-);
 
 $dbh->commit();
 $dbh->disconnect();

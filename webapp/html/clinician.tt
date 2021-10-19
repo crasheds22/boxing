@@ -241,7 +241,45 @@
     }
 
     function RemoveClinician( clinicianid ) {
-
+        BootstrapDialog.show({
+            title: "Remove Clinician",
+            type: BootstrapDialog.TYPE_WARNING,
+            message: "Do you want to delete or archive this Clinician?",
+            buttons: [ {
+                label: "Archive",
+                action: function( self ) {
+                    $.ajax({
+                        url: "ajax/ajaxsaveclinician.cgi",
+                        data: {
+                            clinicianid: clinicianid,
+                            archive: 1
+                        },
+                        type: 'get'
+                    });
+                    location.reload();
+                    self.close();
+                }
+            }, {
+                label: "Delete",
+                action: function( self ) {
+                    $.ajax({
+                        url: "ajax/ajaxsaveclinician.cgi",
+                        data: {
+                            clinicianid: clinicianid,
+                            delete: 1
+                        },
+                        type: "get"
+                    });
+                    location.reload();
+                    self.close();
+                }
+            }, {
+                label: "Cancel",
+                action: function( self ) {
+                    self.close();
+                }
+            } ]
+        });
     }
 
     $(document).ready(function() {
