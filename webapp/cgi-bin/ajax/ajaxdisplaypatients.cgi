@@ -13,14 +13,12 @@ my $dbh = &DBConnect();
 
 my ( $sql, $sth );
 
-my $insertby = "-1," . $main::p{clinicianid};
-
 $sql = "select distinct a.accountname, b.patientid, b.dob, b.height, b.weight, b.condition
         from ACCOUNT a
         join PATIENT b on a.accountid=b.patientid
-        where b.insertby in ( ? )";
+        where b.insertby=?";
 $sth = $dbh->prepare( $sql );
-$sth->execute( $insertby );
+$sth->execute( $main::p{clinicianid} );
 my %payload = ( data => [] );
 while ( my ( $accountname, $patientid, $dob, $height, $weight, $condition ) = $sth->fetchrow_array ) {
     my $row = {
@@ -29,8 +27,8 @@ while ( my ( $accountname, $patientid, $dob, $height, $weight, $condition ) = $s
         height => $height,
         weight => $weight,
         condition => $condition,
-        edit => "<input type=\"button\" class=\"btn btn-primary btn-xs btn-outline\" onclick=\"EditPatient($patientid);\" />",
-        delete => "<input type=\"button\" class=\"btn btn-danger btn-xs btn-outline\" onclick=\"RemovePatient($patientid);\" />"
+        edit => "<input type=\"button\" class=\"btn btn-primary btn-xs btn-outline\" onclick=\"EditPatient($patientid);\" value=\"Edit\" />",
+        delete => "<input type=\"button\" class=\"btn btn-danger btn-xs btn-outline\" onclick=\"RemovePatient($patientid);\" value=\"Delete\" />"
     };
 
     push @{ $payload{data} }, $row;

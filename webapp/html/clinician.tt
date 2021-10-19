@@ -275,13 +275,11 @@
         $("#headclinician_table").DataTable().destroy();
         $("#headclinician_table").DataTable( {
             lengthMenu: [ 5, 10, 20 ],
-            //ajax: {
-            //    url: '/ajax/ajaxdisplayclinicians.cgi',
-            //    type: 'post',
-            //    data: { adminid: "[% p.clinicianid %]" },
-            //    complete: function( response ) {
-            //    },
-            //},
+            ajax: {
+                url: 'ajax/ajaxdisplayclinicians.cgi',
+                type: 'post',
+                data: { adminid: "[% p.clinicianid %]" },
+            },
             aaSorting: [ [ 1, 'asc' ] ],
             columns: [ 
                 { data: 'clinicianname', orderable: 'true', searchable: 'true' },

@@ -29,7 +29,7 @@ if ( $in{headclinicianid} ) {
             join REPORTING on accountid=clinicianid
             where headclinician=?";
     $sth = $dbh->prepare( $sql );
-    $sth->execute( $in{headclinician} );
+    $sth->execute( $in{headclinicianid} );
 
 } elsif ( $in{adminid} ) {
     # Lets just get all the head clinicians
@@ -50,8 +50,8 @@ if ( $in{headclinicianid} ) {
 while ( my ( $clinicianid, $accountname ) = $sth->fetchrow_array ) {
     push @{ $payload{data} }, {
         clinicianname => $accountname,
-        edit => "<input type=\"button\" class=\"btn btn-xs btn-primary btn-outline\" onclick=\"EditClinician($clinicianid);\" />",
-        delete => "<input type=\"button\" class=\"btn btn-xs btn-danger btn-outline\" onclick=\"RemoveClinician($clinicianid);\" />"
+        edit => "<input type=\"button\" class=\"btn btn-xs btn-primary btn-outline\" onclick=\"EditClinician($clinicianid);\" value=\"Edit\" />",
+        delete => "<input type=\"button\" class=\"btn btn-xs btn-danger btn-outline\" onclick=\"RemoveClinician($clinicianid);\" value=\"Delete\" />"
     };
 }
 $sth->finish;
