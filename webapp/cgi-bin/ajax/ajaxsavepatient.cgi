@@ -107,7 +107,7 @@ if ( $in{delete} ) {
             values ( ?, ?, 'Password1', UTC_TIMESTAMP(), 4 )";
     eval {
         $sth = $dbh->prepare( $sql );
-        $sth->execute( $accountname, $in{username} );
+        $sth->execute( $accountname, "$in{username}" );
     };
     if ( $@ ) {
         $data{success} = \0;

@@ -168,15 +168,13 @@
             clinicianDialog = new BootstrapDialog({
                 id: "patientdialog",
                 title: "Create Clinician",
-                data: { "ishead": 1 },
-                message: $('<div></div>').load('ajax/ajaxaddeditclinician.cgi')
+                message: $('<div></div>').load('ajax/ajaxaddeditclinician.cgi?ishead=1')
             });
         } else {
             clinicianDialog = new BootstrapDialog({
                 id: "cliniciandialog",
                 title: "Create Clinician",
-                data: { "ishead": 0 },
-                message: $('<div></div>').load('ajax/ajaxaddeditclinician.cgi')
+                message: $('<div></div>').load('ajax/ajaxaddeditclinician.cgi?ishead=0')
             });
         }
         clinicianDialog.open();
@@ -186,8 +184,7 @@
         patientDialog = new BootstrapDialog({
             id: "patientdialog",
             title: "Edit Patient",
-            data: { patientid: patientid },
-            message: $('<div></div>').load('ajax/ajaxaddeditpatient.cgi')
+            message: $('<div></div>').load('ajax/ajaxaddeditpatient.cgi?patientid='+patientid)
         });
         patientDialog.open();
     }
@@ -196,8 +193,7 @@
         clinicianDialog = new BootstrapDialog({
             id: "cliniciandialog",
             title: "Edit Clinician",
-            data: { "clinicianid": clinicianid },
-            message: $('<div></div>').load('ajax/ajaxaddeditclinician.cgi')
+            message: $('<div></div>').load('ajax/ajaxaddeditclinician.cgi?clinicianid='+clinicianid)
         });
         clinicianDialog.open();
     }
