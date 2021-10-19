@@ -48,7 +48,6 @@ my %args = (
     db => \%db
 );
 
-print "Content-Type:text/html\n\n";
 $main::g_template->process( $filename, \%args ) or die "Template process failed: " . $main::g_template->error();
 
 $dbh->disconnect;

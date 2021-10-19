@@ -186,7 +186,7 @@
         patientDialog = new BootstrapDialog({
             id: "patientdialog",
             title: "Edit Patient",
-            data: { "patientid": patientid },
+            data: { patientid: patientid },
             message: $('<div></div>').load('ajax/ajaxaddeditpatient.cgi')
         });
         patientDialog.open();

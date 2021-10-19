@@ -82,14 +82,14 @@
         $.ajax({
             url: 'ajax/ajaxsavepatient.cgi',
             type: 'post',
-            data: $("addeditpatient_form").serialize(),
+            data: $("#addeditpatient_form").serialize(),
             success: function ( data ) {
-                data = $.parseJSON( data );
                 if ( data.success ) {
                     $("success_saving").show();
                     $("success_saving").html( "Success! " + data.message );
 
                     patientDialog.close();
+                    location.reload();
                 } else {
                     $("error_saving").show();
                     $("error_saving").html( "Error: " + data.message );

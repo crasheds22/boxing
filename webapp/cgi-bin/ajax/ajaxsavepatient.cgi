@@ -14,13 +14,15 @@ my $dbh = &DBConnect();
 
 &SimpleSecurityCheck( $dbh );
 
+print "Content-Type:application/json\n\n";
+
 my $query = CGI->new();
 my %in = ();
 foreach ( $query->param ) {
     $in{$_} = $query->param($_);
 }
 
-my $editing = defined $in{patientid} ? 1 : 0;
+my $editing = $in{patientid} ? 1 : 0;
 
 my %data = ();
 my ( $sql, $sth );
@@ -53,7 +55,6 @@ if ( $editing ) {
 
 } else {
     # Creating
-
     eval {
         my $accountname = $in{firstname} . " " . $in{lastname};
         $sql = "insert into ACCOUNT ( accountname, username, password, insertdate, accounttypeid )
@@ -75,13 +76,15 @@ if ( $editing ) {
 
     my $patientid = $sth->last_insert_id( undef, undef, undef, undef );
 
+    $in{dob} = &MakeMYSQLDate( $in{dob} );
+
     eval {
-        $sql = "insert into PATIENT ( patientid, dob, condition, height, weight, insertby )
+        $sql = "insert into PATIENT ( patientid, dob, `condition`, height, weight, insertby )
                 values ( ?, ?, ?, ?, ?, ? )";
         $sth = $dbh->prepare( $sql );
-        $sth->execute( $patientid, $in{dob}, $in{condition}, $in{height}, $in{width}, $main::p{clinicianid} );
+        $sth->execute( $patientid, $in{dob}, $in{condition}, $in{height}, $in{weight}, $main::p{clinicianid} );
         $sth->finish();
-    }:
+    };
     if ( $@ ) {
         $data{success} = 0;
         $data{message} = "Patient creation error";
@@ -94,12 +97,12 @@ if ( $editing ) {
         exit;
     }
 
-    $data{success} = 1;
+    $data{success} = \1;
     $data{message} = "Patient created";
 }
 
-$dbh->disconnect();
 $dbh->commit();
+$dbh->disconnect();
 
 print encode_json( \%data );
 

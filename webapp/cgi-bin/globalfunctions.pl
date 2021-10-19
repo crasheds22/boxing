@@ -315,4 +315,12 @@ sub SimpleSecurityCheck {
     return CheckCookie( $dbh, $sessionid );
 }
 
+sub MakeMYSQLDate {
+
+    my ( $rawdate ) = @_;
+
+    return join( '-', reverse split( '/', $rawdate ) );
+
+}
+
 1;
