@@ -11,28 +11,24 @@
         [% INCLUDE Display/startboundingbox.tt 
             boxtitle = 'Upcoming Sessions'
         %]
-            <div class="box-body">
-                <div class="form-group">
-                    <table class="table table-striped table-bordered" id="future_sessions">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Scheduled For</th>
-                                <th>Assigned To</th>
-                                <th>&nbsp;</th>
-                                <th>&nbsp;</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                        <tfoot>
-                        </tfoot>
-                    </table>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-2">
-                        <input type="button" class="btn btn-primary" onclick="#" value="New Session" />
-                    </div>
+            <table class="table table-striped table-bordered" id="future_sessions">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Scheduled For</th>
+                        <th>Assigned To</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+            <div class="form-group">
+                <div class="col-md-2">
+                    <input type="button" class="btn btn-primary" onclick="#" value="New Session" />
                 </div>
             </div>
         [% INCLUDE Display/endboundingbox.tt %]
@@ -40,25 +36,21 @@
         [% INCLUDE Display/startboundingbox.tt 
             boxtitle = 'Previous Sessions'
         %]
-            <div class="box-body">
-                <div class="form-group">
-                    <table class="table table-striped table-bordered" id="past_sessions">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Completed On</th>
-                                <th>Assigned To</th>
-                                <th>&nbsp;</th>
-                                <th>&nbsp;</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                        <tfoot>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
+            <table class="table table-striped table-bordered" id="past_sessions">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Completed On</th>
+                        <th>Assigned To</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
         [% INCLUDE Display/endboundingbox.tt %]
             <script>
                 $(document).ready(function() {
