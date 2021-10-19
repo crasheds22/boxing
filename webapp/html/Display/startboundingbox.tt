@@ -1,5 +1,5 @@
-<div class="ibox float-e-margins">
-    <div class="ibox-title">
+<div class="panel panel-defeault">
+    <div class="panel-heading">
         <h5>[% boxtitle %]</h5>
     </div>
-    <div class="ibox-content">
+    <div class="panel-body">

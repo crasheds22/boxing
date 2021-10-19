@@ -3,44 +3,40 @@
 use strict;
 use warnings;
 
-use CGI;
 use JSON;
 
 require "../globalfunctions.pl";
 
 my $dbh = &DBConnect();
 
-exit;
-#&SimpleSecurityCheck( $dbh );
-
-print "Content-Type; text/json\n\n";
-
-my $query = CGI->new;
-my %in = ();
+&SimpleSecurityCheck( $dbh );
 
 my ( $sql, $sth );
-
-my $insertby = "-1," . $main::p{clinicianid};
 
 $sql = "select distinct a.accountname, b.patientid, b.dob, b.height, b.weight, b.condition
         from ACCOUNT a
         join PATIENT b on a.accountid=b.patientid
-        where b.insertby in ( ? )";
+        where b.insertby=? and !a.deleted and !a.archived";
 $sth = $dbh->prepare( $sql );
-$sth->execute( $insertby );
-my @payload = ();
-while ( my ( $accountname, $dob, $height, $weight, $condition ) = $sth->fetchrow_array ) {
-    push @payload, {
+$sth->execute( $main::p{clinicianid} );
+my %payload = ( data => [] );
+while ( my ( $accountname, $patientid, $dob, $height, $weight, $condition ) = $sth->fetchrow_array ) {
+    my $row = {
         patientname => $accountname,
         dob => $dob,
         height => $height,
         weight => $weight,
         condition => $condition,
-        edit => "<input type=\"button\" class=\"btn btn-primary btn-xs btn-outline\" onclick=\"EditPatient($patientid);\" />",
-        delete => "<input type=\"button\" class=\"btn btn-danger btn-xs btn-outline\" onclick=\"RemovePatient($patientid);\" />"
-    } 
+        edit => "<input type=\"button\" class=\"btn btn-primary btn-xs btn-outline\" onclick=\"EditPatient($patientid);\" value=\"Edit\" />",
+        delete => "<input type=\"button\" class=\"btn btn-danger btn-xs btn-outline\" onclick=\"RemovePatient($patientid);\" value=\"Delete\" />"
+    };
+
+    push @{ $payload{data} }, $row;
 }
 
-print encode_json( \@payload );
+$dbh->disconnect;
+
+print "Content-Type: application/json\n\n";
+print encode_json( \%payload );
 
 exit;

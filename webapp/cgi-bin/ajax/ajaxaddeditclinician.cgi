@@ -11,7 +11,7 @@ require "../globalfunctions.pl";
 
 my $dbh = &DBConnect();
 
-#&SecurityCheck( $dbh );
+&SecurityCheck( $dbh );
 
 if ( !$main::p{editclinician} ) {
     exit;
@@ -19,7 +19,7 @@ if ( !$main::p{editclinician} ) {
 
 my $query = CGI->new();
 my %in = ();
-foreach ( $query->params ) {
+foreach ( $query->param ) {
     $in{$_} = $query->param($_);
 }
 
@@ -60,7 +60,7 @@ if ( $in{clinicianid} ) {
 my $filename = "addeditclinician.tt";
 my %args = (
     db => \%db,
-    p => \%p
+    p => \%main::p
 );
 
 $main::g_template->process( $filename, \%args ) or die "Template process failed: " . $main::g_template->error();
