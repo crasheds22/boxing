@@ -6,7 +6,7 @@ services:
         build:  
             context: ./database
         ports:
-            - "127.0.0.1:8001:3306"
+            - "8001:3306"
         volumes:
             - mydb:/var/lib/mysql
             - ./database/db_upgrades:/var/db_upgrades
@@ -16,7 +16,7 @@ services:
         build:
             context: ./webapp
         ports:
-            - "127.0.0.1:8000:80"
+            - "8000:80"
         depends_on: 
             - db
         links:
