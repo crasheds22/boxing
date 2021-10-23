@@ -1,0 +1,49 @@
+[% INCLUDE Display/header.tt
+    pagetitle = 'Session'
+    pagename = p.accountname
+    ACTIVE = activepage
+%]
+
+<style>
+    .bigwindow-dialog .modal-dialog {
+        width: 1200px;
+    }
+</style>
+
+<div class="col-md-1"></div>
+<div class="col-md-10">
+    <form class="form-horizontal" role="form" name="session_form" id="session_form" method="post">
+        <div class="form-group">
+            <button type="button" class="btn btn-primary" onclick="NewSession()"><span class="glyphicon glyphicon-plus"></span>New Session</button>
+            <button type="button" class="btn btn-primary" onclick="NewActivity()"><span class="glyphicon glyphicon-plus"></span>New Activity</button>
+        </div>
+    </form>
+</div>
+<div class="col-md-1"></div>
+
+<script>
+    function NewSession() {
+        sessionDialog = new BootstrapDialog({
+            id: "sessiondialog",
+            title: "New Session",
+            message: $('<div></div>').load('ajax/ajaxaddeditsession.cgi')
+        });
+        sessionDialog.open();
+    }
+
+    function NewActivity() {
+        activityDialog = new BootstrapDialog({
+            id: "activitydialog",
+            title: "New Activity",
+            cssClass: 'bigwindow-dialog',
+            message: $('<div></div>').load('ajax/ajaxaddeditactivity.cgi')
+        });
+        activityDialog.open();
+    }
+
+    $(document).ready(function() {
+    })
+
+</script>
+
+[% INCLUDE Display/footer.tt %]
