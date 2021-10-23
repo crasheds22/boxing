@@ -117,14 +117,6 @@
     });
 
     function SaveActivity() {
-        var type = $("#activity_type").val();
-        if ( type == 1 ) {
-            type = 'StaticTargets';
-        } else {
-            Alert( "Error: Invalid activity type" );
-            return;
-        }
-
         var instructions = new Array();
         $("#activity_list > tbody > tr").each(function( index ) {
             instructions.push({
@@ -136,7 +128,7 @@
         });
 
         var frm_data = {
-            Type: type,
+            Type: $("#activity_type").text(),
             Commands: instructions
         };
 
@@ -184,10 +176,10 @@
                                 location.reload();
                                 self.close();
                             } else {
-
+                                Alert( "Error deleting activity: " + data.message, 1 );
                             }
                         }
-                    })
+                    });
                 }
             }, {
                 label: "No",
@@ -195,7 +187,7 @@
                     self.close();
                 }
             } ]
-        })
+        });
     }
 
     function Hand_Full( hand ) {

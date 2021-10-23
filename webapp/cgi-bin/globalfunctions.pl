@@ -319,7 +319,11 @@ sub MakeMYSQLDate {
 
     my ( $rawdate ) = @_;
 
-    return join( '-', reverse split( '/', $rawdate ) );
+    my ( $d, $m, $y ) = split( '/', $rawdate );
+
+    my $formatted = "$y-$m-$d";
+
+    return $formatted;
 
 }
 

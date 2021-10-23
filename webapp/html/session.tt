@@ -26,6 +26,7 @@
         sessionDialog = new BootstrapDialog({
             id: "sessiondialog",
             title: "New Session",
+            cssClass: 'bigwindow-dialog',
             message: $('<div></div>').load('ajax/ajaxaddeditsession.cgi')
         });
         sessionDialog.open();
