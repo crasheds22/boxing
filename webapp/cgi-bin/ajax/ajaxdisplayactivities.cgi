@@ -24,7 +24,8 @@ $sql = "select a.activityid, a.activityname, b.typename,
             DATE_FORMAT(DATE_ADD(a.modifieddate, INTERVAL '$main::p{timezone}' HOUR_MINUTE), '%d %m %Y') as modifieddate,
             DATE_FORMAT(DATE_ADD(a.insertdate, INTERVAL '$main::p{timezone}' HOUR_MINUTE), '%d %m %Y') as insertdate
         from ACTIVITY a
-        join ACTIVITY_TYPE b on a.typeid=b.typeid";
+        join ACTIVITY_TYPE b on a.typeid=b.typeid
+        where !a.deleted";
 $sth = $dbh->prepare( $sql );
 $sth->execute();
 while ( my ( $activityid, $activityname, $activitytype, $modifieddate, $insertdate ) = $sth->fetchrow_array ) {

@@ -155,7 +155,7 @@
         });
     }
 
-    Function DeleteActivity() {
+    function DeleteActivity() {
         BootstrapDialog.show({
             title: "Warning",
             type: BootstrapDialog.TYPE_WARNING,
