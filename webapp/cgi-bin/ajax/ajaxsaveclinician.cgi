@@ -110,8 +110,8 @@ if ( $in{delete} ) {
 
     my $accountname = $in{firstname} . " " . $in{lastname};
 
-    $sql = "insert into ACCOUNT ( accountname, username, password, insertdate, timezone, accounttypeid )
-            values ( ?, ?, 'Password1', UTC_TIMESTAMP(), '+8:00', ? )";
+    $sql = "insert into ACCOUNT ( accountname, username, insertdate, timezone, accounttypeid )
+            values ( ?, ?, UTC_TIMESTAMP(), '+8:00', ? )";
     eval {
         $sth = $dbh->prepare( $sql );
         $sth->execute( $accountname, $in{username}, $in{accounttypeid} );

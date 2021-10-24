@@ -13,14 +13,13 @@ my $dbh = &DBConnect();
 my $query = CGI->new();
 my %in = ();
 $in{username} = $query->param('username');
-$in{password} = $query->param('password');
 
 print "Content-Type: application/json\n\n";
 
-if ( !$in{username} && !$in{password} ) {
+if ( !$in{username} ) {
     my %data = (
         success => 0,
-        message => "You did not supply a username or password"
+        message => "You did not supply a username"
     );
 
     print encode_json( \%data );
@@ -32,10 +31,12 @@ if ( !$in{username} && !$in{password} ) {
 
 my ( $sql, $sth );
 
-$sql = "select accountid, accountname, password from ACCOUNT where username like ?";
+$sql = "select accountid, accountname 
+        from ACCOUNT 
+        where username like ?";
 $sth = $dbh->prepare( $sql );
 $sth->execute( $in{username} );
-my ( $exists, $name, $password ) = $sth->fetchrow_array;
+my ( $exists, $name ) = $sth->fetchrow_array;
 $sth->finish;
 
 if ( $exists ) {
