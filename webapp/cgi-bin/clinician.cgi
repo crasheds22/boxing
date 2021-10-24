@@ -9,17 +9,17 @@ use Template;
 
 require "./globalfunctions.pl";
 
-my $dbh = &DBConnect();
+my $dbh = DBConnect();
 
-&SecurityCheck( $dbh );
+SecurityCheck( $dbh );
 
 if ( !$main::p{accountid} ) {
-    &ShowError( "Account error... see administrator", "Account Error" );
+    ShowError( "Account error... see administrator", "Account Error" );
     exit;
 }
 
 if ( $main::p{accounttypeid} == 4 ) {
-    &ShowError( "You do not have access to this area", "Security Error" );
+    ShowError( "You do not have access to this area", "Security Error" );
     exit;
 }
 
@@ -48,7 +48,7 @@ if ( $in{clinicianid} ) {
 my $filename = 'clinician.tt';
 my %args = (
     clinicianname => $clinicianname,
-    activepage => &ActivePage( 'clinician' ),
+    activepage => ActivePage( 'clinician' ),
     p => \%main::p
 );
 

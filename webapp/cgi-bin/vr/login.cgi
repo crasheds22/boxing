@@ -8,7 +8,7 @@ use JSON;
 
 require "../globalfunctions.pl";
 
-my $dbh = &DBConnect();
+my $dbh = DBConnect();
 
 my $query = CGI->new();
 my %in = ();
@@ -45,7 +45,7 @@ if ( $accountid ) {
 
     my %db = ();
 
-    $sql = "select a.accountname, a.timezone, b.dob, b.height, b.weight, b.armlegnth
+    $sql = "select a.accountname, a.timezone, b.dob, b.height, b.weight, b.armlength
             from ACCOUNT a
             join PATIENT b on b.patientid=a.accountid
             where a.accountid=?";
@@ -57,7 +57,7 @@ if ( $accountid ) {
     $sth->finish;
 
     $sql = "select a.sessionid, c.accountname,
-                DATE_FORMAT(DATE_ADD(a.scheduledfor, INTERVAL '$db{timezone}' HOUR_MINUTE), '%d %m %Y') as scheduledfor
+                DATE_FORMAT(DATE_ADD(a.scheduledfor, INTERVAL '$db{Patient}{timezone}' HOUR_MINUTE), '%d %m %Y') as scheduledfor
             from SESSION a 
             join CLINICIAN b on a.clinicianid=b.clinicianid
             join ACCOUNT c on b.clinicianid=c.accountid
@@ -93,7 +93,7 @@ if ( $accountid ) {
     }
 
     %data = (
-        data => \%data,
+        data => \%db,
         success => \1,
         message => "Patient details retrieved"
     );

@@ -9,9 +9,9 @@ use Template;
 
 require "../globalfunctions.pl";
 
-my $dbh = &DBConnect();
+my $dbh = DBConnect();
 
-&SecurityCheck( $dbh );
+SecurityCheck( $dbh );
 
 my $query = CGI->new();
 my %in = ();

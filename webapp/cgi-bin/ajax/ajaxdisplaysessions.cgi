@@ -8,8 +8,8 @@ use JSON;
 
 require "../globalfunctions.pl";
 
-my $dbh = &DBConnect();
-&SimpleSecurityCheck( $dbh );
+my $dbh = DBConnect();
+SimpleSecurityCheck( $dbh );
 
 my $query = CGI->new;
 my %in = ();

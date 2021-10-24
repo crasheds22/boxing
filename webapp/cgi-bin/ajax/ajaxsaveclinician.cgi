@@ -10,9 +10,9 @@ use JSON;
 
 require "../globalfunctions.pl";
 
-my $dbh = &DBConnect();
+my $dbh = DBConnect();
 
-&SimpleSecurityCheck( $dbh );
+SimpleSecurityCheck( $dbh );
 
 my $query = CGI->new;
 my %in = ();

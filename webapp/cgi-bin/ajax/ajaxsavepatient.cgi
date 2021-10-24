@@ -10,9 +10,9 @@ use JSON;
 
 require "../globalfunctions.pl";
 
-my $dbh = &DBConnect();
+my $dbh = DBConnect();
 
-&SimpleSecurityCheck( $dbh );
+SimpleSecurityCheck( $dbh );
 
 print "Content-Type:application/json\n\n";
 
@@ -142,7 +142,7 @@ if ( $in{delete} ) {
         exit;
     }
 
-    $in{dob} = &MakeMYSQLDate( $in{dob} );
+    $in{dob} = MakeMYSQLDate( $in{dob} );
 
     $sql = "insert into PATIENT ( patientid, dob, `condition`, height, weight, insertby )
             values ( ?, ?, ?, ?, ?, ? )";

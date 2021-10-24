@@ -8,9 +8,9 @@ use JSON;
 
 require "../globalfunctions.pl";
 
-my $dbh = &DBConnect();
+my $dbh = DBConnect();
 
-&SimpleSecurityCheck( $dbh );
+SimpleSecurityCheck( $dbh );
 
 my $query = CGI->new;
 my %in = ();
@@ -21,7 +21,7 @@ $in{sessionid} = $query->param('sessionid') ? sprintf( "%d", scalar $query->para
 $in{delete} = $query->param('delete') ? 1 : 0;
 
 $in{scheduledfor} = $query->param('scheduledfor');
-$in{scheduledfor} = &MakeMYSQLDate( $in{scheduledfor} );
+$in{scheduledfor} = MakeMYSQLDate( $in{scheduledfor} );
 
 my ( $sql, $sth );
 my %data = ();
