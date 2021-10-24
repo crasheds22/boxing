@@ -105,6 +105,9 @@ sub Authenticate {
     } else {
         # A not patient
         $p{clinicianid} = $p{accountid};
+        if ( grep { $p{accounttypeid} eq $_ } ( 1, 2 ) ) {
+            $p{editclinician} = 1;
+        }
     }
 
     ( $p{sessionid} ) = &GenerateSessionID( $dbh, $p{accountid} );

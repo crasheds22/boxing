@@ -102,38 +102,22 @@
     }
 
     $(document).ready(function() {
+        $("#activities").DataTable().destroy();
         $("#activities").DataTable({
             lengthMenu: [ 5, 10, 20 ],
             ajax: {
-                url: '/ajax/ajaxdisplayactivities.cgi',
+                url: 'ajax/ajaxdisplayactivities.cgi',
                 type: 'post',
             },
             aaSorting: [ [ 1, 'asc' ] ],
             columns: [ 
                 { data: 'activityname'  , orderable: 'true', searchable: 'true' },
                 { data: 'activitytype'  , orderable: 'true', searchable: 'true' },
+                { data: 'insertdate'  , orderable: 'true', searchable: 'true' },
+                { data: 'modifieddate'  , orderable: 'true', searchable: 'true' },
                 { data: 'buttons'       , orderable: 'false', searchable: 'false' },
             ]
         });
-
-        $("#future_sessions").DataTable().destory();
-        $("#future_sessions").DataTable( {
-            lengthMenu: [ 5, 10, 20 ],
-            ajax: {
-                url: 'ajax/ajaxdisplaysessions.cgi',
-                type: 'post',
-                data: { 
-                    isfuture: "1" 
-                },
-            },
-            aaSorting: [ [ 1, 'asc' ] ],
-            columns: [ 
-                { data: 'sessionname'  , orderable: 'true', searchable: 'true' },
-                { data: 'scheduledfor' , orderable: 'true', searchable: 'true' },
-                { data: 'assignedto'   , orderable: 'true', searchable: 'true' },
-                { data: 'buttons'      , orderable: 'false', searchable: 'false' },
-            ]
-        } );
 
         $("#past_sessions").DataTable().destroy();
         $("#past_sessions").DataTable( {
@@ -154,7 +138,27 @@
                 { data: 'buttons'      , orderable: 'false', searchable: 'false' },
             ]
         } );
-    })
+
+        $("#future_sessions").DataTable().destory();
+        $("#future_sessions").DataTable( {
+            lengthMenu: [ 5, 10, 20 ],
+            ajax: {
+                url: 'ajax/ajaxdisplaysessions.cgi',
+                type: 'post',
+                data: { 
+                    isfuture: "1" 
+                },
+            },
+            aaSorting: [ [ 1, 'asc' ] ],
+            columns: [ 
+                { data: 'sessionname'  , orderable: 'true', searchable: 'true' },
+                { data: 'scheduledfor' , orderable: 'true', searchable: 'true' },
+                { data: 'assignedto'   , orderable: 'true', searchable: 'true' },
+                { data: 'buttons'      , orderable: 'false', searchable: 'false' },
+            ]
+        } );
+
+    });
 
 </script>
 

@@ -14,8 +14,8 @@ my $dbh = &DBConnect();
 my $query = CGI->new;
 my %in = ();
 $in{patientid} = $query->param('patientid') ? sprintf( "%d", scalar $query->param('patientid') ) : 0;
-$in{isfuture} = $query->param('isfuture') ? 1 : 0;
 $in{clinicianid} = $query->param('clinicianid') ? sprintf( "%d", scalar $query->param('clinicianid') ) : 0;
+$in{isfuture} = $query->param('isfuture') ? 1 : 0;
 
 print "Content-Type:application/json\n\n";
 
@@ -119,11 +119,13 @@ if ( $in{patientid} ) {
     }
 
 } else {
+    $dbh->disconnect;
+    print encode_json( \%payload );
     exit;
 }
 
-print encode_json( \%payload );
-
 $dbh->disconnect();
+
+print encode_json( \%payload );
 
 exit;

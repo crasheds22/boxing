@@ -26,7 +26,8 @@ my ( $sql, $sth );
 my %data = ();
 
 if ( $in{delete} ) {
-    $sql = "delete from ACTIVITY
+    $sql = "update ACTIVITY
+            set deleted=1
             where activityid=?";
     eval {
         $sth = $dbh->prepare( $sql );
