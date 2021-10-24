@@ -66,14 +66,9 @@
             data: $("#addeditclinician_form").serialize(),
             success: function ( data ) {
                 if ( data.success ) {
-                    $("success_saving").show();
-                    $("success_saving").html( "Success! " + data.message );
-                    
                     clinicianDialog.close();
                     location.reload();
                 } else {
-                    $("error_saving").show();
-                    $("error_saving").html( "Error: " + data.message );
                     Alert( "Error: " + data.message, 1 );
                 }
             }

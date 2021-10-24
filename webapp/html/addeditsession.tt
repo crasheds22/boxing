@@ -1,0 +1,198 @@
+<form class="form-horizontal" name="session_form" id="session_form" role="form">
+    <input type="hidden" name="sessionid" value="[% db.sessionid %]" />
+    <div class="box-body">
+        <div class="form-group">
+            <label class="col-md-2 control-label">For:</label>
+            <div class="col-md-3">
+                <select class="form-control" name="patientid" id="patientid">
+                [% FOREACH patient IN patients %]
+                    [% IF patient.id == db.patientid %]
+                    <option value="[% patient.id %]" selected>[% patient.name %]</option>
+                    [% ELSE %]
+                    <option value="[% patient.id %]">[% patient.name %]</option>
+                    [% END %]
+                [% END %]
+                </select>
+            </div>
+            <label class="col-md-2 control-label">By:</label>
+            <div class="col-md-3">
+            [% IF p.accounttypeid != 3 %]
+                <select class="form-control" name="clinicianid" id="clinicianid">
+                    <option value="[% p.accountid %]">[% p.accountname %]</option>
+                [% FOREACH clinician IN clinicians %]
+                    [% IF p.clinicianid == db.clinicianid %]
+                    <option value="[% clinician.id %]" selected>[% clinician.name %]</option>
+                    [% ELSE %]
+                    <option value="[% clinician.id %]">[% clinician.name %]</option>
+                    [% END %]
+                [% END %]
+                </select>
+            [% ELSE %]
+                <p class="form-control-static" name="clinicianid" id="clinicianid" value="[% p.clinicianid %]">[% p.accountname %]</p>
+            [% END %]
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">Session Name:</label>
+            <div class="col-md-3">
+                <input type="text" class="form-control" name="sessionname" id="sessionname" value="[% db.sessionname %]" placeholder="Session Name" />
+            </div>
+            <label class="col-md-2 control-label">When:</label>
+            <div class="col-md-3">
+                <div class="input-group date">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    <input type="text" class="form-control" id="scheduledfor" name="scheduledfor" value="[% db.scheduledfor %]" placeholder="dd/mm/yyyy" />
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-6">
+                <label class="col-md-1 control-label">Activities</label>
+                <table class="table table-striped table-bordered" id="activities">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th width="50px">&nbsp;</th>
+                        </tr>
+                    </thead>
+                    [% FOREACH activity IN activities %]
+                        [% activity %]
+                    [% END %]
+                    <tbody>
+                    </tbody>
+                    <tfoot>
+                    </tfoot>
+                </table>
+            </div>
+
+            <div class="col-md-6">
+                <label class="col-md-1 control-label">Session</label>
+                <table class="table table-striped table-bordered" id="exercises">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th width="50px">&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    [% FOREACH ex IN exercises %]
+                        [% ex %]
+                    [% END %]
+                    </tbody>
+                    <tfoot>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+                <label class="control-label-static">Help:</label>
+                <p>How to use this popup</p>
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-3"></div>
+            <input type="button" class="btn btn-primary" onclick="SaveSession()" value="Save" />
+            <input type="button" class="btn btn-default" onclick="sessionDialog.close();" value="Close" />
+            [% IF db.sessionid %]
+            <input type="button" class="btn btn-danger" onclick="DeleteSession()" value="Delete" />
+            [% END %]
+        </div>
+    </div>
+</form>
+
+<script>
+    function SaveSession() {
+        var exercises = new Array();
+        $("#exercises > tbody > tr").each( function( index ) {
+            exercises.push( $(this).data("attribute") );
+        });
+
+        exercises = JSON.stringify(exercises);
+
+        $.ajax({
+            url: 'ajax/ajaxsavesession.cgi',
+            type: 'post',
+            data: {
+                exercises: exercises,
+                sessionid: $("#sessionid").val(),
+                sessionname: $("#sessionname").val(),
+                patientid: $("#patientid").val(),
+                clinicianid: $("#clinicianid").val(),
+                scheduledfor: $("#scheduledfor").val()
+            },
+            success: function( data ) {
+                if ( data.success ) {
+                    sessionDialog.close();
+                    location.reload();
+                } else {
+                    Alert( "Error saving session: " + data.message, 1 );
+                }
+            }
+        });
+    }
+
+    function DeleteSession() {
+        BootstrapDialog.show({
+            title: "Warning",
+            type: BootstrapDialog.TYPE_WARNING,
+            message: "Are you sure you want to delete this session?",
+            buttons: [ {
+                label: "Yes",
+                action: function( self ) {
+                    $.ajax({
+                        url: 'ajax/ajaxsavesession.cgi',
+                        type: 'post',
+                        data: {
+                            sessionid: $("#sessionid").val(),
+                            delete: 1
+                        },
+                        success: function( data ) {
+                            if ( data.success ) {
+                                sessionDialog.close();
+                                location.reload();
+                                self.close();
+                            } else {
+                                Alert( "Error deleting session: " + data.message, 1 );
+                            }
+                        }
+                    });
+                }
+            }, {
+                label: "No",
+                action: function( self ) {
+                    self.close();
+                }
+            } ]
+        });
+    }
+
+    function AddExercise( button ) {
+        var rem = '<button type="button" class="btn btn-danger" onclick="RemoveExercise(this)"><span class="glyphicon glyphicon-minus"></span></button>';
+        var clone = $(button).parents("tr").clone()
+                                           .find("td:eq(2)").html( rem ).end();
+        $("#exercises > tbody").append( clone );
+    }
+
+    function RemoveExercise( button ) {
+        $(button).parents("tr").remove();
+    }
+
+    $(document).ready(function() {
+        $("#scheduledfor").datepicker( {
+            autoclose: true,
+            minDate: new Date(),
+            format: "dd/mm/yyyy"
+        } );
+
+    });
+
+</script>

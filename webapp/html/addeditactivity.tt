@@ -1,0 +1,206 @@
+<style>
+    .grid {
+        display: grid;
+        grid-gap: 1px;
+        grid-template-columns: repeat(3, 3fr)
+    }
+
+    .grid-item {
+        padding: 10px;
+        background-color: #ccc;
+        width: 175px;
+        height: 175px;
+    }
+
+
+</style>
+
+<form class="form-horizontal" role="form" id="activity_form" method="post">
+    <input type="hidden" name="activityid" value="[% db.activityid %]" />
+    <div class="box-body">
+        <div class="form-group">
+            <label class="col-md-2 control-label">Activity Name:</label>
+            <div class="col-md-3">
+                <input type="text" class="form-control" id="activity_name" name="activity_name" placeholder="Name" />
+            </div>
+            <label class="col-md-2 control-label">Activity Type:</label>
+            <div class="col-md-3">
+                <select class="form-control" name="activity_type" id="activity_type">
+                [% FOREACH at IN activity_types %]
+                    [% IF at.id == db.activitytype %]
+                    <option value="[% at.id %]" selected>[% at.name %]</option>
+                    [% ELSE %]
+                    <option value="[% at.id %]">[% at.name %]</option>
+                    [% END %]
+                [% END %]
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-6">
+                <div class="grid">
+                    <div class="grid-item" id="target_1" value="1"><p><b>TopLeft</b></p></div>
+                    <div class="grid-item" id="target_2" value="2"><p><b>TopCenter</b></p></div>
+                    <div class="grid-item" id="target_3" value="3"><p><b>TopRight</b></p></div>
+                    <div class="grid-item" id="target_4" value="4"><p><b>MiddleLeft</b></p></div>
+                    <div class="grid-item" id="target_5" value="5"><p><b>MiddleCenter</b></p></div>
+                    <div class="grid-item" id="target_6" value="6"><p><b>MiddleRight</b></p></div>
+                    <div class="grid-item" id="target_7" value="7"><p><b>BottomLeft</b></p></div>
+                    <div class="grid-item" id="target_8" value="8"><p><b>BottomCenter</b></p></div>
+                    <div class="grid-item" id="target_9" value="9"><p><b>BottomRight</b></p></div>
+                </div>
+            </div>
+
+            <div class="col-md-1"></div>
+            <div class="col-md-5">
+                <table class="table table-striped table-bordered" id="activity_list">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Target</th>
+                            <th>Hits</th>
+                            <th>Hand</th>
+                            <th>Duration</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    [% FOREACH row IN commands %]
+                        [% row %]
+                    [% END %]
+                    </tbody>
+                    <tfoot>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-3"></div>
+            <input type="button" class="btn btn-primary" onclick="SaveActivity()" value="Save" />
+            <input type="button" class="btn btn-default" onclick="activityDialog.close();" value="Close" />
+            [% IF db.activityid %]
+            <input type="button" class="btn btn-danger" onclick="DeleteActivity()" value="Delete" />
+            [% END %]
+        </div>
+    </div>
+</form>
+
+<script>
+    function RemoveRow( button ) {
+        var delindex = $(button).parents("tr").index();
+        $(button).parents("tr").remove();
+
+        $("#activity_list > tbody > tr").each(function( index ) {
+            $(this).find("td:eq(0)").text(index + 1);
+        } );
+    }
+
+    $(".grid-item").hover(function() {
+        $(this).css( "background-color", "#ddd" );
+    }, function() {
+        $(this).css( "background-color", "#ccc" );
+    });
+
+    $(".grid-item").click(function() {
+        var index = ( $("#activity_list > tbody > tr").length + 1 );
+
+        var itemNo = '<td>' + index + '</td>';
+        var target = '<td>' + $(this).text() + '</td>';
+        var hits = '<td width="100px"><input type="number" class="form-control" min="0" value="1" /></td>';
+        var hand = '<td><select class="form-control"><option value=0>A</option><option value=1>L</option><option value=2>R</option></select></td>';
+        var duration = '<td width="100px"><input type="number" class="form-control" min="0" value="5" /></td>';
+        var remove = '<td align="right"><button type="button" class="btn btn-danger btn-xs" onclick="RemoveRow(this)"><span class="glyphicon glyphicon-minus"></span></button></td>';
+
+        $("#activity_list tbody").append('<tr>' + itemNo + target + hits + hand + duration + remove + '</tr>');
+    });
+
+    function SaveActivity() {
+        var instructions = new Array();
+        $("#activity_list > tbody > tr").each(function( index ) {
+            instructions.push({
+                TargetLocation: $(this).find("td:eq(1)").text(),
+                NumberOfHitsNeeded: $(this).find("td:eq(2)").find("input").val(),
+                TimeBeforeDestruction: $(this).find("td:eq(4)").find("input").val(),
+                Hand: Hand_Full( $(this).find("td:eq(3)").find("select").val() )
+            });
+        });
+
+        var frm_data = {
+            Type: $("#activity_type").text(),
+            Commands: instructions
+        };
+
+        frm_data = JSON.stringify(frm_data);
+
+        $.ajax({
+            url: 'ajax/ajaxsaveactivity.cgi',
+            type: 'post',
+            data: {
+                data: frm_data,
+                activity_name: $("#activity_name").val(),
+                activity_type: $("#activity_type").val(),
+                activityid: $("#activityid").val()
+            },
+            success: function( data ) {
+                console.log( data );
+                if ( data.success ) {
+                    activityDialog.close();
+                    location.reload();
+                } else {
+                    Alert( "Error: " + data.message, 1 );
+                }
+            }
+        });
+    }
+
+    function DeleteActivity() {
+        BootstrapDialog.show({
+            title: "Warning",
+            type: BootstrapDialog.TYPE_WARNING,
+            message: "Are you sure you want to delete this activity?",
+            buttons: [ {
+                label: "Yes",
+                action: function( self ) {
+                    $.ajax({
+                        url: 'ajax/ajaxsaveactivity.cgi',
+                        type: 'post',
+                        data: {
+                            activityid: $("#activityid").val(),
+                            delete: 1
+                        },
+                        success: function( data ) {
+                            if ( data.success ) {
+                                activityDialog.close();
+                                location.reload();
+                                self.close();
+                            } else {
+                                Alert( "Error deleting activity: " + data.message, 1 );
+                            }
+                        }
+                    });
+                }
+            }, {
+                label: "No",
+                action: function( self ) {
+                    self.close();
+                }
+            } ]
+        });
+    }
+
+    function Hand_Full( hand ) {
+        if ( hand == 0 ) {
+            return "Any";
+        } else if ( hand == 1 ) {
+            return "Left";
+        } else if ( hand == 2 ) {
+            return "Right";
+        } else {
+            Alert( "Error: Invalid hand chosen" );
+            return "";
+        }
+    }
+
+</script>

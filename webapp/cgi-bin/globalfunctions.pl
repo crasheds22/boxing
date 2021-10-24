@@ -105,6 +105,9 @@ sub Authenticate {
     } else {
         # A not patient
         $p{clinicianid} = $p{accountid};
+        if ( grep { $p{accounttypeid} eq $_ } ( 1, 2 ) ) {
+            $p{editclinician} = 1;
+        }
     }
 
     ( $p{sessionid} ) = &GenerateSessionID( $dbh, $p{accountid} );
@@ -319,7 +322,11 @@ sub MakeMYSQLDate {
 
     my ( $rawdate ) = @_;
 
-    return join( '-', reverse split( '/', $rawdate ) );
+    my ( $d, $m, $y ) = split( '/', $rawdate );
+
+    my $formatted = "$y-$m-$d";
+
+    return $formatted;
 
 }
 

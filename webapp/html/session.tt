@@ -1,0 +1,243 @@
+[% INCLUDE Display/header.tt
+    pagetitle = 'Session'
+    pagename = p.accountname
+    ACTIVE = activepage
+%]
+
+<style>
+    .bigwindow-dialog .modal-dialog {
+        width: 1200px;
+    }
+</style>
+
+<div class="col-md-1"></div>
+<div class="col-md-10">
+    <form class="form-horizontal" role="form" name="session_form" id="session_form" method="post">
+        <div class="form-group">
+            <button type="button" class="btn btn-primary" onclick="NewSession()"><span class="glyphicon glyphicon-plus"></span>New Session</button>
+            <button type="button" class="btn btn-primary" onclick="NewActivity()"><span class="glyphicon glyphicon-plus"></span>New Activity</button>
+        </div>
+
+    [% INCLUDE Display/startboundingbox.tt 
+        boxtitle = 'Available Activities'
+    %]
+        <table class="table table-striped table-bordered" id="activities">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Insert Date</th>
+                    <th>Modify Date</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            </tfoot>
+        </table>
+    [% INCLUDE Display/endboundingbox.tt %]
+    <hr />
+    [% INCLUDE Display/startboundingbox.tt 
+        boxtitle = 'Upcoming Sessions'
+    %]
+        <table class="table table-striped table-bordered" id="future_sessions">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Scheduled For</th>
+                    <th>Assigned To</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            </tfoot>
+        </table>
+    [% INCLUDE Display/endboundingbox.tt %]
+    <hr />
+    [% INCLUDE Display/startboundingbox.tt 
+        boxtitle = 'Previous Sessions'
+    %]
+        <table class="table table-striped table-bordered" id="past_sessions">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Scheduled For</th>
+                    <th>Completed On</th>
+                    <th>Assigned To</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            </tfoot>
+        </table>
+    [% INCLUDE Display/endboundingbox.tt %]
+    </form>
+</div>
+<div class="col-md-1"></div>
+
+<script>
+    function NewSession() {
+        sessionDialog = new BootstrapDialog({
+            id: "sessiondialog",
+            title: "New Session",
+            cssClass: 'bigwindow-dialog',
+            message: $('<div></div>').load('ajax/ajaxaddeditsession.cgi')
+        });
+        sessionDialog.open();
+    }
+
+    function NewActivity() {
+        activityDialog = new BootstrapDialog({
+            id: "activitydialog",
+            title: "New Activity",
+            cssClass: 'bigwindow-dialog',
+            message: $('<div></div>').load('ajax/ajaxaddeditactivity.cgi')
+        });
+        activityDialog.open();
+    }
+
+    function EditSession( sessionid ) {
+        sessionDialog = new BootstrapDialog({
+            id: "sessiondialog",
+            title: "New Session",
+            cssClass: 'bigwindow-dialog',
+            data: { sessionid: sessionid },
+            message: $('<div></div>').load('ajax/ajaxaddeditsession.cgi')
+        });
+        sessionDialog.open();
+    }
+
+    function EditActivity( activityid ) {
+        activityDialog = new BootstrapDialog({
+            id: "activitydialog",
+            title: "New Activity",
+            cssClass: 'bigwindow-dialog',
+            data: { activityid: activityid },
+            message: $('<div></div>').load('ajax/ajaxaddeditactivity.cgi')
+        });
+        activityDialog.open();
+    }
+
+    function DeleteSession( sessionid ) {
+        BootstrapDialog.show({
+            title: "Delete session",
+            type: BootstrapDialog.TYPE_WARNING,
+            message: "Are you sure you want to delete this Session",
+            buttons: [ {
+                label: "Yes",
+                action: function( self ) {
+                    $.ajax({
+                        url: 'ajax/ajaxsavesession.cgi',
+                        data: {
+                            sessionid: sessionid,
+                            delete: 1
+                        },
+                        type: 'post'
+                    });
+                    location.reload();
+                    self.close();
+                }
+            }, {
+                label: "No",
+                action: function( self ) {
+                    self.close();
+                }
+            }]
+        });
+    }
+
+    function DeleteActivity( activityid ) {
+        BootstrapDialog.show({
+            title: "Delete activity",
+            type: BootstrapDialog.TYPE_WARNING,
+            message: "Are you sure you want to delete this Activity",
+            buttons: [ {
+                label: "Yes",
+                action: function( self ) {
+                    $.ajax({
+                        url: 'ajax/ajaxsaveactivity.cgi',
+                        data: {
+                            activityid: activityid,
+                            delete: 1
+                        },
+                        type: 'post'
+                    });
+                    location.reload();
+                    self.close();
+                }
+            }, {
+                label: "No",
+                action: function( self ) {
+                    self.close();
+                }
+            }]
+        });
+    }
+
+    $(document).ready(function() {
+        $("#activities").DataTable().destroy();
+        $("#activities").DataTable({
+            lengthMenu: [ 5, 10, 20 ],
+            ajax: {
+                url: 'ajax/ajaxdisplayactivities.cgi',
+                type: 'post',
+            },
+            aaSorting: [ [ 1, 'asc' ] ],
+            columns: [ 
+                { data: 'activityname'  , orderable: 'true', searchable: 'true' },
+                { data: 'activitytype'  , orderable: 'true', searchable: 'true' },
+                { data: 'insertdate'  , orderable: 'true', searchable: 'true' },
+                { data: 'modifieddate'  , orderable: 'true', searchable: 'true' },
+                { data: 'buttons'       , orderable: 'false', searchable: 'false' },
+            ]
+        });
+
+        $("#past_sessions").DataTable().destroy();
+        $("#past_sessions").DataTable( {
+            lengthMenu: [ 5, 10, 20 ],
+            ajax: {
+                url: 'ajax/ajaxdisplaysessions.cgi',
+                type: 'post',
+                data: { 
+                    isfuture: "0" 
+                },
+            },
+            aaSorting: [ [ 1, 'asc' ] ],
+            columns: [ 
+                { data: 'sessionname'  , orderable: 'true', searchable: 'true' },
+                { data: 'scheduledfor' , orderable: 'true', searchable: 'true' },
+                { data: 'completedon'  , orderable: 'true', searchable: 'true' },
+                { data: 'assignedto'   , orderable: 'true', searchable: 'true' },
+                { data: 'buttons'      , orderable: 'false', searchable: 'false' },
+            ]
+        } );
+
+        $("#future_sessions").DataTable().destroy();
+        $("#future_sessions").DataTable( {
+            lengthMenu: [ 5, 10, 20 ],
+            ajax: {
+                url: 'ajax/ajaxdisplaysessions.cgi',
+                type: 'post',
+                data: { 
+                    isfuture: "1" 
+                },
+            },
+            aaSorting: [ [ 1, 'asc' ] ],
+            columns: [ 
+                { data: 'sessionname'  , orderable: 'true', searchable: 'true' },
+                { data: 'scheduledfor' , orderable: 'true', searchable: 'true' },
+                { data: 'assignedto'   , orderable: 'true', searchable: 'true' },
+                { data: 'buttons'      , orderable: 'false', searchable: 'false' },
+            ]
+        } );
+
+    });
+
+</script>
+
+[% INCLUDE Display/footer.tt %]
