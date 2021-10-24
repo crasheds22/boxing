@@ -27,8 +27,8 @@ while ( my ( $accountname, $patientid, $dob, $height, $weight, $condition ) = $s
         height => $height,
         weight => $weight,
         condition => $condition,
-        edit => "<input type=\"button\" class=\"btn btn-primary btn-xs btn-outline\" onclick=\"EditPatient($patientid);\" value=\"Edit\" />",
-        delete => "<input type=\"button\" class=\"btn btn-danger btn-xs btn-outline\" onclick=\"RemovePatient($patientid);\" value=\"Delete\" />"
+        buttons => qq^<input type="button" class="btn btn-primary btn-xs btn-outline" onclick="EditPatient($patientid);" value="Edit" />&nbsp;
+                      <input type="button" class="btn btn-danger btn-xs btn-outline" onclick="RemovePatient($patientid);" value="Delete" />^
     };
 
     push @{ $payload{data} }, $row;

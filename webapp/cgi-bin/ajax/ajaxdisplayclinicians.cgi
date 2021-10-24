@@ -50,8 +50,8 @@ if ( $in{headclinicianid} ) {
 while ( my ( $clinicianid, $accountname ) = $sth->fetchrow_array ) {
     push @{ $payload{data} }, {
         clinicianname => $accountname,
-        edit => "<input type=\"button\" class=\"btn btn-xs btn-primary btn-outline\" onclick=\"EditClinician($clinicianid);\" value=\"Edit\" />",
-        delete => "<input type=\"button\" class=\"btn btn-xs btn-danger btn-outline\" onclick=\"RemoveClinician($clinicianid);\" value=\"Delete\" />"
+        buttons => qq^<input type="button" class="btn btn-xs btn-primary btn-outline" onclick="EditClinician($clinicianid);" value="Edit" />&nbsp;
+                      <input type="button" class="btn btn-xs btn-danger btn-outline" onclick="RemoveClinician($clinicianid);" value="Delete" />^
     };
 }
 $sth->finish;

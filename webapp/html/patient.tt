@@ -16,8 +16,7 @@
                     <tr>
                         <th>Name</th>
                         <th>Scheduled For</th>
-                        <th>Assigned To</th>
-                        <th>&nbsp;</th>
+                        <th>Assigned By</th>
                         <th>&nbsp;</th>
                     </tr>
                 </thead>
@@ -40,9 +39,9 @@
                 <thead>
                     <tr>
                         <th>Name</th>
+                        <th>Scheduled For</th>
                         <th>Completed On</th>
-                        <th>Assigned To</th>
-                        <th>&nbsp;</th>
+                        <th>Assigned By</th>
                         <th>&nbsp;</th>
                     </tr>
                 </thead>
@@ -54,45 +53,47 @@
         [% INCLUDE Display/endboundingbox.tt %]
             <script>
                 $(document).ready(function() {
+                    $("#future_sessions").DataTable().destroy();
                     $("#future_sessions").DataTable( {
                         lengthMenu: [ 5, 10, 20 ],
-                        //ajax: {
-                        //    url: '/ajax/ajaxdisplaysessions.cgi',
-                        //    type: 'post',
-                        //    data: { clinicianid: "[% p.clinicianid %]", isfuture: "1" },
-                        //    complete: function( response ) {
-                        //    },
-                        //},
+                        ajax: {
+                            url: 'ajax/ajaxdisplaysessions.cgi',
+                            type: 'post',
+                            data: { 
+                                patientid: $("#patientid").val(), 
+                                isfuture: "1" 
+                            },
+                        },
                         aaSorting: [ [ 1, 'asc' ] ],
                         columns: [ 
                             { data: 'sessionname'  , orderable: 'true', searchable: 'true' },
                             { data: 'scheduledfor' , orderable: 'true', searchable: 'true' },
-                            { data: 'assignedto'   , orderable: 'true', searchable: 'true' },
-                            { data: 'edit'         , orderable: 'false', searchable: 'false' },
-                            { data: 'delete'       , orderable: 'false', searchable: 'false' },
+                            { data: 'assignedby'   , orderable: 'true', searchable: 'true' },
+                            { data: 'buttons'      , orderable: 'false', searchable: 'false' },
                         ]
                     } );
 
+                    $("#past_sessions").DataTable().destroy();
                     $("#past_sessions").DataTable( {
                         lengthMenu: [ 5, 10, 20 ],
-                        //ajax: {
-                        //    url: '/ajax/ajaxdisplaysessions.cgi',
-                        //    type: 'post',
-                        //    data: { clinicianid: "[% p.clinicianid %]", isfuture: "0" },
-                        //    complete: function( response ) {
-                        //    },
-                        //},
+                        ajax: {
+                            url: 'ajax/ajaxdisplaysessions.cgi',
+                            type: 'post',
+                            data: { 
+                                patientid: $("#patientid").val(),
+                                isfuture: "0" 
+                            },
+                        },
                         aaSorting: [ [ 1, 'asc' ] ],
                         columns: [ 
                             { data: 'sessionname'  , orderable: 'true', searchable: 'true' },
+                            { data: 'scheduledfor' , orderable: 'true', searchable: 'true' },
                             { data: 'completedon'  , orderable: 'true', searchable: 'true' },
-                            { data: 'assignedto'   , orderable: 'true', searchable: 'true' },
-                            { data: 'edit'         , orderable: 'false', searchable: 'false' },
-                            { data: 'delete'       , orderable: 'false', searchable: 'false' },
+                            { data: 'assignedby'   , orderable: 'true', searchable: 'true' },
+                            { data: 'buttons'      , orderable: 'false', searchable: 'false' },
                         ]
                     } );
-
-                } );
+                })
             </script>
         </div>
     </form>
