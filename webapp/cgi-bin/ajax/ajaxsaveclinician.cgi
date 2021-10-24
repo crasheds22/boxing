@@ -110,11 +110,11 @@ if ( $in{delete} ) {
 
     my $accountname = $in{firstname} . " " . $in{lastname};
 
-    $sql = "insert into ACCOUNT ( accountname, username, insertdate, timezone, accounttypeid )
-            values ( ?, ?, UTC_TIMESTAMP(), '+8:00', ? )";
+    $sql = "insert into ACCOUNT ( accountname, insertdate, timezone, accounttypeid )
+            values ( ?, UTC_TIMESTAMP(), '+8:00', ? )";
     eval {
         $sth = $dbh->prepare( $sql );
-        $sth->execute( $accountname, $in{username}, $in{accounttypeid} );
+        $sth->execute( $accountname, $in{accounttypeid} );
         $sth->finish();
     };
     if ( $@ ) {
@@ -131,6 +131,27 @@ if ( $in{delete} ) {
     }
 
     my $clinicianid = $dbh->last_insert_id( undef, undef, undef, undef );
+
+    $sql = "update ACCOUNT 
+            set username = LPAD( ?, 6, 0 ) 
+            where accountid=?";
+    eval {
+        $sth = $dbh->prepare( $sql );
+        $sth->execute( $clinicianid, $clinicianid );
+        $sth->finish();
+    };
+    if ( $@ ) {
+        my %data = (
+            success => 0,
+            message => "Error creating new Account"
+        );
+
+        $dbh->rollback();
+        $dbh->disconnect();
+
+        print encode_json( \%data );
+        exit;
+    }
 
     $sql = "insert into CLINICIAN ( clinicianid )
             values ( ? )";
