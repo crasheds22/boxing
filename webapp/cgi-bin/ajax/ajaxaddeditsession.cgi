@@ -9,9 +9,9 @@ use Template;
 
 require "../globalfunctions.pl";
 
-my $dbh = &DBConnect();
+my $dbh = DBConnect();
 
-&SecurityCheck( $dbh );
+SecurityCheck( $dbh );
 
 my $query = CGI->new;
 my %in = ();
@@ -74,7 +74,8 @@ $sth->finish;
 
 $sql = "select a.activityid, a.activityname, b.typename
         from ACTIVITY a
-        join ACTIVITY_TYPE b on a.typeid=b.typeid";
+        join ACTIVITY_TYPE b on a.typeid=b.typeid
+        where !a.deleted";
 $sth = $dbh->prepare( $sql );
 $sth->execute();
 while ( my ( $activityid, $activityname, $typename ) = $sth->fetchrow_array ) {

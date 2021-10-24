@@ -87,7 +87,7 @@ sub Authenticate {
     if ( !$p{accountid} ) {
         print "\n";
         $dbh->disconnect;
-        &ShowError( "<p>This could mean your username is incorrect</p>", "Error logging in" );
+        ShowError( "<p>This could mean your username is incorrect</p>", "Error logging in" );
         exit;
     }
 
@@ -110,7 +110,7 @@ sub Authenticate {
         }
     }
 
-    ( $p{sessionid} ) = &GenerateSessionID( $dbh, $p{accountid} );
+    ( $p{sessionid} ) = GenerateSessionID( $dbh, $p{accountid} );
 
     $sql = "insert into ACCOUNT_LOG ( accountid, insertdate, sessionid ) 
             values ( ?, UTC_TIMESTAMP(), ? )";
@@ -160,7 +160,7 @@ sub CheckCookie {
 
     if ( $ok && $timeout ) {
         # Timeout
-        &DestroySessionToken( $dbh, $sessionid );
+        DestroySessionToken( $dbh, $sessionid );
         $dbh->disconnect;
 
         print SetAuthCookie( "boxingsessionid", "" );
@@ -171,7 +171,7 @@ sub CheckCookie {
         exit;
 
     } elsif ( $ok ) {
-        &UpdateSessionToken( $dbh, $sessionid );
+        UpdateSessionToken( $dbh, $sessionid );
     }
 
     if ( $accountid ) {
@@ -273,7 +273,7 @@ sub Logout {
 
     my ( $dbh, $sessionid, $accountid ) = @_;
 
-    &DestroySessionToken( $dbh, $sessionid );
+    DestroySessionToken( $dbh, $sessionid );
     print SetAuthCookie( "boxingsessionid", "" );
 
     my $sql = "update ACCOUNT_LOG

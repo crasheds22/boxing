@@ -7,14 +7,14 @@ use CGI;
 
 require "./globalfunctions.pl";
 
-my $dbh = &DBConnect();
+my $dbh = DBConnect();
 
 my %in = ();
 my $query = CGI->new();
 $in{username} = $query->param('username');
 $in{logout} = scalar $query->param('logout') ? 1 : 0;
 
-&SecurityCheck( $dbh, \%in );
+SecurityCheck( $dbh, \%in );
 
 my $filename = 'dashboard.tt';
 my %args = (

@@ -10,9 +10,9 @@ use JSON;
 
 require "../globalfunctions.pl";
 
-my $dbh = &DBConnect();
+my $dbh = DBConnect();
 
-&SimpleSecurityCheck( $dbh );
+SimpleSecurityCheck( $dbh );
 
 print "Content-Type:application/json\n\n";
 
@@ -103,11 +103,11 @@ if ( $in{delete} ) {
 } else {
     # Creating
     my $accountname = $in{firstname} . " " . $in{lastname};
-    $sql = "insert into ACCOUNT ( accountname, username, password, insertdate, accounttypeid )
-            values ( ?, ?, 'Password1', UTC_TIMESTAMP(), 4 )";
+    $sql = "insert into ACCOUNT ( accountname, insertdate, timezone, accounttypeid )
+            values ( ?, UTC_TIMESTAMP(), '+8:00', 4 )";
     eval {
         $sth = $dbh->prepare( $sql );
-        $sth->execute( $accountname, "$in{username}" );
+        $sth->execute( $accountname );
     };
     if ( $@ ) {
         $data{success} = \0;
@@ -123,7 +123,26 @@ if ( $in{delete} ) {
 
     my $patientid = $sth->last_insert_id( undef, undef, undef, undef );
 
-    $in{dob} = &MakeMYSQLDate( $in{dob} );
+    $sql = "update ACCOUNT
+            set username = LPAD( ?, 6, 0 )
+            where accountid=?";
+    eval {
+        $sth = $dbh->prepare( $sql );
+        $sth->execute( $patientid, $patientid );
+    };
+    if ( $@ ) {
+        $data{success} = \0;
+        $data{message} = "Account creation error";
+
+        print encode_json( \%data );
+
+        $dbh->rollback();
+        $dbh->disconnect();
+
+        exit;
+    }
+
+    $in{dob} = MakeMYSQLDate( $in{dob} );
 
     $sql = "insert into PATIENT ( patientid, dob, `condition`, height, weight, insertby )
             values ( ?, ?, ?, ?, ?, ? )";

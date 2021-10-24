@@ -9,12 +9,12 @@ use Template;
 
 require "./globalfunctions.pl";
 
-my $dbh = &DBConnect();
+my $dbh = DBConnect();
 
-&SecurityCheck( $dbh );
+SecurityCheck( $dbh );
 
 if ( !$main::p{accountid} ) {
-    &ShowError( "Account Error... see administrator", "Account Error" );
+    ShowError( "Account Error... see administrator", "Account Error" );
     exit;
 }
 
@@ -43,7 +43,7 @@ if ( $in{patientid} ) {
 my $filename = "patient.tt";
 my %args = (
     patientname => $patientname,
-    activepage => &ActivePage( 'patient' ),
+    activepage => ActivePage( 'patient' ),
     p => \%main::p,
     i => \%in
 );

@@ -8,9 +8,9 @@ use JSON;
 
 require "../globalfunctions.pl";
 
-my $dbh = &DBConnect();
+my $dbh = DBConnect();
 
-&SimpleSecurityCheck( $dbh );
+SimpleSecurityCheck( $dbh );
 
 print "Content-Type:application/json\n\n";
 
