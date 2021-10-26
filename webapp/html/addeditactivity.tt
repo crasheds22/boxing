@@ -16,7 +16,7 @@
 </style>
 
 <form class="form-horizontal" role="form" id="activity_form" method="post">
-    <input type="hidden" name="activityid" value="[% db.activityid %]" />
+    <input type="hidden" name="activityid" id="activityid" value="[% db.activityid %]" />
     <div class="box-body">
         <div class="form-group">
             <label class="col-md-2 control-label">Activity Name:</label>
@@ -128,7 +128,7 @@
         });
 
         var frm_data = {
-            Type: $("#activity_type").text(),
+            Type: $("#activity_type").find(":selected").text(),
             Commands: instructions
         };
 

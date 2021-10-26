@@ -35,8 +35,8 @@ while ( my ( $activityid, $activityname, $activitytype, $modifieddate, $insertda
         insertdate => $insertdate,
         modifieddate =>  $modifieddate,
         buttons => qq^
-            <input type="button" class="btn btn-primary btn-xs btn-outline" onclick="EditActivity($activityid);" value="Edit" />&nbsp;
-            <input type="button" class="btn btn-danger btn-xs btn-outline" onclick="DeleteActivity($activityid);" value="Delete" />
+            <input type="button" class="btn btn-primary btn-xs btn-outline" onclick="EditActivity($activityid)" value="Edit" />&nbsp;
+            <input type="button" class="btn btn-danger btn-xs btn-outline" onclick="DeleteActivity($activityid)" value="Delete" />
         ^
     };
 }

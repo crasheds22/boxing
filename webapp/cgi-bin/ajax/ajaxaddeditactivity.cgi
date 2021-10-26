@@ -31,9 +31,9 @@ if ( $in{activityid} ) {
     ( $db{activityid}, $db{activityname}, $db{instructions}, $db{typeid} ) = $sth->fetchrow_array;
     $sth->finish;
 
-    my $struct = %{ decode_json( $db{instructions} ) };
+    my %struct = %{ decode_json( $db{instructions} ) };
     my $count = 1;
-    foreach ( @$struct{Commands} ) {
+    foreach ( @{ $struct{Commands} } ) {
         my ( $l, $r, $a ) = ( "", "", "" );
         if ( $_->{Hands} eq "Left" ) {
             $l = "selected";
