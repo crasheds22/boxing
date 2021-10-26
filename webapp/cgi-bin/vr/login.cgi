@@ -66,11 +66,11 @@ if ( $accountid ) {
     $sth = $dbh->prepare( $sql );
     $sth->execute( $accountid );
     while ( my ( $sessionid, $accountname, $scheduledfor ) = $sth->fetchrow_array ) {
-        my %session = (
+        push $db{Session}[$sessionid], {
             id => $sessionid,
             assignedby => $accountname,
             scheduledfor => $scheduledfor
-        );
+        };
         
         $sql = "select a.exerciseid, a.sessionorder, b.activityname, b.instructions, c.typename
                 from EXERCISE a
@@ -80,7 +80,7 @@ if ( $accountid ) {
         $sth = $dbh->prepare( $sql );
         $sth->execute( $sessionid );
         while ( my ( $exerciseid, $sessionorder, $activityname, $instructions, $typename ) = $sth->fetchrow_array ) {
-            push @{ $session{Exercise} }, {
+            push $db{Session}[$sesionid]{Exercise} {
                 id => $exerciseid,
                 activitytype => $typename,
                 order => $sessionorder,
@@ -88,8 +88,6 @@ if ( $accountid ) {
                 instructions => $instructions
             };
         }
-
-        push @{ $db{Session} }, \%session;
     }
 
     %data = (
