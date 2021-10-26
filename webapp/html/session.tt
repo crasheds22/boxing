@@ -13,6 +13,7 @@
 <div class="col-md-1"></div>
 <div class="col-md-10">
     <form class="form-horizontal" role="form" name="session_form" id="session_form" method="post">
+        <input type="hidden" name="clinicianid" id="clinicianid" value="[% p.clinicianid %]" />
         <div class="form-group">
             <button type="button" class="btn btn-primary" onclick="NewSession()"><span class="glyphicon glyphicon-plus"></span>New Session</button>
             <button type="button" class="btn btn-primary" onclick="NewActivity()"><span class="glyphicon glyphicon-plus"></span>New Activity</button>
@@ -202,7 +203,8 @@
                 url: 'ajax/ajaxdisplaysessions.cgi',
                 type: 'post',
                 data: { 
-                    isfuture: "0" 
+                    isfuture: "0",
+                    clinicianid: $("#clinicianid").val(),
                 },
             },
             aaSorting: [ [ 1, 'asc' ] ],
@@ -222,7 +224,8 @@
                 url: 'ajax/ajaxdisplaysessions.cgi',
                 type: 'post',
                 data: { 
-                    isfuture: "1" 
+                    isfuture: "1",
+                    clinicianid: $("#clinicianid").val()
                 },
             },
             aaSorting: [ [ 1, 'asc' ] ],

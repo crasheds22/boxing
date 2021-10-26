@@ -15,9 +15,7 @@ SecurityCheck( $dbh );
 
 my $query = CGI->new;
 my %in = ();
-foreach ( $query->param ) {
-    $in{$_} = $query->param($_);
-}
+$in{sessionid} = $query->param('sessionid') ? sprintf( "%d", scalar $query->param('sessionid') ) : undef;
 
 my ( $sql, $sth );
 my %db = ();
@@ -30,7 +28,7 @@ if ( $in{sessionid} ) {
     # Editing
     $sql = "select sessionid, sessionname, scheduledfor, patientid, clinicianid
             from SESSION
-            where sessionid=? and !completed and !deleted";
+            where sessionid=? and !deleted";
     $sth = $dbh->prepare( $sql );
     $sth->execute( $in{sessionid} );
     ( $db{sessionid}, $db{sessionname}, $db{scheduledfor}, $db{patientid}, $db{clinicianid} ) = $sth->fetchrow_array;
@@ -40,8 +38,8 @@ if ( $in{sessionid} ) {
             from EXERCISE a
             join ACTIVITY b on a.activityid=b.activityid
             join ACTIVITY_TYPE c on b.typeid=c.typeid
-            where sessionid=?
-            order by sessionorder";
+            where a.sessionid=?
+            order by a.sessionorder";
     $sth = $dbh->prepare( $sql );
     $sth->execute( $db{sessionid} );
     while ( my ( $exercisename, $exercisetype ) = $sth->fetchrow_array ) {

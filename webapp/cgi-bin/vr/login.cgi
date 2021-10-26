@@ -57,7 +57,7 @@ if ( $accountid ) {
     $sth->finish;
 
     $sql = "select a.sessionid, c.accountname,
-                DATE_FORMAT(DATE_ADD(a.scheduledfor, INTERVAL '$db{Patient}{timezone}' HOUR_MINUTE), '%d %m %Y') as scheduledfor
+                DATE_FORMAT(DATE_ADD(a.scheduledfor, INTERVAL '$db{Patient}{timezone}' HOUR_MINUTE), '%d %b %Y') as scheduledfor
             from SESSION a 
             join CLINICIAN b on a.clinicianid=b.clinicianid
             join ACCOUNT c on b.clinicianid=c.accountid
