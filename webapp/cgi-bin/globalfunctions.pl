@@ -65,7 +65,7 @@ sub SecurityCheck {
         LogError( "Username detected: authenticating" );
         Authenticate( $dbh, $in{username} );
     } elsif ( my $sessionid = GetAuthCookie( "boxingsessionid" ) ) {
-        LogError( "Checking sessionid: $sessionid") );
+        LogError( "Checking sessionid: $sessionid" );
         CheckCookie( $dbh, $sessionid );
 
         if ( $in{logout} ) {
