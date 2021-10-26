@@ -45,13 +45,13 @@ if ( $accountid ) {
 
     my %db = ();
 
-    $sql = "select a.accountname, a.timezone, b.dob, b.height, b.weight, b.armlength
+    $sql = "select b.patientid, a.accountname, a.timezone, b.dob, b.height, b.weight, b.armlength
             from ACCOUNT a
             join PATIENT b on b.patientid=a.accountid
             where a.accountid=?";
     $sth = $dbh->prepare( $sql );
     $sth->execute( $accountid );
-    ( $db{Patient}{accountname}, $db{Patient}{timezone}, 
+    ( $db{Patient}{id},          $db{Patient}{accountname}, $db{Patient}{timezone}, 
       $db{Patient}{dob},         $db{Patient}{height}, 
       $db{Patient}{weight},      $db{Patient}{armlength} ) = $sth->fetchrow_array;
     $sth->finish;
