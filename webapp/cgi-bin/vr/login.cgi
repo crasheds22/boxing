@@ -66,7 +66,7 @@ if ( $accountid ) {
     $sth = $dbh->prepare( $sql );
     $sth->execute( $accountid );
     while ( my ( $sessionid, $accountname, $scheduledfor ) = $sth->fetchrow_array ) {
-        push $db{Session}[$sessionid], {
+        $db{Session}[$sessionid] = {
             id => $sessionid,
             assignedby => $accountname,
             scheduledfor => $scheduledfor
@@ -80,7 +80,7 @@ if ( $accountid ) {
         $sth = $dbh->prepare( $sql );
         $sth->execute( $sessionid );
         while ( my ( $exerciseid, $sessionorder, $activityname, $instructions, $typename ) = $sth->fetchrow_array ) {
-            push $db{Session}[$sesionid]{Exercise} {
+            push @{ $db{Session}[$sessionid]{Exercise} }, {
                 id => $exerciseid,
                 activitytype => $typename,
                 order => $sessionorder,
