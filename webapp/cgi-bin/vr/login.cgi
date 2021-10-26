@@ -77,9 +77,9 @@ if ( $accountid ) {
                 join ACTIVITY b on a.activityid=b.activityid
                 join ACTIVITY_TYPE c on b.typeid=c.typeid
                 where a.sessionid=?";
-        $sth = $dbh->prepare( $sql );
-        $sth->execute( $sessionid );
-        while ( my ( $exerciseid, $sessionorder, $activityname, $instructions, $typename ) = $sth->fetchrow_array ) {
+        my $sth2 = $dbh->prepare( $sql );
+        $sth2->execute( $sessionid );
+        while ( my ( $exerciseid, $sessionorder, $activityname, $instructions, $typename ) = $sth2->fetchrow_array ) {
             push @{ $db{Session}[$sessionid]{Exercise} }, {
                 id => $exerciseid,
                 activitytype => $typename,
