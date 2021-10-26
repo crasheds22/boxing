@@ -75,7 +75,7 @@ sub Authenticate {
 
     my $sql = "select accountid, accountname, insertdate, timezone, accounttypeid
             from ACCOUNT 
-            where username like ? and !deleted and !archived";
+            where username = ? and !deleted and !archived";
     my $sth = $dbh->prepare( $sql );
     $sth->execute( $username );
     my $hashref = $sth->fetchrow_hashref;
@@ -152,7 +152,7 @@ sub CheckCookie {
 
     my $sql = "select sessionid, accountid, last_seen < DATE_SUB(UTC_TIMESTAMP(), interval $hoursTimeout hour)
             from ACCOUNT_SESSION
-            where sessionid like ?";
+            where sessionid = ?";
     my $sth = $dbh->prepare( $sql );
     $sth->execute( $sessionid );
     my ( $ok, $accountid, $timeout ) = $sth->fetchrow_array;
@@ -178,7 +178,7 @@ sub CheckCookie {
         %p = ();
         $sql = "select accountid, accountname, insertdate, timezone, accounttypeid
                 from ACCOUNT 
-                where accountid like ? and !deleted and !archived";
+                where accountid = ? and !deleted and !archived";
         $sth = $dbh->prepare( $sql );
         $sth->execute( $accountid );
         my $hashref = $sth->fetchrow_hashref;
@@ -258,7 +258,7 @@ sub DestroySessionToken {
 
     my $sql = "delete 
             from ACCOUNT_SESSION 
-            where sessionid like ?";
+            where sessionid = ?";
     my $sth = $dbh->prepare( $sql );
     $sth->execute( $sessionid );
     $sth->finish();
@@ -278,7 +278,7 @@ sub Logout {
 
     my $sql = "update ACCOUNT_LOG
             set enddate=UTC_TIMESTAMP(), sessionid=null 
-            where accountid=? and sessionid like ?";
+            where accountid=? and sessionid = ?";
     my $sth = $dbh->prepare( $sql );
     $sth->execute( $accountid, $sessionid );
     $sth->finish();
@@ -296,7 +296,9 @@ sub UpdateSessionToken {
     
     my ( $dbh, $sessionid ) = @_;
 
-    my $sql = "update ACCOUNT_SESSION set last_seen=UTC_TIMESTAMP() where sessionid like ?";
+    my $sql = "update ACCOUNT_SESSION 
+            set last_seen=UTC_TIMESTAMP() 
+            where sessionid = ?";
     my $sth = $dbh->prepare( $sql );
     $sth->execute( $sessionid );
     $sth->finish();
