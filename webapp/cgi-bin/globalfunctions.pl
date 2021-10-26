@@ -41,43 +41,25 @@ sub DBConnect {
 
 }
 
-sub LogError {
-
-    my ( $message ) = @_;
-
-    print STDERR $message . "\n";
-
-    return;
-
-}
-
 sub SecurityCheck {
 
     my ( $dbh, $in ) = @_;
-
-    LogError( "Security Check Begin" );
 
     my %in = %$in if $in;
 
     print "Content-Type:text/html\n";
 
     if ( $in{username} ) {
-        LogError( "Username detected: authenticating" );
         Authenticate( $dbh, $in{username} );
     } elsif ( my $sessionid = GetAuthCookie( "boxingsessionid" ) ) {
-        LogError( "Checking sessionid: $sessionid" );
         CheckCookie( $dbh, $sessionid );
 
         if ( $in{logout} ) {
-            LogError( "Log out request detected" );
             Logout( $dbh, $sessionid, $p{accountid} );
         }
     } else {
-        LogError( "no data: showing login" );
         ShowLogin();
     }
-
-    LogError( "End of security check" );
 
     print "\n";
 
