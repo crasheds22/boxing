@@ -165,6 +165,8 @@ sub CheckCookie {
 
     my ( $dbh, $sessionid ) = @_;
 
+    LogError( "Checking Cookie" );
+
     # Timeout after 8 hours inactive;
     my $hoursTimeout = 8;
 

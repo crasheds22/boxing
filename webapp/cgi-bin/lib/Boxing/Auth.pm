@@ -41,7 +41,11 @@ sub GetAuthCookie {
 
     my ( $cookie_name ) = @_;
 
+    print STDERR "Getting $cookie_name\n";
+
     my %cookies = CGI::Cookie->fetch;
+
+    print STDERR $cookies{cookie_name}->value . "\n";
 
     return defined $cookies{$cookie_name} ? $cookies{$cookie_name}->value : undef;
 
