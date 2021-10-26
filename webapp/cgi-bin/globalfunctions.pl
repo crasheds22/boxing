@@ -110,16 +110,16 @@ sub Authenticate {
         }
     }
 
-    ( $p{sessionid} ) = GenerateSessionID( $dbh, $p{accountid} );
+    my ( $sessionid ) = GenerateSessionID( $dbh, $p{accountid} );
 
     $sql = "insert into ACCOUNT_LOG ( accountid, insertdate, sessionid ) 
             values ( ?, UTC_TIMESTAMP(), ? )";
     $sth = $dbh->prepare( $sql );
-    $sth->execute( $p{accountid}, $p{sessionid} );
+    $sth->execute( $p{accountid}, $sessionid );
     $sth->finish;
     $dbh->commit;
 
-    print SetAuthCookie( "boxingsessionid", $p{sessionid} );
+    print SetAuthCookie( "boxingsessionid", $sessionid );
 
 }
 
