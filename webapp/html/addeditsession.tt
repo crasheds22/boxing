@@ -28,7 +28,8 @@
                 [% END %]
                 </select>
             [% ELSE %]
-                <p class="form-control-static" name="clinicianid" id="clinicianid" value="[% p.clinicianid %]">[% p.accountname %]</p>
+                <p class="form-control-static">[% p.accountname %]</p>
+                <input type="hidden" id="clinicianid" value="[% p.clinicianid %]" />
             [% END %]
             </div>
         </div>
@@ -42,7 +43,7 @@
             <div class="col-md-3">
                 <div class="input-group date">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                    <input type="text" class="form-control" id="scheduledfor" name="scheduledfor" value="[% db.scheduledfor %]" placeholder="dd/mm/yyyy" />
+                    <input type="text" class="form-control" id="scheduledfor" name="scheduledfor" value="[% db.scheduledfor %]" placeholder="dd/mm/yyyy" autocomplete="off" />
                 </div>
             </div>
         </div>
