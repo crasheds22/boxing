@@ -119,7 +119,7 @@ sub Authenticate {
     $sth->finish;
     $dbh->commit;
 
-    print SetAuthCookie( "boxingsessionid", $sessionid );
+    print SetAuthCookie( "boxingsessionid", $sessionid ) . "\n";
 
 }
 
