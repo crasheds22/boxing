@@ -106,8 +106,7 @@
             id: "sessiondialog",
             title: "New Session",
             cssClass: 'bigwindow-dialog',
-            data: { sessionid: sessionid },
-            message: $('<div></div>').load('ajax/ajaxaddeditsession.cgi')
+            message: $('<div></div>').load('ajax/ajaxaddeditsession.cgi?sessionid='+sessionid)
         });
         sessionDialog.open();
     }
@@ -117,8 +116,7 @@
             id: "activitydialog",
             title: "New Activity",
             cssClass: 'bigwindow-dialog',
-            data: { activityid: activityid },
-            message: $('<div></div>').load('ajax/ajaxaddeditactivity.cgi')
+            message: $('<div></div>').load('ajax/ajaxaddeditactivity.cgi?activityid='+activityid)
         });
         activityDialog.open();
     }
