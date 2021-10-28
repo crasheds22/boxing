@@ -14,8 +14,9 @@
 <div class="col-md-10">
     <form class="form-horizontal" role="form" name="session_form" id="session_form" method="post">
         <div class="form-group">
+            <div class="col-md-1"></div>
+            <button type="button" class="btn btn-primary" onclick="NewActivity()"><span class="glyphicon glyphicon-plus"></span>New Activity</button>&nbsp;
             <button type="button" class="btn btn-primary" onclick="NewSession()"><span class="glyphicon glyphicon-plus"></span>New Session</button>
-            <button type="button" class="btn btn-primary" onclick="NewActivity()"><span class="glyphicon glyphicon-plus"></span>New Activity</button>
         </div>
 
     [% INCLUDE Display/startboundingbox.tt 

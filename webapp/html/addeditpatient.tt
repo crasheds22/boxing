@@ -35,13 +35,18 @@
         <div class="form-group">
             <div class="col-md-1"></div>
             <label class="control-label col-md-2">Height</label>
-            <div class="col-md-2">
-                <input type="text" class="form-control" id="height" name="height" value="[% db.height %]" placeholder="Height" />
+            <div class="col-md-3">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="height" name="height" value="[% db.height %]" placeholder="Height" />
+                    <span class="input-group-addon">cm</span>
+                </div>
             </div>
-            <div class="col-md-2"></div>
             <label class="control-label col-md-2">Weight</label>
-            <div class="col-md-2">
-                <input type="text" class="form-control" id="weight" name="weight" value="[% db.weight %]" placeholder="Weight" /> 
+            <div class="col-md-3">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="weight" name="weight" value="[% db.weight %]" placeholder="Weight" /> 
+                    <span class="input-group-addon">kg</span>
+                </div>
             </div>
         </div>
 

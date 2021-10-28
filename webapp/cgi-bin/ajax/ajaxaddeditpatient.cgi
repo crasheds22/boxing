@@ -22,8 +22,7 @@ foreach ( $query->param ) {
 my %db = ();
 if ( $in{patientid} ) {
     # We are editing
-    my $sql = "select a.accountname, a.username, 
-                DATE_FORMAT(b.dob, '%d %b %Y') as dob, b.condition, b.height, b.weight 
+    my $sql = "select a.accountname, DATE_FORMAT(b.dob, '%d/%m/%Y') as dob, b.condition, b.height, b.weight 
             from ACCOUNT a 
             join PATIENT b on a.accountid=b.patientid 
             where patientid=?";
