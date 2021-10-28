@@ -65,4 +65,6 @@ my %args = (
 
 $main::g_template->process( $filename, \%args ) or die "Template process failed: " . $main::g_template->error();
 
+$dbh->disconnect;
+
 exit;

@@ -1,5 +1,5 @@
 <form class="form-horizontal" name="session_form" id="session_form" role="form">
-    <input type="hidden" name="sessionid" value="[% db.sessionid %]" />
+    <input type="hidden" name="sessionid" id="sessionid" value="[% db.sessionid %]" />
     <div class="box-body">
         <div class="form-group">
             <label class="col-md-2 control-label">For:</label>
@@ -20,7 +20,9 @@
                 <select class="form-control" name="clinicianid" id="clinicianid">
                     <option value="[% p.accountid %]">[% p.accountname %]</option>
                 [% FOREACH clinician IN clinicians %]
-                    [% IF p.clinicianid == db.clinicianid %]
+                    [% IF p.clinicianid == clinicianid %]
+                    <option value="[% clinician.id %]" selected>[% clinician.name %]</option>
+                    [% ELSIF db.clinicianid == clinicianid %]
                     <option value="[% clinician.id %]" selected>[% clinician.name %]</option>
                     [% ELSE %]
                     <option value="[% clinician.id %]">[% clinician.name %]</option>

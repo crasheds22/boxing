@@ -36,7 +36,7 @@ if ( $in{sessionid} ) {
     ( $db{sessionid}, $db{sessionname}, $db{scheduledfor}, $db{patientid}, $db{clinicianid} ) = $sth->fetchrow_array;
     $sth->finish;
 
-    $sql = "select a.exerciseid, b.activityname, c.typename
+    $sql = "select a.activityid, b.activityname, c.typename
             from EXERCISE a
             join ACTIVITY b on a.activityid=b.activityid
             join ACTIVITY_TYPE c on b.typeid=c.typeid
@@ -44,10 +44,9 @@ if ( $in{sessionid} ) {
             order by a.sessionorder";
     $sth = $dbh->prepare( $sql );
     $sth->execute( $db{sessionid} );
-    while ( my ( $exerciseid, $exercisename, $exercisetype ) = $sth->fetchrow_array ) {
-        print STDERR $exerciseid . "\n";
+    while ( my ( $activityid, $exercisename, $exercisetype ) = $sth->fetchrow_array ) {
         push @exercises, qq^
-            <tr data-attribute="$exerciseid">
+            <tr data-attribute="$activityid">
                 <td>$exercisename</td>
                 <td>$exercisetype</td>
                 <td><button type="button" class="btn btn-danger" onclick="RemoveExercise(this)"><span class="glyphicon glyphicon-minus"></span></button></td>

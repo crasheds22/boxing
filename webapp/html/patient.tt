@@ -7,6 +7,7 @@
 <div class="col-md-1"></div>
 <div class="col-md-10">
     <form class="form-horizontal" role="form" name="patient_form" id="patient_form" method="post">
+        <input type="hidden" name="patientid" id="patientid" value="[% p.patientid %]" />
         <div class="box-body">
         [% INCLUDE Display/startboundingbox.tt 
             boxtitle = 'Upcoming Sessions'
@@ -25,11 +26,6 @@
                 <tfoot>
                 </tfoot>
             </table>
-            <div class="form-group">
-                <div class="col-md-2">
-                    <input type="button" class="btn btn-primary" onclick="#" value="New Session" />
-                </div>
-            </div>
         [% INCLUDE Display/endboundingbox.tt %]
             <hr />
         [% INCLUDE Display/startboundingbox.tt 
