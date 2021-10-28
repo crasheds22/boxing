@@ -4,14 +4,14 @@
         <div class="form-group">
             <label class="control-label col-md-3">First name</label>
             <div class="col-md-8">
-                <input type="text" class="form-control" id="firstname" name="firstname" value="[% db.firstname %]" placeholder="First name" [% db.readonly %]  />
+                <input type="text" class="form-control no-numbers" id="firstname" name="firstname" value="[% db.firstname %]" placeholder="First name" [% db.readonly %]  />
             </div>
         </div>
 
         <div class="form-group">
             <label class="control-label col-md-3">Last name</label>
             <div class="col-md-8">
-                <input type="text" class="form-control" id="lastname" name="lastname" value="[% db.lastname %]" placeholder="Last name" [% db.readonly %] />
+                <input type="text" class="form-control no-numbers" id="lastname" name="lastname" value="[% db.lastname %]" placeholder="Last name" [% db.readonly %] />
             </div>
         </div>
 
@@ -37,14 +37,14 @@
             <label class="control-label col-md-2">Height</label>
             <div class="col-md-3">
                 <div class="input-group">
-                    <input type="text" class="form-control" id="height" name="height" value="[% db.height %]" placeholder="Height" />
+                    <input type="text" class="form-control numbers-only" id="height" name="height" value="[% db.height %]" placeholder="Height" />
                     <span class="input-group-addon">cm</span>
                 </div>
             </div>
             <label class="control-label col-md-2">Weight</label>
             <div class="col-md-3">
                 <div class="input-group">
-                    <input type="text" class="form-control" id="weight" name="weight" value="[% db.weight %]" placeholder="Weight" /> 
+                    <input type="text" class="form-control numbers-only" id="weight" name="weight" value="[% db.weight %]" placeholder="Weight" /> 
                     <span class="input-group-addon">kg</span>
                 </div>
             </div>
@@ -93,6 +93,19 @@
             endDate: new Date(),
             todayHighlight: true
         } );
+        
+        $(".no-numbers").on('input', function() {
+            var value = $(this).val();
+            value = value.replace(/[^a-zA-Z\-]/g, '');
+            $(this).val( value );
+        } );
+
+        $(".numbers-only").on('input', function() {
+            var value = $(this).val();
+            value = value.replace(/[^0-9.]/g, '');
+            $(this).val( value );
+        } );
+
     });
 
 </script>

@@ -22,8 +22,6 @@
                 [% FOREACH clinician IN clinicians %]
                     [% IF p.clinicianid == clinicianid %]
                     <option value="[% clinician.id %]" selected>[% clinician.name %]</option>
-                    [% ELSIF db.clinicianid == clinicianid %]
-                    <option value="[% clinician.id %]" selected>[% clinician.name %]</option>
                     [% ELSE %]
                     <option value="[% clinician.id %]">[% clinician.name %]</option>
                     [% END %]
@@ -39,7 +37,7 @@
         <div class="form-group">
             <label class="col-md-2 control-label">Session Name:</label>
             <div class="col-md-3">
-                <input type="text" class="form-control" name="sessionname" id="sessionname" value="[% db.sessionname %]" placeholder="Session Name" />
+                <input type="text" class="form-control no-numbers" name="sessionname" id="sessionname" value="[% db.sessionname %]" placeholder="Session Name" />
             </div>
             <label class="col-md-2 control-label">When:</label>
             <div class="col-md-3">
@@ -196,6 +194,18 @@
             startDate: new Date(),
             endDate: "+2m",
             todayHighlight: true
+        } );
+        
+        $(".no-numbers").on('input', function() {
+            var value = $(this).val();
+            value = value.replace(/[^a-zA-Z\-]/g, '');
+            $(this).val( value );
+        } );
+
+        $(".numbers-only").on('input', function() {
+            var value = $(this).val();
+            value = value.replace(/[^0-9.]/g, '');
+            $(this).val( value );
         } );
 
     });
