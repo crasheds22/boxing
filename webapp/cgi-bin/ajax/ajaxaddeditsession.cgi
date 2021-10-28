@@ -28,25 +28,26 @@ my @exercises = ();
 
 if ( $in{sessionid} ) {
     # Editing
-    $sql = "select sessionid, sessionname, scheduledfor, patientid, clinicianid
+    $sql = "select sessionid, sessionname, DATE_FORMAT(DATE_ADD(scheduledfor, INTERVAL '$main::p{timezone}' HOUR_MINUTE), '%d/%m/%Y'), patientid, clinicianid
             from SESSION
-            where sessionid=? and !completed and !deleted";
+            where sessionid=? and !deleted";
     $sth = $dbh->prepare( $sql );
     $sth->execute( $in{sessionid} );
     ( $db{sessionid}, $db{sessionname}, $db{scheduledfor}, $db{patientid}, $db{clinicianid} ) = $sth->fetchrow_array;
     $sth->finish;
 
-    $sql = "select b.activityname, c.typename
+    $sql = "select a.exerciseid, b.activityname, c.typename
             from EXERCISE a
             join ACTIVITY b on a.activityid=b.activityid
             join ACTIVITY_TYPE c on b.typeid=c.typeid
-            where sessionid=?
-            order by sessionorder";
+            where a.sessionid=?
+            order by a.sessionorder";
     $sth = $dbh->prepare( $sql );
     $sth->execute( $db{sessionid} );
-    while ( my ( $exercisename, $exercisetype ) = $sth->fetchrow_array ) {
+    while ( my ( $exerciseid, $exercisename, $exercisetype ) = $sth->fetchrow_array ) {
+        print STDERR $exerciseid . "\n";
         push @exercises, qq^
-            <tr>
+            <tr data-attribute="$exerciseid">
                 <td>$exercisename</td>
                 <td>$exercisetype</td>
                 <td><button type="button" class="btn btn-danger" onclick="RemoveExercise(this)"><span class="glyphicon glyphicon-minus"></span></button></td>

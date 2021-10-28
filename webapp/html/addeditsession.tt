@@ -190,8 +190,10 @@
     $(document).ready(function() {
         $("#scheduledfor").datepicker( {
             autoclose: true,
-            minDate: new Date(),
-            format: "dd/mm/yyyy"
+            format: "dd/mm/yyyy",
+            startDate: new Date(),
+            endDate: "+2m",
+            todayHighlight: true
         } );
 
     });

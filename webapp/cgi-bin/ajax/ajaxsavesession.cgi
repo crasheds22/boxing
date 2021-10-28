@@ -19,6 +19,7 @@ $in{patientid} = sprintf( "%d", scalar $query->param('patientid') );
 $in{exercises} = $query->param('exercises');
 $in{sessionid} = $query->param('sessionid') ? sprintf( "%d", scalar $query->param('sessionid') ) : 0;
 $in{delete} = $query->param('delete') ? 1 : 0;
+$in{sessionname} = $query->param('sessionname');
 
 $in{scheduledfor} = $query->param('scheduledfor');
 $in{scheduledfor} = MakeMYSQLDate( $in{scheduledfor} );

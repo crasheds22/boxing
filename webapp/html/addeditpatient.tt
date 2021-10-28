@@ -83,7 +83,10 @@
     $(document).ready(function() {
         $("#dob").datepicker( {
             autoclose: true,
-            format: "dd/mm/yyyy"
+            format: "dd/mm/yyyy",
+            startDate: "-90y",
+            endDate: new Date(),
+            todayHighlight: true
         } );
     });
 

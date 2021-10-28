@@ -25,11 +25,11 @@ my %payload = ( data => [] );
 if ( $in{patientid} ) {
     # Patient specific
     if ( $in{isfuture} ) {
-        $sql = "select a.sessionid, a.sessionname, DATE_FORMAT(DATE_ADD(a.scheduledfor, '%main::p{timezone}' HOUR_MINUTE), '%d %m %Y') as scheduledfor, c.accountname
+        $sql = "select a.sessionid, a.sessionname, DATE_FORMAT( DATE_ADD( a.scheduledfor, INTERVAL '%main::p{timezone}' HOUR_MINUTE ), '%d %m %Y' ) as scheduledfor, c.accountname
                 from SESSION a
                 join CLINICIAN b on a.clinicianid=b.clinicianid
                 join ACCOUNT c on b.clinicianid=c.accountid
-                where a.patientid=? and a.scheduledfor => UTC_TIMESTAMP() and a.completed is null and !a.deleted";
+                where a.patientid=? and a.scheduledfor >= UTC_TIMESTAMP() and !a.deleted";
         $sth = $dbh->prepare( $sql );
         $sth->execute( $in{patientid} );
         while ( my ( $sessionid, $sessionname, $scheduledfor, $assignedby ) = $sth->fetchrow_array ) {
@@ -46,8 +46,8 @@ if ( $in{patientid} ) {
 
     } else {
         $sql = "select a.sessionid, a.sessionname, 
-                    DATE_FORMAT(DATE_ADD(a.scheduledfor, '%main::p{timezone}' HOUR_MINUTE), '%d %m %Y') as scheduledfor, c.accountname
-                    DATE_FORMAT(DATE_ADD(a.completed, '%main::p{timezone}' HOUR_MINUTE), '%d %m %Y') as completed
+                    DATE_FORMAT(DATE_ADD(a.scheduledfor, INTERVAL '%main::p{timezone}' HOUR_MINUTE), '%d %m %Y') as scheduledfor, c.accountname,
+                    DATE_FORMAT(DATE_ADD(a.completed, INTERVAL '%main::p{timezone}' HOUR_MINUTE), '%d %m %Y') as completed
                 from SESSION a
                 join CLINICIAN b on a.clinicianid=b.clinicianid
                 join ACCOUNT c on b.clinicianid=c.accountid
@@ -72,11 +72,11 @@ if ( $in{patientid} ) {
 } elsif ( $in{clinicianid} ) {
     # Clinician specific
     if ( $in{isfuture} ) {
-        $sql = "select a.sessionid, a.sessionname, DATE_FORMAT(DATE_ADD(a.scheduledfor, '%main::p{timezone}' HOUR_MINUTE), '%d %m %Y') as scheduledfor, c.accountname
+        $sql = "select a.sessionid, a.sessionname, DATE_FORMAT(DATE_ADD(a.scheduledfor, INTERVAL '%main::p{timezone}' HOUR_MINUTE), '%d %m %Y') as scheduledfor, c.accountname
                 from SESSION a
                 join PATIENT b on a.patientid=b.patientid
                 join ACCOUNT c on b.patientid=c.accountid
-                where a.clinicianid=? and a.scheduledfor => UTC_TIMESTAMP() and a.completed is null and !a.deleted";
+                where a.clinicianid=? and a.scheduledfor >= UTC_TIMESTAMP() and !a.deleted";
         $sth = $dbh->prepare( $sql );
         $sth->execute( $in{clinicianid} );
         while ( my ( $sessionid, $sessionname, $scheduledfor, $assignedto ) = $sth->fetchrow_array ) {
@@ -94,8 +94,8 @@ if ( $in{patientid} ) {
 
     } else {
         $sql = "select a.sessionid, a.sessionname, 
-                    DATE_FORMAT(DATE_ADD(a.scheduledfor, '%main::p{timezone}' HOUR_MINUTE), '%d %m %Y') as scheduledfor, c.accountname
-                    DATE_FORMAT(DATE_ADD(a.completed, '%main::p{timezone}' HOUR_MINUTE), '%d %m %Y') as completed
+                    DATE_FORMAT(DATE_ADD(a.scheduledfor, INTERVAL '%main::p{timezone}' HOUR_MINUTE), '%d %m %Y') as scheduledfor, c.accountname,
+                    DATE_FORMAT(DATE_ADD(a.completed, INTERVAL '%main::p{timezone}' HOUR_MINUTE), '%d %m %Y') as completed
                 from SESSION a
                 join PATIENT b on a.patientid=b.patientid
                 join ACCOUNT c on b.patientid=c.accountid

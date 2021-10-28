@@ -202,7 +202,8 @@
                 url: 'ajax/ajaxdisplaysessions.cgi',
                 type: 'post',
                 data: { 
-                    isfuture: "0" 
+                    isfuture: "0",
+                    clinicianid: [% p.clinicianid %]
                 },
             },
             aaSorting: [ [ 1, 'asc' ] ],
@@ -222,7 +223,8 @@
                 url: 'ajax/ajaxdisplaysessions.cgi',
                 type: 'post',
                 data: { 
-                    isfuture: "1" 
+                    isfuture: "1",
+                    clinicianid: [% p.clinicianid %]
                 },
             },
             aaSorting: [ [ 1, 'asc' ] ],
