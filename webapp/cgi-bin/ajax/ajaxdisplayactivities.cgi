@@ -44,4 +44,6 @@ $sth->finish;
 
 print encode_json( \%payload );
 
+$dbh->disconnect;
+
 exit;

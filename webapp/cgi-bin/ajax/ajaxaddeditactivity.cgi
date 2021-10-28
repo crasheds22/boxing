@@ -28,33 +28,40 @@ if ( $in{activityid} ) {
     $sth = $dbh->prepare( $sql );
     $sth->execute( $in{activityid} );
     my $ok = 0;
-    ( $db{activityid}, $db{activityname}, $db{instructions}, $db{typeid} ) = $sth->fetchrow_array;
+    ( $db{activityid}, $db{activityname}, $db{instructions}, $db{activitytype} ) = $sth->fetchrow_array;
     $sth->finish;
 
     my %struct = %{ decode_json( $db{instructions} ) };
     my $count = 1;
-    foreach ( @{ $struct{Commands} } ) {
-        my ( $l, $r, $a ) = ( "", "", "" );
-        if ( $_->{Hands} eq "Left" ) {
-            $l = "selected";
-        } elsif ( $_->{Hands} eq "Right" ) {
-            $r = "selected";
-        } elsif ( $_->{Hands} eq "Any" ) {
-            $a = "selected";
+    if ( $db{activitytype} == 3 ) {
+        foreach ( @{ $struct{Commands} } ) {
+            $db{commands} = $_->{RestTime};
         }
+        
+    } else {
+        foreach ( @{ $struct{Commands} } ) {
+            my ( $l, $r, $a ) = ( "", "", "" );
+            if ( $_->{Hands} eq "Left" ) {
+                $l = "selected";
+            } elsif ( $_->{Hands} eq "Right" ) {
+                $r = "selected";
+            } elsif ( $_->{Hands} eq "Any" ) {
+                $a = "selected";
+            }
 
-        $db{commands} .= qq^
-            <tr>
-                <td>$count</td>
-                <td>$_->{TargetLocation}</td>
-                <td width="100px"><input type="number" class="form-control" min="0" value="$_->{NumberOfHitsNeeded}" /></td>
-                <td><select class="form-control"><option value=0 $a>A</option><option value=1 $l>L</option><option value=2 $r>R</option></select></td>
-                <td width="100px"><input type="number" class="form-control" min="0" value="$_->{TimeBeforeDestruction}" /></td>
-                <td align="right"><button type="button" class="btn btn-danger btn-xs" onclick="RemoveRow(this)"><span class="glyphicon glyphicon-minus"></span></button></td>
-            </tr>
-        ^;
+            $db{commands} .= qq^
+                <tr>
+                    <td>$count</td>
+                    <td>$_->{TargetLocation}</td>
+                    <td width="100px"><input type="number" class="form-control" min="0" value="$_->{NumberOfHitsNeeded}" /></td>
+                    <td><select class="form-control"><option value=0 $a>A</option><option value=1 $l>L</option><option value=2 $r>R</option></select></td>
+                    <td width="100px"><input type="number" class="form-control" min="0" value="$_->{TimeBeforeDestruction}" /></td>
+                    <td align="right"><button type="button" class="btn btn-danger btn-xs" onclick="RemoveRow(this)"><span class="glyphicon glyphicon-minus"></span></button></td>
+                </tr>
+            ^;
 
-        $count++;
+            $count++;
+        }
     }
 
 } else {
