@@ -4,14 +4,14 @@
         <div class="form-group">
             <label class="control-label col-md-3">First Name</label>
             <div class="col-md-8">
-                <input type="text" class="form-control" name="firstname" id="firstname" value="[% db.firstname %]" placeholder="First Name" [% db.readonly %] />
+                <input type="text" class="form-control no-numbers" name="firstname" id="firstname" value="[% db.firstname %]" placeholder="First Name" [% db.readonly %] />
             </div>
         </div>
 
         <div class="form-group">
             <label class="control-label col-md-3">Last Name</label>
             <div class="col-md-8">
-                <input type="text" class="form-control" name="lastname" id="lastname" value="[% db.lastname %]" placeholder="Last Name" [% db.readonly %] />
+                <input type="text" class="form-control no-numbers" name="lastname" id="lastname" value="[% db.lastname %]" placeholder="Last Name" [% db.readonly %] />
             </div>
         </div>
 

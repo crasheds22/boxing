@@ -12,7 +12,6 @@
         height: 175px;
     }
 
-
 </style>
 
 <form class="form-horizontal" role="form" id="activity_form" method="post">
@@ -21,11 +20,11 @@
         <div class="form-group">
             <label class="col-md-2 control-label">Activity Name:</label>
             <div class="col-md-3">
-                <input type="text" class="form-control" id="activity_name" name="activity_name" placeholder="Name" />
+                <input type="text" class="form-control no-numbers" id="activity_name" name="activity_name" placeholder="Name" value="[% db.activityname %]" />
             </div>
             <label class="col-md-2 control-label">Activity Type:</label>
             <div class="col-md-3">
-                <select class="form-control" name="activity_type" id="activity_type">
+                <select class="form-control" name="activity_type" id="activity_type" onchange="ChangeActivityType()">
                 [% FOREACH at IN activity_types %]
                     [% IF at.id == db.activitytype %]
                     <option value="[% at.id %]" selected>[% at.name %]</option>
@@ -39,21 +38,36 @@
 
         <div class="form-group">
             <div class="col-md-6">
-                <div class="grid">
-                    <div class="grid-item" id="target_1" value="1"><p><b>TopLeft</b></p></div>
-                    <div class="grid-item" id="target_2" value="2"><p><b>TopCenter</b></p></div>
-                    <div class="grid-item" id="target_3" value="3"><p><b>TopRight</b></p></div>
-                    <div class="grid-item" id="target_4" value="4"><p><b>MiddleLeft</b></p></div>
-                    <div class="grid-item" id="target_5" value="5"><p><b>MiddleCenter</b></p></div>
-                    <div class="grid-item" id="target_6" value="6"><p><b>MiddleRight</b></p></div>
-                    <div class="grid-item" id="target_7" value="7"><p><b>BottomLeft</b></p></div>
-                    <div class="grid-item" id="target_8" value="8"><p><b>BottomCenter</b></p></div>
-                    <div class="grid-item" id="target_9" value="9"><p><b>BottomRight</b></p></div>
+                <div id="static_targets">
+                    <div class="grid">
+                        <div class="grid-item" id="target_1" value="1"><p><b>TopLeft</b></p></div>
+                        <div class="grid-item" id="target_2" value="2"><p><b>TopCenter</b></p></div>
+                        <div class="grid-item" id="target_3" value="3"><p><b>TopRight</b></p></div>
+                        <div class="grid-item" id="target_4" value="4"><p><b>MiddleLeft</b></p></div>
+                        <div class="grid-item" id="target_5" value="5"><p><b>MiddleCenter</b></p></div>
+                        <div class="grid-item" id="target_6" value="6"><p><b>MiddleRight</b></p></div>
+                        <div class="grid-item" id="target_7" value="7"><p><b>BottomLeft</b></p></div>
+                        <div class="grid-item" id="target_8" value="8"><p><b>BottomCenter</b></p></div>
+                        <div class="grid-item" id="target_9" value="9"><p><b>BottomRight</b></p></div>
+                    </div>
+                </div>
+
+                <div id="dynamic_training" style="display:none;">
+                </div>
+
+                <div id="rest_period" style="display:none;">
+                    <label class="col-md-3 control-label">Rest Period:</label>
+                    <div class="col-md-9">
+                        <div class="input-group">
+                            <input type="text" class="form-control numbers-only" name="rest_time" id="rest_time" placehodler="Rest Time" value="[% commands %]" />
+                            <span class="input-group-addon">seconds</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <div class="col-md-1"></div>
-            <div class="col-md-5">
+            <div class="col-md-5" id="activity_list">
                 <table class="table table-striped table-bordered" id="activity_list">
                     <thead>
                         <tr>
@@ -66,9 +80,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    [% FOREACH row IN commands %]
-                        [% row %]
-                    [% END %]
+                    [% commands %]
                     </tbody>
                     <tfoot>
                     </tfoot>
@@ -108,30 +120,38 @@
 
         var itemNo = '<td>' + index + '</td>';
         var target = '<td>' + $(this).text() + '</td>';
-        var hits = '<td width="100px"><input type="number" class="form-control" min="0" value="1" /></td>';
+        var hits = '<td width="100px"><input type="text" class="form-control numbers-only" min="0" value="1" /></td>';
         var hand = '<td><select class="form-control"><option value=0>A</option><option value=1>L</option><option value=2>R</option></select></td>';
-        var duration = '<td width="100px"><input type="number" class="form-control" min="0" value="5" /></td>';
+        var duration = '<td width="100px"><input type="text" class="form-control numbers-only" min="0" value="5" /></td>';
         var remove = '<td align="right"><button type="button" class="btn btn-danger btn-xs" onclick="RemoveRow(this)"><span class="glyphicon glyphicon-minus"></span></button></td>';
 
         $("#activity_list tbody").append('<tr>' + itemNo + target + hits + hand + duration + remove + '</tr>');
     });
 
     function SaveActivity() {
-        var instructions = new Array();
-        $("#activity_list > tbody > tr").each(function( index ) {
-            instructions.push({
-                TargetLocation: $(this).find("td:eq(1)").text(),
-                NumberOfHitsNeeded: $(this).find("td:eq(2)").find("input").val(),
-                TimeBeforeDestruction: $(this).find("td:eq(4)").find("input").val(),
-                Hand: Hand_Full( $(this).find("td:eq(3)").find("select").val() )
+        var frm_data;
+
+        if ( $("#activity_type").val() == 3 ) {
+            frm_data = {
+                Type: $("#activity_type").find(":selected").text(),
+                Commands: [ { RestTime: $("#rest_time").val() } ]
+            };
+        } else {
+            var instructions = new Array();
+            $("#activity_list > tbody > tr").each(function( index ) {
+                instructions.push({
+                    TargetLocation: $(this).find("td:eq(1)").text(),
+                    NumberOfHitsNeeded: $(this).find("td:eq(2)").find("input").val(),
+                    TimeBeforeDestruction: $(this).find("td:eq(4)").find("input").val(),
+                    Hand: Hand_Full( $(this).find("td:eq(3)").find("select").val() )
+                });
             });
-        });
 
-        var frm_data = {
-            Type: $("#activity_type").find(":selected").text(),
-            Commands: instructions
-        };
-
+            frm_data = {
+                Type: $("#activity_type").find(":selected").text(),
+                Commands: instructions
+            };
+        }
         frm_data = JSON.stringify(frm_data);
 
         $.ajax({
@@ -202,5 +222,33 @@
             return "";
         }
     }
+
+    function ChangeActivityType() {
+        var val = $("#activity_type").val();
+
+        if ( val == 1 ) {
+            // Static training
+            $("#static_targets").show();
+            $("#dynamic_training").hide();
+            $("#rest_period").hide();
+            $("#activity_list").show();
+        } else if ( val == 2 ) {
+            // Dynamic Training 
+            $("#static_targets").hide();
+            $("#dynamic_training").show();
+            $("#rest_period").hide();
+            $("#activity_list").show();
+        } else if ( val == 3 ) {
+            // Rest Period
+            $("#static_targets").hide();
+            $("#dynamic_training").hide();
+            $("#rest_period").show();
+            $("#activity_list").hide();
+        }
+    }
+
+    $(document).ready(function() {
+        ChangeActivityType();
+    });
 
 </script>

@@ -44,8 +44,7 @@ my $filename = "patient.tt";
 my %args = (
     patientname => $patientname,
     activepage => ActivePage( 'patient' ),
-    p => \%main::p,
-    i => \%in
+    p => \%main::p
 );
 
 $main::g_template->process( $filename, \%args ) or die "Template process error: " . $main::g_template->error();

@@ -7,54 +7,54 @@
 <div class="col-md-1"></div>
 <div class="col-md-10">
     <form class="form-horizontal" role="form" name="clinician_form" id="clinician_form">
-        <input type="hidden" name="clinicianid" value="[% p.clinicianid %]" />
-        [% INCLUDE Display/startboundingbox.tt 
-            boxtitle = 'Patients'
-        %]
-            <table class="table table-striped table-bordered" id="patient_table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Age (D.o.B.)</th>
-                        <th>Height</th>
-                        <th>Weight</th>
-                        <th>Current Condition</th>
-                        <th>&nbsp;</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-                <tfoot>
-                </tfoot>
-            </table>
-            <div class="form-group">
-                <div class="col-md-2">
-                    <input type="button" class="btn btn-primary" onclick="NewPatient()" value="New Patient" />
-                </div>
+        <input type="hidden" name="clinicianid" id="clinicianid" value="[% p.clinicianid %]" />
+    [% INCLUDE Display/startboundingbox.tt 
+        boxtitle = 'Patients'
+    %]
+        <table class="table table-striped table-bordered" id="patient_table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Age (D.o.B.)</th>
+                    <th>Height</th>
+                    <th>Weight</th>
+                    <th>Current Condition</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            </tfoot>
+        </table>
+        <div class="form-group">
+            <div class="col-md-2">
+                <input type="button" class="btn btn-primary" onclick="NewPatient()" value="New Patient" />
             </div>
-        [% INCLUDE Display/endboundingbox.tt %]
+        </div>
+    [% INCLUDE Display/endboundingbox.tt %]
         <hr />
     [% IF p.accounttypeid == 2 || p.accounttypeid == 1 %]
         [% INCLUDE Display/startboundingbox.tt 
             boxtitle = 'Clinicians'
         %]
-            <table class="table table-striped table-bordered" id="clinician_table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>&nbsp;</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-                <tfoot>
-                </tfoot>
-            </table>
-            <div class="form-group">
-                <div class="col-md-2">
-                    <input type="button" class="btn btn-primary" onclick="NewClinician(0)" value="New Clinician" />
-                </div>
+        <table class="table table-striped table-bordered" id="clinician_table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            </tfoot>
+        </table>
+        <div class="form-group">
+            <div class="col-md-2">
+                <input type="button" class="btn btn-primary" onclick="NewClinician(0)" value="New Clinician" />
             </div>
+        </div>
         [% INCLUDE Display/endboundingbox.tt %]
         <hr />
     [% END %]
@@ -62,68 +62,63 @@
         [% INCLUDE Display/startboundingbox.tt 
             boxtitle = 'Head Clinicians'
         %]
-            <table class="table table-striped table-bordered" id="headclinician_table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>&nbsp;</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-                <tfoot>
-                </tfoot>
-            </table>
-            <div class="form-group">
-                <div class="col-md-2">
-                    <input type="button" class="btn btn-primary" onclick="NewClinician(1)" value="New Head Clinician" />
-                </div>
+        <table class="table table-striped table-bordered" id="headclinician_table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            </tfoot>
+        </table>
+        <div class="form-group">
+            <div class="col-md-2">
+                <input type="button" class="btn btn-primary" onclick="NewClinician(1)" value="New Head Clinician" />
             </div>
+        </div>
         [% INCLUDE Display/endboundingbox.tt %]
         <hr />
     [% END %]
         [% INCLUDE Display/startboundingbox.tt 
-            boxtitle = 'Upcoming Sessions'
+            boxtitle = 'Incomplete Sessions'
         %]
-            <table class="table table-striped table-bordered" id="future_sessions">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Scheduled For</th>
-                        <th>Assigned To</th>
-                        <th>&nbsp;</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-                <tfoot>
-                </tfoot>
-            </table>
-            <div class="form-group">
-                <div class="col-md-2">
-                    <input type="button" class="btn btn-primary" onclick="#" value="New Session" />
-                </div>
-            </div>
+        <table class="table table-striped table-bordered" id="incomplete_sessions">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Scheduled For</th>
+                    <th>Assigned To</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            </tfoot>
+        </table>
         [% INCLUDE Display/endboundingbox.tt %]
         <hr />
         [% INCLUDE Display/startboundingbox.tt 
-            boxtitle = 'Previous Sessions'
+            boxtitle = 'Complete Sessions'
         %]
-            <table class="table table-striped table-bordered" id="past_sessions">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Scheduled For</th>
-                        <th>Completed On</th>
-                        <th>Assigned To</th>
-                        <th>&nbsp;</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-                <tfoot>
-                </tfoot>
-            </table>
+        <table class="table table-striped table-bordered" id="complete_sessions">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Scheduled For</th>
+                    <th>Completed On</th>
+                    <th>Assigned To</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            </tfoot>
+        </table>
         [% INCLUDE Display/endboundingbox.tt %]
     </form>
 </div>
@@ -311,15 +306,15 @@
             ]
         } );
 
-        $("#future_sessions").DataTable().destroy();
-        $("#future_sessions").DataTable({
+        $("#incomplete_sessions").DataTable().destroy();
+        $("#incomplete_sessions").DataTable({
             lengthMenu: [ 5, 10, 20 ],
             ajax: {
                 url: 'ajax/ajaxdisplaysessions.cgi',
                 type: 'post',
                 data: { 
                     clinicianid: $("#clinicianid").val(),
-                    isfuture: "1" 
+                    iscompleted: "0" 
                 },
             },
             aaSorting: [ [ 1, 'asc' ] ],
@@ -331,15 +326,15 @@
             ]
         } );
 
-        $("#past_sessions").DataTable().destroy();
-        $("#past_sessions").DataTable( {
+        $("#complete_sessions").DataTable().destroy();
+        $("#complete_sessions").DataTable( {
             lengthMenu: [ 5, 10, 20 ],
             ajax: {
                 url: 'ajax/ajaxdisplaysessions.cgi',
                 type: 'post',
                 data: { 
                     clinicianid: $("#clinicianid").val(),
-                    isfuture: "0" 
+                    iscompleted: "1" 
                 },
             },
             aaSorting: [ [ 1, 'asc' ] ],

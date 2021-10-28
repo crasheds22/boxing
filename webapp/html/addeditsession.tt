@@ -1,5 +1,5 @@
 <form class="form-horizontal" name="session_form" id="session_form" role="form">
-    <input type="hidden" name="sessionid" value="[% db.sessionid %]" />
+    <input type="hidden" name="sessionid" id="sessionid" value="[% db.sessionid %]" />
     <div class="box-body">
         <div class="form-group">
             <label class="col-md-2 control-label">For:</label>
@@ -20,7 +20,7 @@
                 <select class="form-control" name="clinicianid" id="clinicianid">
                     <option value="[% p.accountid %]">[% p.accountname %]</option>
                 [% FOREACH clinician IN clinicians %]
-                    [% IF p.clinicianid == db.clinicianid %]
+                    [% IF p.clinicianid == clinicianid %]
                     <option value="[% clinician.id %]" selected>[% clinician.name %]</option>
                     [% ELSE %]
                     <option value="[% clinician.id %]">[% clinician.name %]</option>
@@ -37,7 +37,7 @@
         <div class="form-group">
             <label class="col-md-2 control-label">Session Name:</label>
             <div class="col-md-3">
-                <input type="text" class="form-control" name="sessionname" id="sessionname" value="[% db.sessionname %]" placeholder="Session Name" />
+                <input type="text" class="form-control no-numbers" name="sessionname" id="sessionname" value="[% db.sessionname %]" placeholder="Session Name" />
             </div>
             <label class="col-md-2 control-label">When:</label>
             <div class="col-md-3">
@@ -190,8 +190,22 @@
     $(document).ready(function() {
         $("#scheduledfor").datepicker( {
             autoclose: true,
-            minDate: new Date(),
-            format: "dd/mm/yyyy"
+            format: "dd/mm/yyyy",
+            startDate: new Date(),
+            endDate: "+2m",
+            todayHighlight: true
+        } );
+        
+        $(".no-numbers").on('input', function() {
+            var value = $(this).val();
+            value = value.replace(/[^a-zA-Z\-]/g, '');
+            $(this).val( value );
+        } );
+
+        $(".numbers-only").on('input', function() {
+            var value = $(this).val();
+            value = value.replace(/[^0-9.]/g, '');
+            $(this).val( value );
         } );
 
     });

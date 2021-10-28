@@ -42,7 +42,6 @@ if ( $in{headclinicianid} ) {
 
 } else {
     $dbh->disconnect();
-    print STDERR "No head clinician or admin id\n";
     print encode_json( \%payload );
     exit;
 }
