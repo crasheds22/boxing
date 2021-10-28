@@ -23,8 +23,7 @@ sub SetAuthCookie {
         -path => '/',
         -httponly => \1,
         -samesite => 'Lax',
-        -expires => '+12h',
-        -secure => \1
+        -expires => '+12h'
     };
 
     my $cookie = CGI::Cookie->new( $cookie_args );
