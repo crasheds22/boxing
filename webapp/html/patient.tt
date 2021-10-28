@@ -48,6 +48,10 @@
             </table>
         [% INCLUDE Display/endboundingbox.tt %]
             <script>
+                function ViewSession( sessionid ) {
+                    console.log('Not implemented');
+                }
+
                 $(document).ready(function() {
                     $("#future_sessions").DataTable().destroy();
                     $("#future_sessions").DataTable( {

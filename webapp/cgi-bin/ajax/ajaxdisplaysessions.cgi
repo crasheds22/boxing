@@ -38,7 +38,7 @@ if ( $in{patientid} ) {
                 scheduledfor => $scheduledfor,
                 assignedby => $assignedby,
                 buttons => qq^
-                    <input type="button" class="btn btn-default" onclick="#" value="View" />
+                    <input type="button" class="btn btn-default" onclick="ViewSession($sessionid)" value="View" />
                 ^
             };
         }
@@ -61,7 +61,7 @@ if ( $in{patientid} ) {
                 completedon => $completedon,
                 assignedby => $assignedby,
                 buttons => qq^
-                    <input type="button" class="btn btn-default" onclick="#" value="View" />
+                    <input type="button" class="btn btn-default" onclick="ViewSession($sessionid)" value="View" />
                 ^
             };
         }
