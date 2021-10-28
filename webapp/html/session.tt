@@ -40,9 +40,9 @@
     [% INCLUDE Display/endboundingbox.tt %]
     <hr />
     [% INCLUDE Display/startboundingbox.tt 
-        boxtitle = 'Upcoming Sessions'
+        boxtitle = 'Incomplete Sessions'
     %]
-        <table class="table table-striped table-bordered" id="future_sessions">
+        <table class="table table-striped table-bordered" id="incomplete_sessions">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -59,9 +59,9 @@
     [% INCLUDE Display/endboundingbox.tt %]
     <hr />
     [% INCLUDE Display/startboundingbox.tt 
-        boxtitle = 'Previous Sessions'
+        boxtitle = 'Complete Sessions'
     %]
-        <table class="table table-striped table-bordered" id="past_sessions">
+        <table class="table table-striped table-bordered" id="complete_sessions">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -196,14 +196,14 @@
             ]
         });
 
-        $("#past_sessions").DataTable().destroy();
-        $("#past_sessions").DataTable( {
+        $("#complete_sessions").DataTable().destroy();
+        $("#complete_sessions").DataTable( {
             lengthMenu: [ 5, 10, 20 ],
             ajax: {
                 url: 'ajax/ajaxdisplaysessions.cgi',
                 type: 'post',
                 data: { 
-                    isfuture: "0",
+                    iscompleted: "1",
                     clinicianid: [% p.clinicianid %]
                 },
             },
@@ -217,14 +217,14 @@
             ]
         } );
 
-        $("#future_sessions").DataTable().destroy();
-        $("#future_sessions").DataTable( {
+        $("#incomplete_sessions").DataTable().destroy();
+        $("#incomplete_sessions").DataTable( {
             lengthMenu: [ 5, 10, 20 ],
             ajax: {
                 url: 'ajax/ajaxdisplaysessions.cgi',
                 type: 'post',
                 data: { 
-                    isfuture: "1",
+                    iscompleted: "0",
                     clinicianid: [% p.clinicianid %]
                 },
             },
