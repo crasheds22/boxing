@@ -15,6 +15,15 @@
             </div>
         </div>
 
+        [% IF db.patientid %]
+        <div class="form-group">
+            <label class="control-label col-md-3">Username</label>
+            <div class="col-md-8">
+                <p class="form-control-static" id="username">[% db.username %]</p>
+            </div>
+        </div>
+        [% END %]
+
         <div class="form-group">
             <label class="control-label col-md-3">Date of Birth</label>
             <div class="col-md-8">
