@@ -89,7 +89,7 @@ if ( $accountid ) {
             };
         }
 
-        push @{ $db{Session} }, $session;
+        push @{ $db{Session} }, \%session;
     }
 
     %data = (
