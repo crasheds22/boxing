@@ -253,7 +253,7 @@
 
     $(".no-numbers").on('input', function() {
         var value = $(this).val();
-        value = value.replace(/[^a-zA-Z\-]/g, '');
+        value = value.replace(/[^a-zA-Z\-\s]/g, '');
         $(this).val( value );
     } );
 
