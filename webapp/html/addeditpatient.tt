@@ -102,7 +102,7 @@
             endDate: new Date(),
             todayHighlight: true
         } );
-        
+
         $(".no-numbers").on('input', function() {
             var value = $(this).val();
             value = value.replace(/[^a-zA-Z\-]/g, '');

@@ -57,20 +57,20 @@ if ( $accountid ) {
     $sth->finish;
 
     $sql = "select a.sessionid, c.accountname,
-                DATE_FORMAT(DATE_ADD(a.scheduledfor, INTERVAL '$db{Patient}{timezone}' HOUR_MINUTE), '%d %m %Y') as scheduledfor
+                DATE_FORMAT(DATE_ADD(a.scheduledfor, INTERVAL '$db{Patient}{timezone}' HOUR_MINUTE), '%d/%m/%Y') as scheduledfor
             from SESSION a 
             join CLINICIAN b on a.clinicianid=b.clinicianid
             join ACCOUNT c on b.clinicianid=c.accountid
-            where a.patientid=? and a.completed is null and a.scheduledfor >= UTC_TIMESTAMP()
+            where a.patientid=? and a.completed is null
             limit 5";
     $sth = $dbh->prepare( $sql );
     $sth->execute( $accountid );
     while ( my ( $sessionid, $accountname, $scheduledfor ) = $sth->fetchrow_array ) {
-        $db{Session}[$sessionid] = {
+        %session = (
             id => $sessionid,
             assignedby => $accountname,
             scheduledfor => $scheduledfor
-        };
+        );
         
         $sql = "select a.exerciseid, a.sessionorder, b.activityname, b.instructions, c.typename
                 from EXERCISE a
@@ -80,7 +80,7 @@ if ( $accountid ) {
         my $sth2 = $dbh->prepare( $sql );
         $sth2->execute( $sessionid );
         while ( my ( $exerciseid, $sessionorder, $activityname, $instructions, $typename ) = $sth2->fetchrow_array ) {
-            push @{ $db{Session}[$sessionid]{Exercise} }, {
+            push @{ $session{Exercise} }, {
                 id => $exerciseid,
                 activitytype => $typename,
                 order => $sessionorder,
@@ -88,6 +88,8 @@ if ( $accountid ) {
                 instructions => $instructions
             };
         }
+
+        push @{ $db{Session} }, $session;
     }
 
     %data = (
