@@ -66,7 +66,7 @@ if ( $accountid ) {
     $sth = $dbh->prepare( $sql );
     $sth->execute( $accountid );
     while ( my ( $sessionid, $accountname, $scheduledfor ) = $sth->fetchrow_array ) {
-        %session = (
+        my %session = (
             id => $sessionid,
             assignedby => $accountname,
             scheduledfor => $scheduledfor
