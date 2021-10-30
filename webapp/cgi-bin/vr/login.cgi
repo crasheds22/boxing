@@ -85,7 +85,7 @@ if ( $accountid ) {
                 activitytype => $typename,
                 order => $sessionorder,
                 activityname => $activityname,
-                instructions => $instructions
+                instructions => decode_json( $instructions )
             };
         }
 
