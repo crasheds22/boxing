@@ -23,9 +23,70 @@ foreach ( $query->param ) {
 }
 
 my $editing = $in{patientid} ? 1 : 0;
+$in{dob} = MakeMYSQLDate( $in{dob} );
 
 my %data = ();
 my ( $sql, $sth );
+
+if ( !$main::p{accountid} ) {
+    # No accountid set, dont continue;
+    %data = (
+        success => \0,
+        message => "Security Error"
+    );
+    print encode_json( \%data );
+    $dbh->disconnect;
+    exit;
+}
+
+if ( $main::p{accounttypeid} == 4 ) {
+    # This user is a patient and should not be here
+    %data = (
+        success => \0,
+        message => "Security Error: invalid user access"
+    );
+    print encode_json( \%data );
+    $dbh->disconnect;
+    exit;
+}
+
+if ( $editing ) {
+    $sql = "select patientid 
+            from PATIENT 
+            where patientid=?";
+    $sth = $dbh->prepare( $sql );
+    $sth->execute( $in{patientid} );
+    my ( $ok ) = $sth->fetchrow_array();
+    $sth->finish();
+
+    if ( !$ok ) {
+        %data = (
+            success => \0,
+            message => "Not a real patient, cannot continue"
+        );
+        $dbh->disconnect;
+        print encode_json( \%data );
+        exit;
+    }
+
+    $sql = "select patientid 
+            from PATIENT 
+            where patientid=? and insertby in ( -1, ? )";
+    $sth = $dbh->prepare( $sql );
+    $sth->execute( $in{patientid}, $main::p{clinicianid} );
+    ( $ok ) = $sth->fetchrow_array();
+    $sth->finish();
+
+    if ( !$ok ) {
+        %data = (
+            success => \0,
+            message => "You do not have access to this patient"
+        );
+        $dbh->disconnect;
+        print encode_json( \%data );
+        exit;
+    }
+}
 
 if ( $in{delete} ) {
     $sql = "update ACCOUNT 
@@ -78,11 +139,11 @@ if ( $in{delete} ) {
     # Editing
 
     $sql = "update PATIENT 
-            set dob=?, condition=?, height=?, weight=?
+            set dob=?, `condition`=?, height=?, weight=?
             where patientid=?";
     eval {
         $sth = $dbh->prepare( $sql );
-        $sth->execute( $in{dob}, $in{condition}, $in{height}, $in{width} );
+        $sth->execute( $in{dob}, $in{condition}, $in{height}, $in{weight}, $in{patientid} );
         $sth->finish();
     };
     if ( $@ ) {

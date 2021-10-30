@@ -25,6 +25,17 @@ print "Content-Type:application/json\n\n";
 my ( $sql, $sth );
 my %data = ();
 
+if ( !$main::p{accountid} ) {
+    # No accountid set, dont continue;
+    %data = (
+        success => \0,
+        message => "Security Error"
+    );
+    print encode_json( \%data );
+    $dbh->disconnect;
+    exit;
+}
+
 if ( $in{delete} ) {
     $sql = "update ACTIVITY
             set deleted=1

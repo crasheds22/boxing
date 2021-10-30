@@ -23,9 +23,20 @@ foreach ( $query->param ) {
 $in{accounttypeid} = sprintf( "%d", $in{accounttypeid} );
 
 my ( $sql, $sth );
+my %data = ();
 
 print "Content-Type:application/json\n\n";
-my %data = ();
+
+if ( !$main::p{accountid} ) {
+    # No accountid set, dont continue;
+    %data = (
+        success => \0,
+        message => "Security Error"
+    );
+    print encode_json( \%data );
+    $dbh->disconnect;
+    exit;
+}
 
 if ( $in{delete} ) {
     $sql = "update ACCOUNT 
