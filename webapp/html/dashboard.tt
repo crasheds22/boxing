@@ -62,6 +62,21 @@
             Simply click log out to safely exit the application
         </p>
         [% END %]
+
+        <br /><br />
+        <p>
+            Team Not Implemented<br />
+            ICT302 Semester 2 2021<br /><br />
+
+            Team Members:<br />
+            Aaron Thomson, Liam Kinsella, Kiera Gibson, Jessica Preston, Jake Oorschot, Caleb Macmile, Davinder Singh<br /><br />
+
+            Client: David Blacker<br />
+            Supervisor: Shri Rai<br />
+            Unit Coordinator: Mohd Fairuz Shiratuddin<br /><br />
+        </p>
+
+        <span class="badge badge-warning">This product is only a proof of concept prototype and is not ready for commercial use.</span>
     </form>
     <div class="col-md-1"></div>
 </div>
