@@ -61,7 +61,7 @@ if ( $in{sessionid} ) {
 $sql = "select a.accountid, a.accountname 
         from ACCOUNT a
         join PATIENT b on a.accountid=b.patientid
-        where b.insertby in ( -1, ? )";
+        where b.insertby in ( -1, ? ) and !deleted and !archived";
 $sth = $dbh->prepare( $sql );
 $sth->execute( $main::p{accountid} );
 while ( my ( $patientid, $patientname ) = $sth->fetchrow_array ) {
