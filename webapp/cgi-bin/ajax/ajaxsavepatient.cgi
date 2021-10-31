@@ -203,8 +203,6 @@ if ( $in{delete} ) {
         exit;
     }
 
-    $in{dob} = MakeMYSQLDate( $in{dob} );
-
     $sql = "insert into PATIENT ( patientid, dob, `condition`, height, weight, insertby )
             values ( ?, ?, ?, ?, ?, ? )";
     eval {
