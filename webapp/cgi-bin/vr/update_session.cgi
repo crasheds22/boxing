@@ -99,15 +99,25 @@ $sql = "update EXERCISE
         set exercisedata=?
         where exerciseid=?";
 $sth = $dbh->prepare( $sql );
-$sth->execute( decode_json( $in{exercisedata}->{data} ), $in{exercisedata}->{id} );
+$sth->execute( $in{exercisedata}->{data}, $in{exercisedata}->{id} );
 $sth->finish;
 
-$sql = "update SESSION
-        set completed=UTC_TIMESTAMP()
-        where sessionid=?";
+$sql = "select count(exerciseid)
+        from EXERCISE
+        where exercisedata is not null and sessionid=?";
 $sth = $dbh->prepare( $sql );
 $sth->execute( $in{sessionid} );
+my ( $incomplete ) = $sth->fetchrow_array();
 $sth->finish;
+
+if ( !$incomplete ) {
+    $sql = "update SESSION
+            set completed=UTC_TIMESTAMP()
+            where sessionid=?";
+    $sth = $dbh->prepare( $sql );
+    $sth->execute( $in{sessionid} );
+    $sth->finish;
+}
 
 $dbh->commit;
 $dbh->disconnect;
