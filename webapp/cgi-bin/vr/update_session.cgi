@@ -95,14 +95,12 @@ if ( !$ok ) {
     exit;
 }
 
-foreach ( @{ decode_json( $in{exercisedata} ) } ) {
-    $sql = "update EXERCISE
-            set exercisedata=?
-            where exerciseid=?";
-    $sth = $dbh->prepare( $sql );
-    $sth->execute( $_->{data}, $_->{id} );
-    $sth->finish;
-}
+$sql = "update EXERCISE
+        set exercisedata=?
+        where exerciseid=?";
+$sth = $dbh->prepare( $sql );
+$sth->execute( decode_json( $in{exercisedata}->{data} ), $in{exercisedata}->{id} );
+$sth->finish;
 
 $sql = "update SESSION
         set completed=UTC_TIMESTAMP()
