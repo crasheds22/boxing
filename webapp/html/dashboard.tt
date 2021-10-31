@@ -8,6 +8,60 @@
     <div class="col-md-1"></div>
     <form class="form-horizontal" name="dashboard_form" id="dashboard_form" method="post" role="form">
         <p>Welcome [% p.accountname %]</p>
+        <p>
+            The Boxing for Health web application is here to provide access to users for review of session and account information for tracking progress of their Boxing for Health VR game sessions. 
+            Using the navigation bar at the top, users can move around the web application to view their relevant information
+        </p>
+        [% IF p.accounttypeid == 4 %]
+        <p>
+            As a Patient you can utilise the Boxing for Health web application primarily through the “Patient” page. 
+            This is where your session history and upcoming prescribed sessions can be viewed. 
+            Any training sessions your clinician has outlined for you to complete along with their date to be completed can be seen here. 
+            Alternatively, you can also view the completed sessions and when you completed them. 
+            Simply click log out to safely exit the application.
+        </p>
+        [% ELSIF p.accounttypeid == 3 %]
+        <p>
+            As a Clinician you may access all areas of the application. 
+            In order to assign or modify sessions for a patient, move over to the “Sessions” page. 
+            This is where you may create activities using the activity creator, then assign them to a session for a patient. 
+            The created activities are viewable and modifiable, meaning you may make a slight modification of an activity that has been used before. 
+            You may also do the same with sessions which are assigned to patients. 
+            This allows for easy creation of effective sessions for other patients.
+            The “Clinician” page provides the ability to create, modify and delete patients from your record. 
+            This page will allow you to view all the patients you have created and their account information. 
+            You may access your own account information from the “Settings” page. 
+            Simply click log out to safely exit the application.
+        </p>
+        [% ELSIF p.aaccounttypeid == 2 %]
+        <p>
+            As a Head Clinician you may access all areas of the application. 
+            In order to assign or modify sessions for a patient, move over to the “Sessions” page. 
+            This is where you may create activities using the activity creator, then assign them to a session for a patient. 
+            The created activities are viewable and modifiable, meaning you may make a slight modification of an activity that has been used before. 
+            You may also do the same with sessions which are assigned to patients. 
+            This allows for easy creation of effective sessions for other patients.
+            The “Clinician” page provides the ability to create, modify and delete patients from your record. 
+            This page will allow you to view all the patients you have created and their account information. 
+            The Head Clinician role also adds the ability to add, modify and delete other clinicians. 
+            These Clinicians will be tied to you and are viewable similarly patients in their own tables on the “Clinician” page. 
+            Simply click log out to safely exit the application.
+        </p>
+        [% ELSIF p.accounttypeid == 1 %]
+        <p>
+            As an Admin you may access all areas of the application. 
+            In order to assign or modify sessions for a patient, move over to the “Sessions” page. 
+            This is where you may create activities using the activity creator, then assign them to a session for a patient. 
+            The created activities are viewable and modifiable, meaning you may make a slightly modified of an activity that has been used before. 
+            You may also do the same with sessions which are assigned to patients. 
+            This allows for easy creation of effective sessions for other patients.
+            The “Clinician” page provides the ability to create, modify and delete patients from your record. 
+            This page will allow you to view all the patients you have created and their account information. 
+            The Admin role also adds the ability to add, modify and delete clinicians and head clinicians. 
+            These Clinicians will be tied to you are viewable alike patients in their own tables on the “Clinician” page. 
+            Simply click log out to safely exit the application
+        </p>
+        [% END %]
     </form>
     <div class="col-md-1"></div>
 </div>

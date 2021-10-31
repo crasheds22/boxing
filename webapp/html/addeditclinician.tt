@@ -38,6 +38,16 @@
         </div>
 
         <div class="form-group">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+                <label class="form-control-static">Help:</label>
+                <p>
+                    Fill in clinician first and last names, select the account type and click save.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
             <div class="col-md-5"></div>
             <input type="button" class="btn btn-primary" value="Save" onclick="CheckFields();" />
             <input type="button" class="btn btn-default" value="Close" onclick="clinicianDialog.close();" />

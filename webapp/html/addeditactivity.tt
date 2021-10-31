@@ -89,6 +89,19 @@
         </div>
 
         <div class="form-group">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+                <label class="form-control-static">Help:</label>
+                <p>
+                    Simply provide a name and activity type.
+                    <li>If making a static type: use the grid on the left to select the targets in the order you wish them to be hit. Modify the hit constraints on the right and press save.</li>
+                    <li>If making a dynamic type: ... </li>
+                    <li>If making a rest type: specify the amount of time to rest in seconds and press save when done</li>
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
             <div class="col-md-3"></div>
             <input type="button" class="btn btn-primary" onclick="SaveActivity()" value="Save" />
             <input type="button" class="btn btn-default" onclick="activityDialog.close();" value="Close" />

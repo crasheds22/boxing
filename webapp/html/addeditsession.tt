@@ -94,7 +94,11 @@
             <div class="col-md-1"></div>
             <div class="col-md-10">
                 <label class="control-label-static">Help:</label>
-                <p>How to use this popup</p>
+                <p>
+                    Provide a Session name and to do date, then assign the session to a patient. 
+                    Use the activity selector to select your desired activities on the left or remove from the right. 
+                    Once complete click save.
+                </p>
             </div>
             <div class="col-md-1"></div>
         </div>
