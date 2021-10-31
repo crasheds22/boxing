@@ -20,6 +20,13 @@ $in{patientid} = $decoded_json->{patientid};
 $in{sessionid} = $decoded_json->{sessionid};
 $in{exercisedata} = $decoded_json->{exercisedata};
 
+print STDERR "Data dump:\n
+    patientid: $in{patientid}\n
+    sessionid: $in{sessionid}\n
+    exercisedata->{id}: $in{exercisedata}->{id}\n
+    exercisedata->{data}: $in{exercisedata}->{data}\n
+    exercisedata decoded: " . decode_json( $in{exercisedata}->{data} );
+
 my %data = ();
 
 print "Content-Type:application/json\n\n";
@@ -104,7 +111,7 @@ $sth->finish;
 
 $sql = "select count(exerciseid)
         from EXERCISE
-        where exercisedata is not null and sessionid=?";
+        where exercisedata is null and sessionid=?";
 $sth = $dbh->prepare( $sql );
 $sth->execute( $in{sessionid} );
 my ( $incomplete ) = $sth->fetchrow_array();
