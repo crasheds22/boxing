@@ -12,9 +12,13 @@ my $dbh = DBConnect();
 
 my $query = CGI->new;
 my %in = ();
-$in{patientid} = $query->param('patientid') ? sprintf( "%d", scalar $query->param('patientid') ) : 0;
-$in{sessionid} = $query->param('sessionid') ? sprintf( "%d", scalar $query->param('sessionid') ) : 0;
-$in{exercisedata} = $query->param('exercisedata');
+my $rawput = $query->param('PUTDATA');
+
+my $decoded_json = decode_json( $rawput );
+
+$in{patientid} = $decoded_json->{patientid};
+$in{sessionid} = $decoded_json->{sessionid};
+$in{exercisedata} = $decoded_json->{exercisedata};
 
 my %data = ();
 
