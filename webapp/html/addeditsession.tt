@@ -116,6 +116,11 @@
 
 <script>
     function SaveSession() {
+        if ( $("#exercises > tbody > tr").length < 1 ) {
+            Alert( "Require at least one Exercise to save", 1 );
+            return false;
+        }
+
         var exercises = new Array();
         $("#exercises > tbody > tr").each( function( index ) {
             exercises.push( $(this).data("attribute") );
