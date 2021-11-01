@@ -286,7 +286,7 @@ sub Logout {
     $dbh->commit();
     $dbh->disconnect;
 
-    print "Location: http://localhost:8000/cgi-bin/login.cgi?logout=1\n\n";
+    print "Location: http://10.51.33.119:8000/cgi-bin/login.cgi?logout=1\n\n";
 
     exit;
 
