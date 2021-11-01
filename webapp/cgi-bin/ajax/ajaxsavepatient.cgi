@@ -143,7 +143,7 @@ if ( $in{delete} ) {
             where patientid=?";
     eval {
         $sth = $dbh->prepare( $sql );
-        $sth->execute( $in{dob}, $in{condition}, $in{height}, $in{weight}, $in{patientid}, $db{whoaccess} );
+        $sth->execute( $in{dob}, $in{condition}, $in{height}, $in{weight}, $in{patientid}, $in{whoaccess} );
         $sth->finish();
     };
     if ( $@ ) {
@@ -207,7 +207,7 @@ if ( $in{delete} ) {
             values ( ?, ?, ?, ?, ?, ? )";
     eval {
         $sth = $dbh->prepare( $sql );
-        $sth->execute( $patientid, $in{dob}, $in{condition}, $in{height}, $in{weight}, $db{whoaccess} );
+        $sth->execute( $patientid, $in{dob}, $in{condition}, $in{height}, $in{weight}, $in{whoaccess} );
         $sth->finish();
     };
     if ( $@ ) {
