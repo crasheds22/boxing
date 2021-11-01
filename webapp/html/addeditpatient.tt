@@ -60,6 +60,21 @@
         </div>
 
         <div class="form-group">
+            <label class="control-label col-md-3">Who has access:</label>
+            <div class="col-md-4">
+                <select class="form-control" name="whoaccess" id="whoaccess">
+                [% FOREACH clinician IN clinicians %]
+                    [% IF clinician.id == db.insertby %]
+                    <option value="[% clinician.id %]" selected>[% clinician.name %]</option>
+                    [% ELSE %]
+                    <option value="[% clinician.id %]">[% clinician.name %]</option>
+                    [% END %]
+                [% END %]
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
             <div class="col-md-1"></div>
             <div class="col-md-10">
                 <label class="form-control-static">Help</label>

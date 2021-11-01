@@ -139,11 +139,11 @@ if ( $in{delete} ) {
     # Editing
 
     $sql = "update PATIENT 
-            set dob=?, `condition`=?, height=?, weight=?
+            set dob=?, `condition`=?, height=?, weight=?, insertby=?
             where patientid=?";
     eval {
         $sth = $dbh->prepare( $sql );
-        $sth->execute( $in{dob}, $in{condition}, $in{height}, $in{weight}, $in{patientid} );
+        $sth->execute( $in{dob}, $in{condition}, $in{height}, $in{weight}, $in{patientid}, $db{whoaccess} );
         $sth->finish();
     };
     if ( $@ ) {
@@ -207,7 +207,7 @@ if ( $in{delete} ) {
             values ( ?, ?, ?, ?, ?, ? )";
     eval {
         $sth = $dbh->prepare( $sql );
-        $sth->execute( $patientid, $in{dob}, $in{condition}, $in{height}, $in{weight}, $main::p{clinicianid} );
+        $sth->execute( $patientid, $in{dob}, $in{condition}, $in{height}, $in{weight}, $db{whoaccess} );
         $sth->finish();
     };
     if ( $@ ) {
