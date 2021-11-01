@@ -16,7 +16,7 @@ my ( $sql, $sth );
 $sql = "select distinct a.accountname, b.patientid, b.dob, b.height, b.weight, b.condition
         from ACCOUNT a
         join PATIENT b on a.accountid=b.patientid
-        where b.insertby=? and !a.deleted and !a.archived";
+        where b.insertby in ( -1, ? ) and !a.deleted and !a.archived";
 $sth = $dbh->prepare( $sql );
 $sth->execute( $main::p{clinicianid} );
 my %payload = ( data => [] );
